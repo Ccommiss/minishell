@@ -6,7 +6,7 @@
 #    By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/07/20 14:50:16 by ccommiss          #+#    #+#              #
-#    Updated: 2021/07/22 16:14:20 by ccommiss         ###   ########.fr        #
+#    Updated: 2021/09/14 15:20:14 by ccommiss         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -53,9 +53,10 @@ CC = @clang -g $(FLAGS)
 
 all : $(NAME)
 
-$(NAME) : $(OBJS)
-	@$(CC) $(OBJS) -o $(NAME)
-	@echo ">> Classic version of pipex. Only one pipe handled.\nFor more: make bonus."
+$(NAME) : $(OBJS_BONUS)
+	@ar -rc $(NAME) $(OBJS_BONUS)
+	@ranlib $(NAME)
+	@echo ">> Multiple pipes handled. Have fun !"
 
 bonus : $(OBJS_BONUS)
 	@$(CC) $(OBJS_BONUS) -o $(NAME)

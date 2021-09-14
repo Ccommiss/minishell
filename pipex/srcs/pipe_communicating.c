@@ -6,7 +6,7 @@
 /*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/22 15:51:34 by ccommiss          #+#    #+#             */
-/*   Updated: 2021/07/22 15:51:34 by ccommiss         ###   ########.fr       */
+/*   Updated: 2021/09/14 15:45:04 by ccommiss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ void	dup_and_exec(t_cmd *cmds, int *files, int **fd, char **envp)
 			error_quit(DUP_ERR, cmds->head, fd);
 		close(fd[cmds->index][1]);
 	}
+//	printf ("exec : %s \n", cmds->cmdp);
 	if (execve(cmds->cmdp, cmds->cmd_args, envp) == -1)
 		error_quit(EXEC_ERR, cmds->head, fd);
 }
@@ -83,7 +84,7 @@ void	free_fds(int **fd, t_cmd *head)
 **             	   ^                 ^
 **          	fd[1][0/1]             fd[3][0/1]
 */
-int	main(int ac, char **argv, char **envp)
+int	pipex(int ac, char **argv, char **envp)
 {
 	int		files[2];
 	int		**fd;
@@ -92,11 +93,18 @@ int	main(int ac, char **argv, char **envp)
 	t_cmd	*head;
 
 	get_file(files, argv, ac);
-	pipe_fds(&fd, ac - 4);
+	if (ac - 4 <= 0)
+		ac = 1;
+	else
+		ac = ac - 4;
+	printf (" ac = %d \n", ac);
+	pipe_fds(&fd, ac);
 	cmds = take_multiple_args(argv, ac, envp);
 	head = cmds;
+	printf("here \n");
 	while (cmds != NULL)
 	{
+		printf ("cmd : %s \n", cmds->cmdp);
 		pid = fork();
 		if (pid == -1)
 			error_quit(FORK_ERR, cmds->head, fd);
