@@ -1,2 +1,0 @@
-# minishello
-for the minishell
