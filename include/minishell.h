@@ -7,6 +7,7 @@
 # include <limits.h>
 # include <readline/readline.h>
 # include <readline/history.h>
-#include "./libft/libft.h"
+#include "../libft/libft.h"
 
+int	get_next_line(int fd, char **line);
 #endif

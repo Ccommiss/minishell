@@ -1,9 +1,9 @@
-SOURCES = get_next_line.c\
-		  main.c\
-SPATH = srcs/
+SOURCES = srcs/get_next_line.c\
+		  srcs/main.c\
+#SPATH = srcs/
 
-SOURCES  += $(addprefix $(SPATH), $(SOURCES))
-
+#SOURCES  += $(addprefix $(SPATH), $(SOURCES))
+OBJS	= 	${SOURCES:.c=.o}
 CC = gcc
 CFLAGS = -Wall -Werror -Wextra -I ./include/ 
 
@@ -11,11 +11,11 @@ RM = rm -f
 
 NAME = minishell 
 
-#-fds=yes 
 %.o: %.c 
-	${CC} ${CFLAGS} -C $< -o ${<:.c=.o}
+	${CC} ${CFLAGS} -c $< -o ${<:.c=.o}
+
 ${NAME}: ${OBJS}
-		${MAKE} -c libft/ 
+		${MAKE} -C libft/ 
 		${CC} ${OBJS} libft/libft.a -o ${NAME}
 all: ${NAME}
 
