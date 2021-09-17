@@ -1,11 +1,14 @@
-SOURCES = srcs/get_next_line.c\
-		  srcs/main.c\
-#SPATH = srcs/
+SOURCES =	main.c\
 
-#SOURCES  += $(addprefix $(SPATH), $(SOURCES))
-OBJS	= 	${SOURCES:.c=.o}
-CC = gcc
-CFLAGS = -Wall -Werror -Wextra -I ./include/ 
+SPATH = srcs/
+
+SRCS  += $(addprefix $(SPATH), $(SOURCES))
+
+OBJS	= 	${SRCS:.c=.o}
+
+CC = gcc 
+
+CFLAGS = -Wall -Werror -Wextra -fsanitize=address
 
 RM = rm -f
 
@@ -16,7 +19,7 @@ NAME = minishell
 
 ${NAME}: ${OBJS}
 		${MAKE} -C libft/ 
-		${CC} ${OBJS} libft/libft.a -o ${NAME}
+		${CC} ${CFLAGS} ${OBJS} -lreadline libft/libft.a -o ${NAME}
 all: ${NAME}
 
 clean : 
@@ -25,6 +28,7 @@ clean :
 fclean : clean
 		${RM} ${NAME}
 		${MAKE} fclean -C libft/
+
 re:	 fclean all
 
 .PHONY: all clean fclean re

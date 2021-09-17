@@ -9,5 +9,10 @@
 # include <readline/history.h>
 #include "../libft/libft.h"
 
-int	get_next_line(int fd, char **line);
+typedef struct	s_arg
+{
+	int	s_quote;
+	int	d_quote;
+	int	nb_pipe;
+}				t_arg;
 #endif
