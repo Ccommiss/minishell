@@ -6,13 +6,15 @@
 /*   By: mpochard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/19 13:25:57 by mpochard          #+#    #+#             */
-/*   Updated: 2021/09/19 15:16:47 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/09/20 10:45:30 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-//#include "../include/minishell.h"
-
-#include <stdio.h>
+#include "../include/minishell.h"
+/*
+ * this fonction split the arg of line with a sep like | (readline) 
+ * ex : " ls -l | wc > a
+ * `
 int	ft_sep(char c, char sep)
 {
 	if ( c == sep)
@@ -38,24 +40,21 @@ int	ft_count_sep(char *str, char sep)
 		count++;
 	return (count);
 }
-int	main (int ac, char **av)
-{
-	(void)ac;
-	printf ("mot %d\n", ft_count_sep(av[1], '|'));
-}
 
-/*
-	char	**ft_split_cmd(char *str, char sep)
+char	**ft_split_cmd(char *str, char sep, t_arg op)
 {
 	char **tab;
 	int	i;
 	int	nbr;
 
 	i = 0;
-	nbr = ft_count_sep(str, sep);
+	nbr = ft_count_sep(str, sep) + op.nb_pipe;
 	tab = malloc(sizeof(char *) * (nbr + 1));
 	if (tab == NULL)
 		return (NULL);
 	while (str[i])
 	{
-		if (str[i] == */
+	}
+
+	return (tab);
+}

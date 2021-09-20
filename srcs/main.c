@@ -6,7 +6,7 @@
 /*   By: mpochard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/15 16:46:53 by mpochard          #+#    #+#             */
-/*   Updated: 2021/09/17 17:26:53 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/09/20 10:45:34 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,10 @@ int	main(int ac, char **av, char **env)
 		line = readline("> ");
 		if (line)
 			add_history(line);
-		if (check_op(line, &op) > 1)
+		if (check_op(line, &op) > 1)// FREE LINE 
 			continue ;
+		if (ft_split_cmd(line, '|', op) == NULL)
+
 		if (ft_strncmp(line, "exit", 5) == 0)
 		{
 			free(line);
