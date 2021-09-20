@@ -6,23 +6,23 @@
 /*   By: mpochard <mpochard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/19 17:29:05 by mpochard          #+#    #+#             */
-/*   Updated: 2020/11/30 15:44:39 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/06/09 14:38:26 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int		ft_charset(char str, char c)
+static int	ft_charset(char str, char c)
 {
 	if (str == c)
 		return (1);
 	return (0);
 }
 
-static int		ft_countword(char *str, char c)
+static int	ft_countword(char *str, char c)
 {
-	int i;
-	int count;
+	int	i;
+	int	count;
 
 	i = 0;
 	count = 0;
@@ -38,7 +38,7 @@ static int		ft_countword(char *str, char c)
 	return (count);
 }
 
-static char		*ft_strldup(char *str, char c)
+static char	*ft_strldup(char *str, char c)
 {
 	int		i;
 	char	*fi;
@@ -47,7 +47,8 @@ static char		*ft_strldup(char *str, char c)
 	count = 0;
 	while (str[count] && ft_charset(str[count], c) == 0)
 		count++;
-	if (!(fi = malloc(sizeof(char) * (count + 1))))
+	fi = malloc(sizeof(char) * (count + 1));
+	if (!(fi))
 		return (NULL);
 	i = 0;
 	while (str[i] && ft_charset(str[i], c) == 0)
@@ -59,7 +60,7 @@ static char		*ft_strldup(char *str, char c)
 	return (fi);
 }
 
-static char		*free_malloc(char **tabfi)
+static char	*free_malloc(char **tabfi)
 {
 	while (*tabfi)
 	{
@@ -70,31 +71,31 @@ static char		*free_malloc(char **tabfi)
 	return (NULL);
 }
 
-char			**ft_split(const char *s, char c)
+char	**ft_split(const char *s, char c)
 {
-	int		i;
-	int		j;
-	int		k;
+	t_split	utils;
 	char	**tabfi;
-	char	*s1;
 
 	if (s == NULL)
 		return (NULL);
-	s1 = (char *)s;
-	k = ft_countword(s1, c);
-	if (!(tabfi = malloc(sizeof(char *) * (k + 1))))
+	utils.s1 = (char *)s;
+	utils.k = ft_countword(utils.s1, c);
+	tabfi = malloc(sizeof(char *) * (utils.k + 1));
+	if (!(tabfi))
 		return (NULL);
-	j = 0;
-	i = 0;
-	while (j < k && s1[i])
+	utils.j = 0;
+	utils.i = 0;
+	while (utils.j < utils.k && utils.s1[utils.i])
 	{
-		while (s1[i] && (ft_charset(s1[i], c) == 1))
-			i++;
-		if (!(tabfi[j++] = (ft_strldup(&s1[i], c))))
+		while (utils.s1[utils.i] && (ft_charset(utils.s1[utils.i], c) == 1))
+			utils.i++;
+		tabfi[utils.j] = (ft_strldup(&utils.s1[utils.i], c));
+		if (tabfi[utils.j] == NULL)
 			free_malloc(tabfi);
-		while (s[i] && (ft_charset(s1[i], c)) == 0)
-			i++;
+		utils.j++;
+		while (s[utils.i] && (ft_charset(utils.s1[utils.i], c)) == 0)
+			utils.i++;
 	}
-	tabfi[j] = 0;
+	tabfi[utils.j] = 0;
 	return (tabfi);
 }
