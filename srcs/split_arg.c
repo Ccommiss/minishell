@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split_arg.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpochard <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/19 13:25:57 by mpochard          #+#    #+#             */
-/*   Updated: 2021/09/20 10:45:30 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/09/20 13:38:53 by ccommiss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 /*
  * this fonction split the arg of line with a sep like | (readline) 
  * ex : " ls -l | wc > a
- * `
+ */
+ 
 int	ft_sep(char c, char sep)
 {
 	if ( c == sep)
