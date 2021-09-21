@@ -1,9 +1,0 @@
-total 72
-drwxr-xr-x  8 mpochard  2020_paris   272 Sep 20 13:17 .
-drwxr-xr-x  8 mpochard  2020_paris   272 Sep 20 12:19 ..
--rw-r--r--  1 mpochard  2020_paris     0 Sep 20 13:17 a
--rwxr-xr-x  1 mpochard  2020_paris  8800 Sep 20 13:06 a.out
--rw-r--r--  1 mpochard  2020_paris    25 Sep 20 13:14 b
--rw-r--r--  1 mpochard  2020_paris  2118 Sep 20 10:45 main.c
--rw-r--r--  1 mpochard  2020_paris  8212 Sep 19 15:47 main.o
--rw-r--r--  1 mpochard  2020_paris  2582 Sep 20 13:06 split_arg.c
