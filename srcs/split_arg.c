@@ -3,19 +3,31 @@
 /*                                                        :::      ::::::::   */
 /*   split_arg.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpochard <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/19 13:25:57 by mpochard          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2021/09/21 17:31:25 by mpochard         ###   ########.fr       */
+=======
+/*   Updated: 2021/09/20 13:38:53 by ccommiss         ###   ########.fr       */
+>>>>>>> db7eab9cdef8809e3dda8f69f5f3a848e409a595
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 /*
+<<<<<<< HEAD
  * this fonction split the arg of line  with space \t \v \r  (readline) 
  * */
 
 int	ft_sep(char c)
+=======
+ * this fonction split the arg of line with a sep like | (readline) 
+ * ex : " ls -l | wc > a
+ */
+ 
+int	ft_sep(char c, char sep)
+>>>>>>> db7eab9cdef8809e3dda8f69f5f3a848e409a595
 {
 	if (ft_isin(c," \n\v\f\r") == 1)
 		return (1);
