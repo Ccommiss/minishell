@@ -28,6 +28,7 @@ enum tokens
 	OP = 0,
 	WORD = 1,
 	QUOTE = 2,
+	VAR = 3,
 	TOK_EAT = 404,
 	TOK_WORD = 100,
 	TOK_PIPE,

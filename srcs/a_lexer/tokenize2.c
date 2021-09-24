@@ -29,7 +29,7 @@ static int corresp[255] = {
 	['\"'] = QUOTE,
 };
 
-static enum tokens tok[3][255] = {
+static enum tokens tok[4][255] = {
 	[OP] = {
 		['|'] = TOK_PIPE,
 		['<'] = TOK_LESS,
@@ -49,22 +49,49 @@ static enum tokens tok[3][255] = {
 		['|'] = TOK_PIPE,
 		['<'] = TOK_LESS,
 		['>'] = TOK_GREAT,
+	},
+	[VAR] = {
+		[' '] = TOK_EAT, // CARACTERE D'ARRET, alors que non si on est dans des quotes
+		['A' ... 'Z'] = TOK_WORD,
+		['a' ... 'z'] = TOK_WORD,
+		['$'] = TOK_WORD,
+		['\''] = TOK_WORD,
+		['\"'] = TOK_WORD,
+		[0 ... 9] = TOK_WORD,
+		['|'] = TOK_WORD,
+		['<'] = TOK_WORD,
+		['>'] = TOK_WORD
 	}
 
 };
 
+
+
+char *ft_str_replace(char *str, int start, int len)
+{
+	int i;
+	i = 0;
+//	printf ("len = %d \n", len);
+	while (i < start)
+		i++;
+	//str[i] = ' '; // test pour espaces
+	//i++;
+	while (i < start + len)
+	{
+		str[i++] = '|';
+	}
+//	printf ("replaced %s \n", str);
+	return (str);
+}
+/*
+**	@param to_tokenize : chaine de commande
+**	@t_token
+*/
 void tokenize(char *to_tokenize, t_token *toks) // fonction recursive
 {
 	int i = 0;
 	int ref_char = -100;
 	static int ind = 0;
-
-	//printf("\nDEBUG TOKENIZATION\n");
-	// Deux cas possibles
-	// 1 - Token a 100% meme type
-	// 			subtilite : si lol'>'file
-	// 2 - Token a rediviser exemple lol>file
-
 
 	ref_char = tok[corresp[to_tokenize[0]]] [to_tokenize[0]] ; //le type de reference sera le typ[e du premier char
 										//ex Tok_Word
@@ -73,26 +100,36 @@ void tokenize(char *to_tokenize, t_token *toks) // fonction recursive
 	int context;
 	context = corresp[to_tokenize[0]];
 	//printf ("context = %d \n", context);
-
+	if (context == QUOTE)
+		context = WORD;
 	while (to_tokenize[i] && ref_char == tok[context][to_tokenize[i]])
 	{
 
 		//printf ("%c -- %d \n", to_tokenize[i], tok[context][to_tokenize[i]]);
-		i++;
-		if (context != QUOTE &&
+		//i++;
+		if ( context != QUOTE &&
 			( (to_tokenize[i] == SQUOTE && ft_strchr(to_tokenize + i +1, SQUOTE))
 			|| (to_tokenize[i] == DQUOTE && ft_strchr(to_tokenize + i + 1, DQUOTE))
 			)
 		)
 		{
-			//printf ("ALLO \n");
 			context = QUOTE;
-			//printf ("CONTEXT = %d \n", context);
 		}
 		else if (context == QUOTE && (to_tokenize[i] == SQUOTE || to_tokenize[i] == DQUOTE))
 			context = WORD;
-		//printf ("%c - context = %d \n", to_tokenize[i], context);
 
+		else if (to_tokenize[i] == '$' && context != QUOTE)
+		{
+			int j;
+			j = 0;
+			context = VAR;
+			while (to_tokenize[i+j] && to_tokenize[i+j] != ' ')
+				j++;
+			to_tokenize = ft_str_replace(to_tokenize, i, j);
+			//i += j - 1;
+			i -= 1; //pour reanalyser le $ avec comment il a ete replaced
+		}
+		i++;
 	}
 	if (ref_char != TOK_EAT)
 	{
