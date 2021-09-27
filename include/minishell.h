@@ -70,4 +70,21 @@ typedef struct s_data
 
 } t_data;
 
+/*
+ * the struct for the env
+ */
+typedef struct	s_env
+{
+	char	*key;
+	char	*value;
+	char	*env;
+	struct	s_env *next;
+}				t_env;
+
+/* d_env
+ * the file for put env in a list chaine or for display this list chainee
+ */
+void	printf_the_env(t_env *envp);
+void	get_the_env(t_env **envp, char **env);
+
 #endif
