@@ -69,7 +69,6 @@ typedef struct s_data
 	t_cmd *cmds;   // ptr sur la head de la liste chainee des commandes
 
 } t_data;
-
 /*
  * the struct for the env
  */

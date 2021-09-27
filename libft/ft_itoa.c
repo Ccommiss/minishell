@@ -6,15 +6,15 @@
 /*   By: mpochard <mpochard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/20 15:18:51 by mpochard          #+#    #+#             */
-/*   Updated: 2020/11/28 17:56:34 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/06/09 14:32:38 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int		ft_division(unsigned int n)
+static int	ft_division(unsigned int n)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (n == 0)
@@ -27,9 +27,9 @@ static int		ft_division(unsigned int n)
 	return (i);
 }
 
-static int		ft_modulo(unsigned int n, int i)
+static int	ft_modulo(unsigned int n, int i)
 {
-	char *base;
+	char	*base;
 
 	base = "0123456789";
 	if (n == 0)
@@ -42,7 +42,17 @@ static int		ft_modulo(unsigned int n, int i)
 	return (base[n % 10]);
 }
 
-char			*ft_itoa(int n)
+static int	n_inf(int *n, char **fi, int *count, int *i)
+{
+	*count = (ft_division(*n));
+	*fi = malloc(sizeof(char) *(*count) + 2);
+	if (!(fi))
+		return (-1);
+	*fi[*i++] = '-';
+	return (0);
+}
+
+char	*ft_itoa(int n)
 {
 	char			*fi;
 	int				i;
@@ -53,15 +63,14 @@ char			*ft_itoa(int n)
 	if (n < 0)
 	{
 		n = -n;
-		count = (ft_division(n));
-		if (!(fi = malloc(sizeof(char) * count + 2)))
-			return (NULL);
-		fi[i++] = '-';
+		if ((n_inf(&n, &fi, &count, &i)) == -1)
+			return (0);
 	}
 	else
 	{
 		count = (ft_division(n));
-		if (!(fi = malloc(sizeof(char) * count + 1)))
+		fi = malloc(sizeof(char) * (count + 1));
+		if (!(fi))
 			return (0);
 	}
 	nb = n;

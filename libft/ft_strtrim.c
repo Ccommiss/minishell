@@ -12,9 +12,9 @@
 
 #include "libft.h"
 
-static int		ft_charset(char c, char const *set)
+static int	ft_charset(char c, char const *set)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (set[i])
@@ -26,7 +26,7 @@ static int		ft_charset(char c, char const *set)
 	return (0);
 }
 
-char			*ft_strtrim(char const *s1, char const *set)
+char	*ft_strtrim(char const *s1, char const *set)
 {
 	int		i;
 	int		j;
@@ -43,7 +43,8 @@ char			*ft_strtrim(char const *s1, char const *set)
 		i++;
 	while ((j > i) && ft_charset(s1[j], set) == 1)
 		j--;
-	if (!(fi = malloc(sizeof(*fi) * (j - i) + 1)))
+	fi = malloc(sizeof(*fi) * (j - i) + 1);
+	if (!(fi))
 		return (NULL);
 	fi = ft_substr(s1, i, (j - i) + 1);
 	return (fi);

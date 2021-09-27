@@ -1,24 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_calloc.c                                        :+:      :+:    :+:   */
+/*   export_the_var.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpochard <mpochard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mpochard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/11/19 02:40:51 by mpochard          #+#    #+#             */
-/*   Updated: 2020/11/27 03:31:40 by mpochard         ###   ########.fr       */
+/*   Created: 2021/09/24 17:23:21 by mpochard          #+#    #+#             */
+/*   Updated: 2021/09/24 18:50:08 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../../include/minishell.h"
 
-void	*ft_calloc(size_t count, size_t size)
+void	export_the_var(t_env **env, char *cmd_suffix)
 {
-	void		*fi;
+	int	i;
 
-	fi = malloc(count * size);
-	if (!(fi))
-		return (NULL);
-	ft_bzero(fi, (size * count));
-	return (fi);
-}
+	i = 0;
+	while(cmd_suffix[i])
+	{
+		if (cmd_suffix[i] == '=')
+		{
+
+	)

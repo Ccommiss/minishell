@@ -12,6 +12,12 @@
 
 #include "libft.h"
 
+static	void	init(int *i, int *k)
+{
+	*i = 0;
+	*k = 0;
+}
+
 char	*ft_strjoin(char const *s1, char const *s2)
 {
 	int		i;
@@ -19,12 +25,12 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	int		k;
 	char	*fi;
 
-	i = 0;
-	k = 0;
+	init(&i, &k);
 	if (!s1 || !s2)
 		return (NULL);
 	j = ft_strlen((char *)s1) + ft_strlen((char *)s2);
-	if (!(fi = malloc(sizeof(char *) * j + 1)))
+	fi = malloc(sizeof(char *) * (j + 1));
+	if (!(fi))
 		return (NULL);
 	while (s1[i])
 	{
