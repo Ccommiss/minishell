@@ -6,7 +6,7 @@
 /*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/22 11:50:39 by ccommiss          #+#    #+#             */
-/*   Updated: 2021/09/22 15:13:42 by ccommiss         ###   ########.fr       */
+/*   Updated: 2021/09/27 10:20:39 by ccommiss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,25 @@ static int tok[2][255] = {
 		//['\''] = SQUOTE,
 		//['\"'] = DQUOTE,
 	},
-	[WORD] = {['A' ... 'Z'] = TOK_WORD, ['a' ... 'z'] = TOK_WORD, ['$'] = TOK_WORD, ['\''] = TOK_WORD, ['\"'] = TOK_WORD, [0 ... 9] = TOK_WORD}
+	[QUOTE] = {['|'] = TOK_WORD, ['<'] = TOK_WORD, ['>'] = TOK_WORD, ['\''] = TOK_WORD, ['\"'] = TOK_WORD, ['A' ... 'Z'] = TOK_WORD, ['a' ... 'z'] = TOK_WORD, ['$'] = TOK_WORD, [' '] = TOK_WORD, [0 ... 9] = TOK_WORD
+
+	},
+	[WORD] = {
+		[' '] = TOK_WORD,
+		['A' ... 'Z'] = TOK_WORD,
+		['a' ... 'z'] = TOK_WORD,
+		['$'] = TOK_WORD,
+		['\''] = TOK_WORD,
+		['\"'] = TOK_WORD,
+		[0 ... 9] = TOK_WORD,
+		['|'] = TOK_PIPE,
+		['<'] = TOK_LESS,
+		['>'] = TOK_GREAT,
+	}
 
 };
 
-void tokenize(char **to_tokenize, t_token *toks)
+void tokenize(char *to_tokenize, t_token *toks)
 {
 	int i;
 	int j = 0;
@@ -89,7 +103,6 @@ void	remove_toks_quotes(t_token *toks)
 		toks = toks->next;
 	}
 }
-
 
 int main(int argc, char **argv)
 {
