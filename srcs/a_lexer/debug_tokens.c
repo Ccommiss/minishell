@@ -10,7 +10,7 @@ static char *tokentype[1000] = {
 
 void	debug_tokens(t_token *toks)
 {
-	printf (BCYN"DEBUG TOKEN ---------------------\n\n"RESET);
+	printf (BCYN"\n\n 			--- DEBUG TOKEN ---\n\n"RESET);
 
 		printf("-------------------------------------------------------------------\n");
 		printf("| INDEX | TYPE   | LEN | CONTENT                                   |\n");
