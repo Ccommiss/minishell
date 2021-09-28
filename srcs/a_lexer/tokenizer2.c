@@ -6,15 +6,15 @@
 
 #include "../../include/minishell.h"
 
-static int alnum[255] = {
-	['A' ... 'Z'] = 1,
-	['a' ... 'z'] = 1,
-	['$'] = 1,
-	['\''] = 1,
-	['\"'] = 1,
-	[0 ... 9] = 1
+// static int alnum[255] = {
+// 	['A' ... 'Z'] = 1,
+// 	['a' ... 'z'] = 1,
+// 	['$'] = 1,
+// 	['\''] = 1,
+// 	['\"'] = 1,
+// 	[0 ... 9] = 1
 
-};
+// };
 
 static int corresp[255] = {
 	['|'] = OP,
@@ -23,7 +23,8 @@ static int corresp[255] = {
 	['A' ... 'Z'] = WORD,
 	['a' ... 'z'] = WORD,
 	['$'] = WORD,
-	[0 ... 9] = WORD,
+	['-'] = WORD,
+	['0' ... '9'] = WORD,
 	[' '] = WORD,
 	['\''] = QUOTE,
 	['\"'] = QUOTE,
@@ -35,78 +36,106 @@ static enum tokens tok[4][255] = {
 		['<'] = TOK_LESS,
 		['>'] = TOK_GREAT,
 	},
-	[QUOTE] = {['|'] = TOK_WORD, ['<'] = TOK_WORD, ['>'] = TOK_WORD, ['\''] = TOK_WORD, ['\"'] = TOK_WORD, ['A' ... 'Z'] = TOK_WORD, ['a' ... 'z'] = TOK_WORD, ['$'] = TOK_WORD, [' '] = TOK_WORD, [0 ... 9] = TOK_WORD
-
+	[QUOTE] = {
+		[0 ... 254] = TOK_WORD,
 	},
 	[WORD] = {
 		[' '] = TOK_EAT, // CARACTERE D'ARRET, alors que non si on est dans des quotes
 		['A' ... 'Z'] = TOK_WORD,
 		['a' ... 'z'] = TOK_WORD,
-		['$'] = TOK_WORD,
-		['\''] = TOK_WORD,
-		['\"'] = TOK_WORD,
-		[0 ... 9] = TOK_WORD,
+		['0' ... '9'] = TOK_WORD,
+		[33 ... 47] = TOK_WORD, // caracteres de ponctuations surtout
+		[':'] = TOK_WORD,
+		[';'] = TOK_WORD,
 		['|'] = TOK_PIPE,
 		['<'] = TOK_LESS,
 		['>'] = TOK_GREAT,
 	},
 	[VAR] = {
-		[' '] = TOK_EAT, // CARACTERE D'ARRET, alors que non si on est dans des quotes
+		[' '] = TOK_EAT, // CARACTERE D'ARRET, alors que non si on est dans des quotes, ajouter tous les espaces
 		['A' ... 'Z'] = TOK_WORD,
 		['a' ... 'z'] = TOK_WORD,
-		['$'] = TOK_WORD,
-		['\''] = TOK_WORD,
-		['\"'] = TOK_WORD,
-		[0 ... 9] = TOK_WORD,
+		[':'] = TOK_WORD,
+		[';'] = TOK_WORD,
+		['0' ... '9'] = TOK_WORD,
+		[33 ... 47] = TOK_WORD, // caracteres de ponctuations surtout
 		['|'] = TOK_WORD,
 		['<'] = TOK_WORD,
-		['>'] = TOK_WORD
+		['>'] = TOK_WORD,
+	//	['-'] = TOK_WORD
 	}
 
 };
 
 
-
-char *ft_str_replace(char *str, int start, int len)
+//reste a gerer si var existe aps
+char *ft_str_replace(char *str, int start, int len, t_env *env)
 {
 	int i;
-	i = 0;
-//	printf ("len = %d \n", len);
-	while (i < start)
-		i++;
-	//str[i] = ' '; // test pour espaces
-	//i++;
-	while (i < start + len)
+	i = -1;
+
+	char *var_name;
+	char *new_str;
+	char *value;
+	int j;
+
+	var_name = ft_substr(str, start + 1, len); // recup la name var
+	while (env && ft_strncmp(var_name, env->key, ft_strlen(env->key) + 1) != 0)
+		env = env->next;
+	if (env == NULL)
+		value = ft_strdup("");
+	else
+		value = ft_strdup(env->value);
+
+
+	new_str = malloc(sizeof(char) * ((ft_strlen(str) - ft_strlen(var_name) + ft_strlen(value) + 1)));
+
+
+	while (++i < start && str[i])
+		new_str[i] = str[i];
+	j = 0;
+	while (env && value[j])
 	{
-		str[i++] = '|';
+		new_str[i] = value[j];
+		i++;
+		j++;
 	}
-//	printf ("replaced %s \n", str);
-	return (str);
+	j = start + ft_strlen(var_name) + 1; //+1 pour le dollar ?
+	while (str[j])
+	{
+		new_str[i] = str[j];
+		i++;
+		j++;
+	}
+	new_str[i] = '\0';
+	return (new_str);
 }
 /*
 **	@param to_tokenize : chaine de commande
 **	@t_token
 */
-void tokenize(char *to_tokenize, t_token *toks) // fonction recursive
+void tokenize(char *to_tokenize, t_token *toks, t_env *env) // fonction recursive
 {
 	int i = 0;
 	int ref_char = -100;
-	static int ind = 0;
+	//static int ind = 0;
 
-	ref_char = tok[corresp[to_tokenize[0]]] [to_tokenize[0]] ; //le type de reference sera le typ[e du premier char
+	ref_char = tok[corresp[(int)to_tokenize[0]]] [(int)to_tokenize[0]] ; //le type de reference sera le typ[e du premier char
 										//ex Tok_Word
 										// But = tous les autres = des toks words aussi
 
 	int context;
-	context = corresp[to_tokenize[0]];
+	context = corresp[(int)to_tokenize[0]];
 	//printf ("context = %d \n", context);
 	if (context == QUOTE)
 		context = WORD;
-	while (to_tokenize[i] && ref_char == tok[context][to_tokenize[i]])
-	{
 
-		//printf ("%c -- %d \n", to_tokenize[i], tok[context][to_tokenize[i]]);
-		//i++;
+
+
+
+	while (to_tokenize[i] && ref_char == tok[context][(int)to_tokenize[i]])
+	{
+		//printf ("%c -- %d \n", to_tokenize[i], tok[context][(int)to_tokenize[i]]);
 		if ( context != QUOTE &&
 			( (to_tokenize[i] == SQUOTE && ft_strchr(to_tokenize + i +1, SQUOTE))
 			|| (to_tokenize[i] == DQUOTE && ft_strchr(to_tokenize + i + 1, DQUOTE))
@@ -123,10 +152,9 @@ void tokenize(char *to_tokenize, t_token *toks) // fonction recursive
 			int j;
 			j = 0;
 			context = VAR;
-			while (to_tokenize[i+j] && to_tokenize[i+j] != ' ')
+			while (to_tokenize[i+j] && to_tokenize[i+j+1] != ' ') //test le +1 pour pas envoyer lespace
 				j++;
-			to_tokenize = ft_str_replace(to_tokenize, i, j);
-			//i += j - 1;
+			to_tokenize = ft_str_replace(to_tokenize, i, j, env);
 			i -= 1; //pour reanalyser le $ avec comment il a ete replaced
 		}
 		i++;
@@ -134,19 +162,18 @@ void tokenize(char *to_tokenize, t_token *toks) // fonction recursive
 	if (ref_char != TOK_EAT)
 	{
 		toks->content = ft_substr(to_tokenize, 0, i);
-		toks->index = ind;
-		ind++;
 		toks->type = ref_char;
 		toks->len = strlen(toks->content);
 		toks->next = malloc(sizeof(t_token));
 		toks->next->prev = toks;
+		toks->next->index = toks->index + 1;
 		printf("[%d] => len = %3d tok type = %d content = |%s|\n", toks->index, toks->len, toks->type, toks->content);
 		toks = toks->next;
 	}
 	to_tokenize = ft_substr(to_tokenize, i, ft_strlen(to_tokenize));
 	//printf("new tokenize = |%s| \n", to_tokenize);
 	if (ft_strlen(to_tokenize) != 0)
-		tokenize(to_tokenize, toks); //recursivite
+		tokenize(to_tokenize, toks, env); //recursivite
 	//else
 
 }
@@ -166,18 +193,16 @@ void remove_toks_quotes(t_token *toks)
 	}
 }
 
-int main(int argc, char **argv)
-{
+// int main(int argc, char **argv)
+// {
 
-	t_token toks;
-	int i = 0;
-	i = -1;
+// 	t_token toks;
+// 	int i = 0;
+// 	i = -1;
 
-	if (argc > 2)
-	{
-		printf("Only one str pls \n");
-		exit(0);
-	}
-	tokenize(argv[1], &toks);
-	//remove_toks_quotes(&toks);
-}
+// 	if (argc > 2)
+// 	{
+// 		printf("Only one str pls \n");
+// 		exit(0);
+// 	}
+// }

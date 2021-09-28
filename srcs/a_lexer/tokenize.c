@@ -6,7 +6,7 @@
 /*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/22 11:50:39 by ccommiss          #+#    #+#             */
-/*   Updated: 2021/09/27 12:50:02 by ccommiss         ###   ########.fr       */
+/*   Updated: 2021/09/27 12:57:19 by ccommiss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static int tok[2][255] = {
 
 };
 
-void tokenize(char *to_tokenize, t_token *toks)
+//void tokenize(char *to_tokenize, t_token *toks)
 {
 	int i;
 	int j = 0;
@@ -104,31 +104,31 @@ void	remove_toks_quotes(t_token *toks)
 	}
 }
 
-int main(int argc, char **argv)
-{
+// int main(int argc, char **argv)
+// {
 
-	t_token toks;
-	// char **tab;
-	// tab = malloc(8 * sizeof(char *));
-	int i = 0;
-	// while (i < 5)
-	// {
-	// 	tab[i] = malloc(20 * sizeof(char));
-	// 	i++;
-	// }
-	// tab[0] = "echo";
-	// tab[1] = "\"je suis    bete \"";
-	// tab[2] = "|";
-	// tab[3] = "$var";
-	// tab[4] = "<";
-	// tab[5] = "\'cette variable $lol pas interpretee\'  ";
-	// tab[6] = "\" mais cette var $ici oui \" ";
-	// tab[7] = NULL;
+// 	t_token toks;
+// 	// char **tab;
+// 	// tab = malloc(8 * sizeof(char *));
+// 	int i = 0;
+// 	// while (i < 5)
+// 	// {
+// 	// 	tab[i] = malloc(20 * sizeof(char));
+// 	// 	i++;
+// 	// }
+// 	// tab[0] = "echo";
+// 	// tab[1] = "\"je suis    bete \"";
+// 	// tab[2] = "|";
+// 	// tab[3] = "$var";
+// 	// tab[4] = "<";
+// 	// tab[5] = "\'cette variable $lol pas interpretee\'  ";
+// 	// tab[6] = "\" mais cette var $ici oui \" ";
+// 	// tab[7] = NULL;
 
-	i = -1;
-	while (argv[++i])
-		printf("[%d] => |%-s|\n", i, argv[i]);
+// 	i = -1;
+// 	while (argv[++i])
+// 		printf("[%d] => |%-s|\n", i, argv[i]);
 
-	tokenize(argv, &toks);
-	remove_toks_quotes(&toks);
-}
+// 	tokenize(argv, &toks);
+// 	remove_toks_quotes(&toks);
+// }

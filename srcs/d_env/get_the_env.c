@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_the_env.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpochard <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 17:06:05 by mpochard          #+#    #+#             */
-/*   Updated: 2021/09/24 18:26:09 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/09/27 16:22:13 by ccommiss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,9 @@ t_env	*ft_lstenv(char *content)
 	tab = ft_split(content, '=');
 	if ( tab == NULL)
 		return (NULL);
-	res->key = tab[0];
+	res->key = ft_strdup(tab[0]);
 	res->env = content;
-	res->value = tab[1];
+	res->value = ft_strdup(tab[1]);
 	res->next = 0;
 	return (res);
 }

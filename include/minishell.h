@@ -85,5 +85,11 @@ typedef struct	s_env
  */
 void	printf_the_env(t_env *envp);
 void	get_the_env(t_env **envp, char **env);
+void	export_the_var(t_env **env, char *cmd_suffix);
+void	tokenize(char *to_tokenize, t_token *toks, t_env *env);
+void	init_token(t_token *toks);
+
+
+
 
 #endif

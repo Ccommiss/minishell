@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpochard <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/15 16:46:53 by mpochard          #+#    #+#             */
-/*   Updated: 2021/09/24 18:50:05 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/09/28 12:01:55 by ccommiss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	check_quote(char *line)
 				check = 2;
 		}
 		i++;
-		
+
 	}
 		if (check == 1)
 			return (-1);
@@ -53,6 +53,7 @@ int	check_quote(char *line)
 int	main(int ac, char **av, char **envp)
 {
 	char	*line;
+	t_token *toks;
 
 	(void)ac;
 	(void)av;
@@ -73,8 +74,18 @@ int	main(int ac, char **av, char **envp)
 		}
 		if ( strcmp(line, "env") == 0) // test for the cmd env
 			printf_the_env(env);
-		if (strcmp(line, "export") == 0)
-			export_the_var(&env,"ls=qw");
+		//if (strcmp(line, "export") == 0)
+		//	export_the_var(&env,"ls=qw");
+
+		if (line)
+		{
+			toks = malloc(sizeof(t_token));
+			init_token(toks);
+			tokenize(line, toks, env);
+			free(toks);
+			toks = NULL;
+		}
+
 	free(line);
 	}
 	return (0);
