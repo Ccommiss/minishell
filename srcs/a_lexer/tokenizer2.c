@@ -61,7 +61,26 @@ static enum tokens tok[40][255] = {
 };
 
 
-//reste a gerer si var existe aps
+
+void	handle_quoted_context(int *context, int *i, char *to_tokenize)
+{
+	if (*context != DQUOTE && *context != SQUOTE && (to_tokenize[*i] == SQUOTE && ft_strchr(to_tokenize + *i +1, SQUOTE)))
+	{
+		*i += 1;
+		*context = SQUOTE;
+	}
+	else if (*context != SQUOTE && *context != DQUOTE && (to_tokenize[*i] == DQUOTE && ft_strchr(to_tokenize + *i +1, DQUOTE)))
+	{
+		*i += 1;
+		*context = DQUOTE;
+	}
+	else if ((*context == SQUOTE && to_tokenize[*i] == SQUOTE) || (*context == DQUOTE && to_tokenize[*i] == DQUOTE))
+	{
+		*i += 1;
+		*context = WORD;
+	}
+}
+
 
 /*
 **	@param to_tokenize : chaine de commande
@@ -86,23 +105,7 @@ void tokenize(char *to_tokenize, t_token *toks, t_env *env) // fonction recursiv
 
 	while (to_tokenize[i] && ref_char == (int)tok[context][(int)to_tokenize[i]])
 	{
-		//printf ("%c -- %d \n", to_tokenize[i], tok[context][(int)to_tokenize[i]]);
-		if (context != DQUOTE && context != SQUOTE && (to_tokenize[i] == SQUOTE && ft_strchr(to_tokenize + i +1, SQUOTE)))
-		{
-			i++;
-			context = SQUOTE;
-		}
-		else if (context != SQUOTE && context != DQUOTE && (to_tokenize[i] == DQUOTE && ft_strchr(to_tokenize + i +1, DQUOTE)))
-		{
-			i++;
-			context = DQUOTE;
-		}
-		else if ((context == SQUOTE && to_tokenize[i] == SQUOTE) || (context == DQUOTE && to_tokenize[i] == DQUOTE))
-		{
-			i++;
-			context = WORD;
-		}
-
+		handle_quoted_context(&context, &i, to_tokenize);
 		if (to_tokenize[i] == '$' && context != SQUOTE)
 		{
 			int j;
