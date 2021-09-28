@@ -1,4 +1,4 @@
-#include "../../include/minishell.h"
+#include "minishell.h"
 
 void	init_token(t_token *toks)
 {
@@ -8,5 +8,4 @@ void	init_token(t_token *toks)
 	toks->type = -1;
 	toks->prev = NULL;
 	toks->next = NULL;
-
 }

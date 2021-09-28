@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <limits.h>
+#include "color.h"
 #include <readline/readline.h>
 #include <readline/history.h>
 #include "../libft/libft.h"
@@ -88,6 +89,10 @@ void	get_the_env(t_env **envp, char **env);
 void	export_the_var(t_env **env, char *cmd_suffix);
 void	tokenize(char *to_tokenize, t_token *toks, t_env *env);
 void	init_token(t_token *toks);
+char	*ft_str_replace(char *str, int start, int len, t_env *env);
+void	debug_tokens(t_token *toks);
+
+
 
 
 

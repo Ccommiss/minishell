@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpochard <mpochard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/21 17:22:14 by mpochard          #+#    #+#             */
-/*   Updated: 2021/01/16 11:24:22 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/09/28 14:54:33 by ccommiss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,10 @@ void				ft_putchar_fd(char c, int fd);
 void				ft_putstr_fd(char *s, int fd);
 void				ft_putendl_fd(char *s, int fd);
 void				ft_putnbr_fd(int n, int fd);
+char				*ft_strconcat(char *s1, char *s2, int size);
+int					ft_malloc_char_pointer(int size, char **ptr);
+int					ft_malloc_int_pointer(int size, int	**ptr);
+
 
 typedef struct s_list
 {

@@ -9,19 +9,22 @@ ENV_PATH = d_env
 SOURCES =	main.c\
 			$(LEX_PATH)/tokenizer2.c \
 			$(LEX_PATH)/init_token.c \
+			$(LEX_PATH)/expand.c \
+			$(LEX_PATH)/debug_tokens.c \
 			$(ENV_PATH)/get_the_env.c
 
 
 
 SPATH = srcs/
+INCLUDES = /includes/
 
 SRCS  += $(addprefix $(SPATH), $(SOURCES))
 
-OBJS	= 	${SRCS:.c=.o}
+OBJS	= 	${SRCS:.c=.o} 
 
 CC = gcc
 
-CFLAGS = -g -Wall -Werror -Wextra -fsanitize=address
+CFLAGS = -g -I.$(INCLUDES) -Wall -Werror -Wextra -fsanitize=address
 
 RM = rm -f
 

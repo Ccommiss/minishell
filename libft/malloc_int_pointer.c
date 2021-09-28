@@ -1,25 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   export_the_var.c                                   :+:      :+:    :+:   */
+/*   malloc_int_pointer.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/09/24 17:23:21 by mpochard          #+#    #+#             */
-/*   Updated: 2021/09/28 14:11:33 by ccommiss         ###   ########.fr       */
+/*   Created: 2021/06/18 15:24:12 by ccommiss          #+#    #+#             */
+/*   Updated: 2021/06/22 12:55:11 by ccommiss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-void	export_the_var(t_env **env, char *cmd_suffix)
+int	ft_malloc_int_pointer(int size, int	**ptr)
 {
-	int	i;
-
-	i = 0;
-	while(cmd_suffix[i])
-	{
-		if (cmd_suffix[i] == '=')
-		{
-
-	)
+	*ptr = (int *)malloc(sizeof(int) * size);
+	if (!*ptr)
+		return (0);
+	return (1);
+}

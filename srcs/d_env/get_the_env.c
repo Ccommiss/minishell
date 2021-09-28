@@ -6,11 +6,11 @@
 /*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 17:06:05 by mpochard          #+#    #+#             */
-/*   Updated: 2021/09/27 16:22:13 by ccommiss         ###   ########.fr       */
+/*   Updated: 2021/09/28 14:11:37 by ccommiss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+#include "minishell.h"
 
 t_env	*ft_lstlastenv(t_env *lst)
 {

@@ -6,11 +6,11 @@
 /*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/15 16:46:53 by mpochard          #+#    #+#             */
-/*   Updated: 2021/09/28 12:01:55 by ccommiss         ###   ########.fr       */
+/*   Updated: 2021/09/28 15:39:49 by ccommiss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "minishell.h"
 #include <stdio.h>
 #include <readline/readline.h>
 #include <readline/history.h>
@@ -63,7 +63,7 @@ int	main(int ac, char **av, char **envp)
 	get_the_env(&env, envp);
 	while (1)
 	{
-		line = readline("> ");
+		line = readline(BWHT"> "RESET);
 		if (line)
 			add_history(line);
 		if (check_quote(line) ==-1)
@@ -82,6 +82,7 @@ int	main(int ac, char **av, char **envp)
 			toks = malloc(sizeof(t_token));
 			init_token(toks);
 			tokenize(line, toks, env);
+			debug_tokens(toks);
 			free(toks);
 			toks = NULL;
 		}

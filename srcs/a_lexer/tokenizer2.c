@@ -4,17 +4,7 @@
 
 
 
-#include "../../include/minishell.h"
-
-// static int alnum[255] = {
-// 	['A' ... 'Z'] = 1,
-// 	['a' ... 'z'] = 1,
-// 	['$'] = 1,
-// 	['\''] = 1,
-// 	['\"'] = 1,
-// 	[0 ... 9] = 1
-
-// };
+#include "minishell.h"
 
 static int corresp[255] = {
 	['|'] = OP,
@@ -69,47 +59,7 @@ static enum tokens tok[4][255] = {
 
 
 //reste a gerer si var existe aps
-char *ft_str_replace(char *str, int start, int len, t_env *env)
-{
-	int i;
-	i = -1;
 
-	char *var_name;
-	char *new_str;
-	char *value;
-	int j;
-
-	var_name = ft_substr(str, start + 1, len); // recup la name var
-	while (env && ft_strncmp(var_name, env->key, ft_strlen(env->key) + 1) != 0)
-		env = env->next;
-	if (env == NULL)
-		value = ft_strdup("");
-	else
-		value = ft_strdup(env->value);
-
-
-	new_str = malloc(sizeof(char) * ((ft_strlen(str) - ft_strlen(var_name) + ft_strlen(value) + 1)));
-
-
-	while (++i < start && str[i])
-		new_str[i] = str[i];
-	j = 0;
-	while (env && value[j])
-	{
-		new_str[i] = value[j];
-		i++;
-		j++;
-	}
-	j = start + ft_strlen(var_name) + 1; //+1 pour le dollar ?
-	while (str[j])
-	{
-		new_str[i] = str[j];
-		i++;
-		j++;
-	}
-	new_str[i] = '\0';
-	return (new_str);
-}
 /*
 **	@param to_tokenize : chaine de commande
 **	@t_token
@@ -133,7 +83,7 @@ void tokenize(char *to_tokenize, t_token *toks, t_env *env) // fonction recursiv
 
 
 
-	while (to_tokenize[i] && ref_char == tok[context][(int)to_tokenize[i]])
+	while (to_tokenize[i] && ref_char == (int)tok[context][(int)to_tokenize[i]])
 	{
 		//printf ("%c -- %d \n", to_tokenize[i], tok[context][(int)to_tokenize[i]]);
 		if ( context != QUOTE &&
@@ -167,14 +117,18 @@ void tokenize(char *to_tokenize, t_token *toks, t_env *env) // fonction recursiv
 		toks->next = malloc(sizeof(t_token));
 		toks->next->prev = toks;
 		toks->next->index = toks->index + 1;
-		printf("[%d] => len = %3d tok type = %d content = |%s|\n", toks->index, toks->len, toks->type, toks->content);
 		toks = toks->next;
 	}
 	to_tokenize = ft_substr(to_tokenize, i, ft_strlen(to_tokenize));
 	//printf("new tokenize = |%s| \n", to_tokenize);
 	if (ft_strlen(to_tokenize) != 0)
 		tokenize(to_tokenize, toks, env); //recursivite
-	//else
+	else
+	{
+		toks->next = NULL;
+		while(toks->index != 0)
+			toks = toks->prev;
+	}
 
 }
 
