@@ -35,6 +35,7 @@ enum tokens
 	TOK_PIPE,
 	TOK_GREAT,
 	TOK_LESS,
+	TOK_EQUAL,
 	SQUOTE = '\'',
 	DQUOTE = '\"'
 };

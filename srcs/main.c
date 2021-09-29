@@ -66,12 +66,12 @@ int	main(int ac, char **av, char **envp)
 		line = readline(BWHT"> "RESET);
 		if (line)
 			add_history(line);
-		if (check_quote(line) ==-1)
-		{
-			free(line);
-			printf("quote are not closed\n");
-			continue;
-		}
+		// if (check_quote(line) ==-1)
+		// {
+		// 	free(line);
+		// 	printf("quote are not closed\n");
+		// 	continue;
+		// }
 		if ( strcmp(line, "env") == 0) // test for the cmd env
 			printf_the_env(env);
 		//if (strcmp(line, "export") == 0)

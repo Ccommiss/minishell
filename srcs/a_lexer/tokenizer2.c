@@ -25,6 +25,7 @@ static enum tokens tok[40][255] = {
 		['|'] = TOK_PIPE,
 		['<'] = TOK_LESS,
 		['>'] = TOK_GREAT,
+		['='] = TOK_EQUAL
 	},
 	[DQUOTE] = {
 		[0 ... 254] = TOK_WORD,
@@ -42,22 +43,8 @@ static enum tokens tok[40][255] = {
 		[';'] = TOK_WORD,
 		['|'] = TOK_PIPE,
 		['<'] = TOK_LESS,
-		['>'] = TOK_GREAT,
-	},
-	[VAR] = {
-		[' '] = TOK_EAT, // CARACTERE D'ARRET, alors que non si on est dans des quotes, ajouter tous les espaces
-		['A' ... 'Z'] = TOK_WORD,
-		['a' ... 'z'] = TOK_WORD,
-		[':'] = TOK_WORD,
-		[';'] = TOK_WORD,
-		['0' ... '9'] = TOK_WORD,
-		[33 ... 47] = TOK_WORD, // caracteres de ponctuations surtout
-		['|'] = TOK_WORD,
-		['<'] = TOK_WORD,
-		['>'] = TOK_WORD,
-	//	['-'] = TOK_WORD
+		['>'] = TOK_GREAT,	
 	}
-
 };
 
 
@@ -77,7 +64,7 @@ void	handle_quoted_context(int *context, int *i, char *to_tokenize)
 	else if ((*context == SQUOTE && to_tokenize[*i] == SQUOTE) || (*context == DQUOTE && to_tokenize[*i] == DQUOTE))
 	{
 		*i += 1;
-		*context = WORD;
+		*context = corresp[(int)to_tokenize[*i]];
 	}
 }
 
@@ -93,7 +80,7 @@ void tokenize(char *to_tokenize, t_token *toks, t_env *env) // fonction recursiv
 	int buf_i = 0;
 	char token[2048];
 	int context;
-
+	ft_bzero(token, 2048);
 	ref_char = tok[corresp[(int)to_tokenize[0]]] [(int)to_tokenize[0]] ; //le type de reference sera le typ[e du premier char
 										//ex Tok_Word
 										// But = tous les autres = des toks words aussi
@@ -103,16 +90,21 @@ void tokenize(char *to_tokenize, t_token *toks, t_env *env) // fonction recursiv
 	if (context == SQUOTE || context == DQUOTE)
 		context = WORD;
 
-	while (to_tokenize[i] && ref_char == (int)tok[context][(int)to_tokenize[i]])
+	while ((to_tokenize[i]) && ref_char == (int)tok[context][(int)to_tokenize[i]])
 	{
+		printf ("%c \n ", to_tokenize[i]);
 		handle_quoted_context(&context, &i, to_tokenize);
+			if (ref_char != (int)tok[context][(int)to_tokenize[i]])
+				break ;
+
 		if (to_tokenize[i] == '$' && context != SQUOTE)
 		{
 			int j;
 			j = 0;
 			while (to_tokenize[i+j] && to_tokenize[i+j+1] != ' ' && to_tokenize[i+j+1] != DQUOTE) //test le +1 pour pas envoyer lespace
 				j++;
-			to_tokenize = ft_str_replace(to_tokenize, i, j, env);
+			if (j > 1) // si on a plus que juste le $
+				to_tokenize = ft_str_replace(to_tokenize, i, j, env);
 		}
 		token[buf_i++] = to_tokenize[i];
 		i++;
@@ -120,7 +112,8 @@ void tokenize(char *to_tokenize, t_token *toks, t_env *env) // fonction recursiv
 	token[buf_i] = '\0';
 	if (ref_char != TOK_EAT)
 	{
-		toks->content = token;
+		printf ("token = %s \n", token);
+		toks->content = ft_strdup(token);
 		toks->type = ref_char;
 		toks->len = strlen(toks->content);
 		toks->next = malloc(sizeof(t_token));
