@@ -17,7 +17,7 @@ void	debug_tokens(t_token *toks)
 	printf("-------------------------------------------------------------------\n");
 	printf("| INDEX | TYPE   | LEN | CONTENT                                   |\n");
 	printf("|-------|--------|-----|-------------------------------------------|\n");
-	while (toks->next != NULL)
+	while (toks != NULL)
 	{
 		printf("| %2d    ", toks->index);
 		printf(BWHT"| %6s ", tokentype[toks->type]);

@@ -11,7 +11,9 @@ SOURCES =	main.c\
 			$(LEX_PATH)/init_token.c \
 			$(LEX_PATH)/expand.c \
 			$(LEX_PATH)/debug_tokens.c \
-			$(ENV_PATH)/get_the_env.c
+			$(ENV_PATH)/get_the_env.c \
+			$(PAR_PATH)/token_to_cmds.c \
+			$(PAR_PATH)/debug_cmds.c
 
 
 
@@ -20,7 +22,7 @@ INCLUDES = /includes/
 
 SRCS  += $(addprefix $(SPATH), $(SOURCES))
 
-OBJS	= 	${SRCS:.c=.o} 
+OBJS	= 	${SRCS:.c=.o}
 
 CC = gcc
 

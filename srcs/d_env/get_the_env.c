@@ -6,7 +6,7 @@
 /*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 17:06:05 by mpochard          #+#    #+#             */
-/*   Updated: 2021/09/28 14:11:37 by ccommiss         ###   ########.fr       */
+/*   Updated: 2021/09/30 11:40:43 by ccommiss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,9 @@ t_env	*ft_lstenv(char *content)
 	tab = ft_split(content, '=');
 	if ( tab == NULL)
 		return (NULL);
-	res->key = ft_strdup(tab[0]);
+	res->key = tab[0];
 	res->env = content;
-	res->value = ft_strdup(tab[1]);
+	res->value = tab[1];
 	res->next = 0;
 	return (res);
 }

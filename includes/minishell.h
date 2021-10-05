@@ -5,6 +5,12 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <limits.h>
+
+
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+
 #include "color.h"
 #include <readline/readline.h>
 #include <readline/history.h>
@@ -24,9 +30,13 @@ enum bool
 	FALSE,
 	TRUE
 };
+
+enum io{
+	NOT_SPECIFIED = -100
+};
 enum tokens
 {
-	OP = 0,
+	OP = 4,
 	WORD = 1,
 	QUOTE = 2,
 	VAR = 3,
@@ -58,7 +68,13 @@ typedef struct s_cmd
 	int index;
 	char *cmdp; //le path
 	char **cmd_args;
+	int io_in; //fd entree commande
+	int dless; // <<
+	int io_out; //fd sortie commande
+	int dgreat; // >>
+
 	t_cmd *next;
+	t_cmd *prev;
 	t_cmd *head;
 
 } t_cmd;
@@ -92,6 +108,11 @@ void	tokenize(char *to_tokenize, t_token *toks, t_env *env);
 void	init_token(t_token *toks);
 char	*ft_str_replace(char *str, int start, int len, t_env *env);
 void	debug_tokens(t_token *toks);
+void	debug_cmds(t_cmd *cmds);
+
+
+t_cmd *token_to_cmds(t_cmd *cmd, t_token *toks);
+
 
 
 

@@ -6,7 +6,7 @@
 
 #include "minishell.h"
 
-static int corresp[255] = {
+static enum tokens corresp[255] = {
 	['|'] = OP,
 	['<'] = OP,
 	['>'] = OP,
@@ -14,6 +14,7 @@ static int corresp[255] = {
 	['a' ... 'z'] = WORD,
 	['$'] = WORD,
 	['-'] = WORD,
+	['='] = WORD,
 	['0' ... '9'] = WORD,
 	[' '] = WORD,
 	['\''] = SQUOTE,
@@ -39,11 +40,12 @@ static enum tokens tok[40][255] = {
 		['a' ... 'z'] = TOK_WORD,
 		['0' ... '9'] = TOK_WORD,
 		[33 ... 47] = TOK_WORD, // caracteres de ponctuations surtout
+		['='] = TOK_WORD,
 		[':'] = TOK_WORD,
 		[';'] = TOK_WORD,
 		['|'] = TOK_PIPE,
 		['<'] = TOK_LESS,
-		['>'] = TOK_GREAT,	
+		['>'] = TOK_GREAT,
 	}
 };
 
@@ -80,6 +82,7 @@ void tokenize(char *to_tokenize, t_token *toks, t_env *env) // fonction recursiv
 	int buf_i = 0;
 	char token[2048];
 	int context;
+	t_token *head;
 	ft_bzero(token, 2048);
 	ref_char = tok[corresp[(int)to_tokenize[0]]] [(int)to_tokenize[0]] ; //le type de reference sera le typ[e du premier char
 										//ex Tok_Word
@@ -90,9 +93,10 @@ void tokenize(char *to_tokenize, t_token *toks, t_env *env) // fonction recursiv
 	if (context == SQUOTE || context == DQUOTE)
 		context = WORD;
 
+	head = toks;
 	while ((to_tokenize[i]) && ref_char == (int)tok[context][(int)to_tokenize[i]])
 	{
-		printf ("%c \n ", to_tokenize[i]);
+		//printf ("%c \n ", to_tokenize[i]);
 		handle_quoted_context(&context, &i, to_tokenize);
 			if (ref_char != (int)tok[context][(int)to_tokenize[i]])
 				break ;
@@ -112,7 +116,6 @@ void tokenize(char *to_tokenize, t_token *toks, t_env *env) // fonction recursiv
 	token[buf_i] = '\0';
 	if (ref_char != TOK_EAT)
 	{
-		printf ("token = %s \n", token);
 		toks->content = ft_strdup(token);
 		toks->type = ref_char;
 		toks->len = strlen(toks->content);
@@ -126,9 +129,9 @@ void tokenize(char *to_tokenize, t_token *toks, t_env *env) // fonction recursiv
 		tokenize(to_tokenize, toks, env); //recursivite
 	else
 	{
+		toks = toks->prev;
+		free(toks->next);
 		toks->next = NULL;
-		while(toks->index != 0)
-			toks = toks->prev;
 	}
 
 }
