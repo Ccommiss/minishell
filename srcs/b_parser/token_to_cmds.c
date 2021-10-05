@@ -18,7 +18,6 @@ void init_cmd(t_cmd *cmd)
 
 t_cmd *token_to_cmds(t_cmd *cmd, t_token *toks)
 {
-	printf ("%d, %s, %d \n", toks->index, toks->content, toks->type);
 	int j = 0;
 	init_cmd(cmd);
 
@@ -53,7 +52,6 @@ t_cmd *token_to_cmds(t_cmd *cmd, t_token *toks)
 			}
 			else if (ft_strlen(toks->content) == 2)
 			{
-				printf( "ICI >> \n");
 				toks = toks->next;
 				cmd->io_out = open(toks->content, O_RDWR | O_APPEND | O_CREAT);
 				cmd->dgreat = TRUE;
