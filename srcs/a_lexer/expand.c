@@ -9,9 +9,9 @@ char *ft_str_replace(char *str, int start, int len, t_env *env)
 	char *tmp;
 
 	var_name = ft_substr(str, start + 1, len); // recup la name var
-	while (env && ft_strncmp(var_name, env->key, ft_strlen(env->key) + 1) != 0) 
+	while (env && ft_strncmp(var_name, env->key, ft_strlen(env->key) + 1) != 0)
 	{
-		printf ("%s %s\n", env->key, env->value );
+		//printf ("%s %s\n", env->key, env->value );
 		env = env->next;
 	}
 	if (env == NULL)
@@ -24,8 +24,10 @@ char *ft_str_replace(char *str, int start, int len, t_env *env)
 	free(tmp);
 	tmp = ft_strdup(new_str);
 	free(new_str);
-	new_str = ft_strconcat(tmp, str + start + ft_strlen(var_name) + 1, 
+	new_str = ft_strconcat(tmp, str + start + ft_strlen(var_name) + 1,
 		ft_strlen(tmp) + ft_strlen(str) - (start + ft_strlen(var_name)));
 	free(tmp);
+	printf ("%s\n", new_str );
+
 	return (new_str);
 }
