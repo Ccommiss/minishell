@@ -6,7 +6,7 @@
 /*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/06 13:19:09 by ccommiss          #+#    #+#             */
-/*   Updated: 2021/10/06 14:52:15 by ccommiss         ###   ########.fr       */
+/*   Updated: 2021/10/06 15:14:42 by ccommiss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ char *ft_str_replace(char *str, int start, int len, t_env *env)
 	new_str = ft_strconcat(tmp, str + start + ft_strlen(var_name) + 1,
 		ft_strlen(tmp) + ft_strlen(str) - (start + ft_strlen(var_name)));
 	free(tmp);
-	printf ("new stre |%s|\n", new_str);
 	return (new_str);
 }
 

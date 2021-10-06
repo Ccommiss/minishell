@@ -107,7 +107,6 @@ void tokenize(char *to_tokenize, t_token *toks, t_env *env) // fonction recursiv
 			expand(&to_tokenize, &i, &context, env);
 		if (ref_char != (int)tok(context, (unsigned char)to_tokenize[i]))
 				break ;
-		printf ("context = %d \n", context);
 		token[buf_i++] = to_tokenize[i];
 		if (to_tokenize[i])
 			i++;
