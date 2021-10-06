@@ -6,7 +6,7 @@
 /*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/06 13:19:09 by ccommiss          #+#    #+#             */
-/*   Updated: 2021/10/06 14:03:59 by ccommiss         ###   ########.fr       */
+/*   Updated: 2021/10/06 14:52:15 by ccommiss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,8 @@ char *ft_str_replace(char *str, int start, int len, t_env *env)
 	char *tmp;
 
 	var_name = ft_substr(str, start + 1, len); // recup la name var
-	printf ("var name = %s \n", var_name);
 	while (env && ft_strncmp(var_name, env->key, ft_strlen(env->key) + 1) != 0)
-	{
 		env = env->next;
-	}
 	if (env == NULL)
 		value = ft_strdup("");
 	else
@@ -42,7 +39,7 @@ char *ft_str_replace(char *str, int start, int len, t_env *env)
 	new_str = ft_strconcat(tmp, str + start + ft_strlen(var_name) + 1,
 		ft_strlen(tmp) + ft_strlen(str) - (start + ft_strlen(var_name)));
 	free(tmp);
-
+	printf ("new stre |%s|\n", new_str);
 	return (new_str);
 }
 
@@ -55,7 +52,6 @@ void	expand(char **to_tokenize, int *i, int *context, t_env *env)
 	int j;
 
 	j = 0;
-	printf ("VAR to_tokenize %s \n", *to_tokenize);
 	while (to_tokenize[0][*i+j] && to_tokenize[0][*i+j] != ' '
 		&& to_tokenize[0][*i+j] != DQUOTE) //test le +1 pour pas envoyer lespace
 	{
@@ -64,6 +60,7 @@ void	expand(char **to_tokenize, int *i, int *context, t_env *env)
 	}
 	if (j > 1) // si on a plus que juste le $
 		*to_tokenize = ft_str_replace(*to_tokenize, *i, j - *i, env);
+	//printf ("to_tokenize = %s \n",);
 	handle_quoted_context(context, i, *to_tokenize); // TEST
 
 }

@@ -42,8 +42,6 @@ static enum tokens	corresp[256] = {
 
 enum tokens	tok(int x, int y)
 {
-	//enum tokens tok[40][256];
-
 	if (x == OP)
 		return (op_toks(y));
 	if (x == WORD)
@@ -56,22 +54,26 @@ enum tokens	tok(int x, int y)
 
 void	handle_quoted_context(int *context, int *i, char *to_tokenize)
 {
-	if (*context != DQUOTE && *context != SQUOTE && (to_tokenize[*i] == SQUOTE && ft_strchr(to_tokenize + *i +1, SQUOTE)))
+	if (*context != DQUOTE && *context != SQUOTE
+		&& (to_tokenize[*i] == SQUOTE && ft_strchr(to_tokenize + *i +1, SQUOTE)))
 	{
 		*i += 1;
 		*context = SQUOTE;
 	}
-	else if (*context != SQUOTE && *context != DQUOTE && (to_tokenize[*i] == DQUOTE && ft_strchr(to_tokenize + *i +1, DQUOTE)))
+	else if (*context != SQUOTE && *context != DQUOTE
+		&& (to_tokenize[*i] == DQUOTE && ft_strchr(to_tokenize + *i +1, DQUOTE)))
 	{
 		*i += 1;
 		*context = DQUOTE;
 	}
-	else if ((*context == SQUOTE && to_tokenize[*i] == SQUOTE) || (*context == DQUOTE && to_tokenize[*i] == DQUOTE))
+	else if ((*context == SQUOTE && to_tokenize[*i] == SQUOTE)
+		|| (*context == DQUOTE && to_tokenize[*i] == DQUOTE))
 	{
 		*i += 1;
 		*context = corresp[(int)to_tokenize[*i]];
 	}
-	if ((int)to_tokenize[*i] == SQUOTE || (int)to_tokenize[*i] == DQUOTE) // test pour gerer si "" collees
+	if ((int)to_tokenize[*i] == SQUOTE
+		|| (int)to_tokenize[*i] == DQUOTE) // test pour gerer si "" collees
 		handle_quoted_context(context, i, to_tokenize);
 }
 
@@ -103,6 +105,9 @@ void tokenize(char *to_tokenize, t_token *toks, t_env *env) // fonction recursiv
 				break ;
 		if (to_tokenize[i] == '$' && context != SQUOTE)
 			expand(&to_tokenize, &i, &context, env);
+		if (ref_char != (int)tok(context, (unsigned char)to_tokenize[i]))
+				break ;
+		printf ("context = %d \n", context);
 		token[buf_i++] = to_tokenize[i];
 		if (to_tokenize[i])
 			i++;
@@ -111,7 +116,6 @@ void tokenize(char *to_tokenize, t_token *toks, t_env *env) // fonction recursiv
 	if (ref_char != TOK_EAT)
 	{
 		toks->content = ft_strdup(token);
-		printf ("%s \n", toks->content);
 		toks->type = ref_char;
 		toks->len = strlen(toks->content);
 		toks->next = malloc(sizeof(t_token));
