@@ -1,6 +1,7 @@
 Le lexer
 
-But : analyse lexicale 
+But : analyse lexicale
 
-- Decouper chaine de caracteres en tokens 
-- Labellisation des tokens 
+- Decouper chaine de caracteres en tokens
+- Labellisation des tokens
+

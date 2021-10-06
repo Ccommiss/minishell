@@ -109,9 +109,18 @@ void	init_token(t_token *toks);
 char	*ft_str_replace(char *str, int start, int len, t_env *env);
 void	debug_tokens(t_token *toks);
 void	debug_cmds(t_cmd *cmds);
+void	expand(char **to_tokenize, int *i, int *context, t_env *env);
+void	handle_quoted_context(int *context, int *i, char *to_tokenize);
+
+
 
 
 t_cmd *token_to_cmds(t_cmd *cmd, t_token *toks);
+
+enum tokens op_toks(int c);
+enum tokens word_toks(int c);
+enum tokens quote_toks(int c);
+
 
 
 

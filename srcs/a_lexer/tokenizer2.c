@@ -1,73 +1,80 @@
-
-
-
-
-
-
 #include "minishell.h"
 
-static enum tokens corresp[255] = {
+/*
+**	Memo ASCII
+**
+**	0 a 32 : non-printable characters
+**	33 ... 47 : ponctuation
+**		├─> 34 : "
+**		├─> 36 : $
+**		├─> 39 : '
+**	48 a 57 : chiffres
+**	58 a 64 : operateurs
+**		├─> 60 : <
+**		├─> 62 : >
+**	65 a 90 : A a Z
+**	91 a 96 : ponctuation '[' a '`'
+**	97 a 122 : a a z
+**	123 a 127 : ponctuation { a ~ puis DEL
+**	128 a 254 : Ascii extended
+*/
+
+static enum tokens	corresp[256] = {
 	['|'] = OP,
 	['<'] = OP,
 	['>'] = OP,
-	['A' ... 'Z'] = WORD,
-	['a' ... 'z'] = WORD,
-	['$'] = WORD,
-	['-'] = WORD,
+	['\0'...'!'] = WORD, // 0 a 33
+	['#'...'&'] = WORD, // 35 a 38
+	['('...'/'] = WORD, //40 a 47
+	['0'...'9'] = WORD, //48 a 57
+	[':'...';'] = WORD,
 	['='] = WORD,
-	['0' ... '9'] = WORD,
-	[' '] = WORD,
-	['\''] = SQUOTE,
-	['\"'] = DQUOTE,
+	['?'...'@'] = WORD, // 58 a 59 et 61, 63, 64
+	['A'...'Z'] = WORD, //65 a 90
+	['['...'`'] = WORD, // 91 a 96
+	['a'...'z'] = WORD, //97 a 122
+	['{'] = WORD,
+	['}'] = WORD,
+	['~'...u'ÿ'] = WORD, // 126 a la fin
+	['\''] = SQUOTE, //39
+	['\"'] = DQUOTE, //34
 };
 
-static enum tokens tok[40][255] = {
-	[OP] = {
-		['|'] = TOK_PIPE,
-		['<'] = TOK_LESS,
-		['>'] = TOK_GREAT,
-		['='] = TOK_EQUAL
-	},
-	[DQUOTE] = {
-		[0 ... 254] = TOK_WORD,
-	},
-	[SQUOTE] = {
-		[0 ... 254] = TOK_WORD,
-	},
-	[WORD] = {
-		[' '] = TOK_EAT, // CARACTERE D'ARRET, alors que non si on est dans des quotes
-		['A' ... 'Z'] = TOK_WORD,
-		['a' ... 'z'] = TOK_WORD,
-		['0' ... '9'] = TOK_WORD,
-		[33 ... 47] = TOK_WORD, // caracteres de ponctuations surtout
-		['='] = TOK_WORD,
-		[':'] = TOK_WORD,
-		[';'] = TOK_WORD,
-		['|'] = TOK_PIPE,
-		['<'] = TOK_LESS,
-		['>'] = TOK_GREAT,
-	}
-};
+enum tokens	tok(int x, int y)
+{
+	if (x == OP)
+		return (op_toks(y));
+	if (x == WORD)
+		return (word_toks(y));
+	if (x == SQUOTE || x == DQUOTE)
+		return (quote_toks(y));
 
-
+	return (WORD);
+}
 
 void	handle_quoted_context(int *context, int *i, char *to_tokenize)
 {
-	if (*context != DQUOTE && *context != SQUOTE && (to_tokenize[*i] == SQUOTE && ft_strchr(to_tokenize + *i +1, SQUOTE)))
+	if (*context != DQUOTE && *context != SQUOTE
+		&& (to_tokenize[*i] == SQUOTE && ft_strchr(to_tokenize + *i +1, SQUOTE)))
 	{
 		*i += 1;
 		*context = SQUOTE;
 	}
-	else if (*context != SQUOTE && *context != DQUOTE && (to_tokenize[*i] == DQUOTE && ft_strchr(to_tokenize + *i +1, DQUOTE)))
+	else if (*context != SQUOTE && *context != DQUOTE
+		&& (to_tokenize[*i] == DQUOTE && ft_strchr(to_tokenize + *i +1, DQUOTE)))
 	{
 		*i += 1;
 		*context = DQUOTE;
 	}
-	else if ((*context == SQUOTE && to_tokenize[*i] == SQUOTE) || (*context == DQUOTE && to_tokenize[*i] == DQUOTE))
+	else if ((*context == SQUOTE && to_tokenize[*i] == SQUOTE)
+		|| (*context == DQUOTE && to_tokenize[*i] == DQUOTE))
 	{
 		*i += 1;
 		*context = corresp[(int)to_tokenize[*i]];
 	}
+	if ((int)to_tokenize[*i] == SQUOTE
+		|| (int)to_tokenize[*i] == DQUOTE) // test pour gerer si "" collees
+		handle_quoted_context(context, i, to_tokenize);
 }
 
 
@@ -82,36 +89,28 @@ void tokenize(char *to_tokenize, t_token *toks, t_env *env) // fonction recursiv
 	int buf_i = 0;
 	char token[2048];
 	int context;
-	t_token *head;
-	ft_bzero(token, 2048);
-	ref_char = tok[corresp[(int)to_tokenize[0]]] [(int)to_tokenize[0]] ; //le type de reference sera le typ[e du premier char
-										//ex Tok_Word
-										// But = tous les autres = des toks words aussi
 
-	context = corresp[(int)to_tokenize[0]];
-	//printf ("context = %d \n", context);
+	ft_bzero(token, 2048);
+
+//	printf ("tok 0 = %d // corresp = %d \n", (unsigned char)to_tokenize[0], corresp[(unsigned char)to_tokenize[0]]);
+	ref_char = tok(corresp[(unsigned char)to_tokenize[0]], (unsigned char)to_tokenize[0]);
+	context = corresp[(unsigned char)to_tokenize[0]];
 	if (context == SQUOTE || context == DQUOTE)
 		context = WORD;
 
-	head = toks;
-	while ((to_tokenize[i]) && ref_char == (int)tok[context][(int)to_tokenize[i]])
+	while ((to_tokenize[i]) && ref_char == (int)tok(context, (unsigned char)to_tokenize[i]))
 	{
-		//printf ("%c \n ", to_tokenize[i]);
 		handle_quoted_context(&context, &i, to_tokenize);
-			if (ref_char != (int)tok[context][(int)to_tokenize[i]])
+		if (ref_char != (int)tok(context, (unsigned char)to_tokenize[i]))
 				break ;
-
 		if (to_tokenize[i] == '$' && context != SQUOTE)
-		{
-			int j;
-			j = 0;
-			while (to_tokenize[i+j] && to_tokenize[i+j+1] != ' ' && to_tokenize[i+j+1] != DQUOTE) //test le +1 pour pas envoyer lespace
-				j++;
-			if (j > 1) // si on a plus que juste le $
-				to_tokenize = ft_str_replace(to_tokenize, i, j, env);
-		}
+			expand(&to_tokenize, &i, &context, env);
+		if (ref_char != (int)tok(context, (unsigned char)to_tokenize[i]))
+				break ;
+		printf ("context = %d \n", context);
 		token[buf_i++] = to_tokenize[i];
-		i++;
+		if (to_tokenize[i])
+			i++;
 	}
 	token[buf_i] = '\0';
 	if (ref_char != TOK_EAT)
@@ -133,5 +132,4 @@ void tokenize(char *to_tokenize, t_token *toks, t_env *env) // fonction recursiv
 		free(toks->next);
 		toks->next = NULL;
 	}
-
 }

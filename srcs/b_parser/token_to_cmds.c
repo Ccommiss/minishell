@@ -36,10 +36,17 @@ t_cmd *token_to_cmds(t_cmd *cmd, t_token *toks)
 		{
 			if (!toks->next)
 				return (NULL); //reetourner une erreur
-			toks = toks->next;
-			cmd->io_in = open(toks->content, O_RDWR);
-			if (ft_strlen(toks->content) == 2)
+			if (ft_strlen(toks->content) == 1)
+			{
+				toks = toks->next;
+				cmd->io_in = open(toks->content, O_RDWR | O_TRUNC | O_CREAT);
+			}
+			else if (ft_strlen(toks->content) == 2)
+			{
+				toks = toks->next;
+				cmd->io_in = open(toks->content, O_RDWR | O_APPEND | O_CREAT);
 				cmd->dless = TRUE;
+			}
 		}
 		else if (toks->type == TOK_GREAT)
 		{
