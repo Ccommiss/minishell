@@ -54,26 +54,36 @@ enum tokens	tok(int x, int y)
 
 void	handle_quoted_context(int *context, int *i, char *to_tokenize)
 {
+	printf ("{handle quote} to_tokenize[%d] = %c \n", *i, to_tokenize[*i]);
 	if (*context != DQUOTE && *context != SQUOTE
-		&& (to_tokenize[*i] == SQUOTE && ft_strchr(to_tokenize + *i +1, SQUOTE)))
+		&& (to_tokenize[*i] == SQUOTE  && ft_strchr(to_tokenize + *i +1, SQUOTE)))
 	{
+		printf ("ici 1\n");
 		*i += 1;
 		*context = SQUOTE;
 	}
 	else if (*context != SQUOTE && *context != DQUOTE
 		&& (to_tokenize[*i] == DQUOTE && ft_strchr(to_tokenize + *i +1, DQUOTE)))
 	{
+		printf ("ici 2\n");
+
 		*i += 1;
 		*context = DQUOTE;
 	}
 	else if ((*context == SQUOTE && to_tokenize[*i] == SQUOTE)
 		|| (*context == DQUOTE && to_tokenize[*i] == DQUOTE))
 	{
+		printf ("ici 3\n");
+
 		*i += 1;
-		*context = corresp[(int)to_tokenize[*i]];
+		*context = WORD; //TEST
+	//	if (to_tokenize[*i] != DQUOTE && to_tokenize[*i] != SQUOTE)
+		//	*context = corresp[(int)to_tokenize[*i]];
 	}
-	if ((int)to_tokenize[*i] == SQUOTE
-		|| (int)to_tokenize[*i] == DQUOTE) // test pour gerer si "" collees
+	printf ("context after handle = %c \n", *context);
+//	sleep (2);
+	if (((int)to_tokenize[*i] == SQUOTE && *context != DQUOTE)
+		|| ((int)to_tokenize[*i] == DQUOTE && *context != SQUOTE)) // test pour gerer si "" collees
 		handle_quoted_context(context, i, to_tokenize);
 }
 
@@ -116,6 +126,7 @@ void tokenize(char *to_tokenize, t_token *toks, t_env *env) // fonction recursiv
 	if (ref_char != TOK_EAT)
 	{
 		toks->content = ft_strdup(token);
+		//printf ("content = %s")
 		toks->type = ref_char;
 		toks->len = strlen(toks->content);
 		toks->next = malloc(sizeof(t_token));

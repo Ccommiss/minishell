@@ -6,7 +6,7 @@
 /*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/06 13:19:09 by ccommiss          #+#    #+#             */
-/*   Updated: 2021/10/06 14:52:15 by ccommiss         ###   ########.fr       */
+/*   Updated: 2021/10/07 15:52:14 by ccommiss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,9 @@ char *ft_str_replace(char *str, int start, int len, t_env *env)
 	char *value;
 	char *tmp;
 
+	printf ("VAR NAME = |%s| s: %d -- len : %d \n", str, start+1, len);
 	var_name = ft_substr(str, start + 1, len); // recup la name var
+	printf ("VAR NAME = |%s|\n", var_name);
 	while (env && ft_strncmp(var_name, env->key, ft_strlen(env->key) + 1) != 0)
 		env = env->next;
 	if (env == NULL)
@@ -53,14 +55,14 @@ void	expand(char **to_tokenize, int *i, int *context, t_env *env)
 
 	j = 0;
 	while (to_tokenize[0][*i+j] && to_tokenize[0][*i+j] != ' '
-		&& to_tokenize[0][*i+j] != DQUOTE) //test le +1 pour pas envoyer lespace
+		&& to_tokenize[0][*i+j] != DQUOTE)
 	{
 		printf (" test : %c - %c \n", to_tokenize[0][*i+j], to_tokenize[0][*i+j+1]);
 			j++;
 	}
 	if (j > 1) // si on a plus que juste le $
-		*to_tokenize = ft_str_replace(*to_tokenize, *i, j - *i, env);
-	//printf ("to_tokenize = %s \n",);
+		*to_tokenize = ft_str_replace(*to_tokenize, *i, j - 1, env);
+	printf ("to_tokenize = %s \n", *to_tokenize );
 	handle_quoted_context(context, i, *to_tokenize); // TEST
 
 }
