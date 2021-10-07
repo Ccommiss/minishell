@@ -73,12 +73,8 @@ void	handle_quoted_context(int *context, int *i, char *to_tokenize)
 	else if ((*context == SQUOTE && to_tokenize[*i] == SQUOTE)
 		|| (*context == DQUOTE && to_tokenize[*i] == DQUOTE))
 	{
-		printf ("ici 3\n");
-
 		*i += 1;
-		*context = WORD; //TEST
-	//	if (to_tokenize[*i] != DQUOTE && to_tokenize[*i] != SQUOTE)
-		//	*context = corresp[(int)to_tokenize[*i]];
+		*context = WORD;
 	}
 	printf ("context after handle = %c \n", *context);
 //	sleep (2);

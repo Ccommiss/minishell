@@ -1,23 +1,23 @@
 #include "minishell.h"
 
-void	redirect(t_cmd *cmd, t_token *toks, int type, int len)
+void	redirect(t_cmd *cmd, t_token **toks, int type, int len)
 {
-	if (!toks->next)
+	if (!(*toks)->next)
 		return ((void)0);
-	toks = toks->next;
+	*toks = (*toks)->next;
 	if (type == TOK_LESS)
 	{
 		if (len == 1)
-			cmd->io_in = open(toks->content, O_RDWR | O_TRUNC | O_CREAT);
+			cmd->io_in = open((*toks)->content, O_RDWR | O_TRUNC | O_CREAT);
 		if (len == 2)
-			cmd->io_in = open(toks->content, O_RDWR | O_APPEND | O_CREAT);
+			cmd->io_in = open((*toks)->content, O_RDWR | O_APPEND | O_CREAT);
 	}
 	if (type == TOK_GREAT)
 	{
 		if (len == 1)
-			cmd->io_out = open(toks->content, O_RDWR | O_TRUNC | O_CREAT);
+			cmd->io_out = open((*toks)->content, O_RDWR | O_TRUNC | O_CREAT);
 		if (len == 2)
-			cmd->io_out = open(toks->content, O_RDWR | O_APPEND | O_CREAT);
+			cmd->io_out = open((*toks)->content, O_RDWR | O_APPEND | O_CREAT);
 	}
 }
 
@@ -51,10 +51,10 @@ t_cmd	*token_to_cmds(t_cmd *cmd, t_token *toks)
 		toks = toks->next;
 	while (toks && toks->type != TOK_PIPE)
 	{
-		if (toks->type == TOK_WORD)
+		if (toks->type == TOK_WORD && ft_strlen(toks->content) > 0)
 			command_and_suffix(cmd, toks, &j);
 		if (toks->type == TOK_LESS || toks->type == TOK_GREAT)
-			redirect (cmd, toks, toks->type, ft_strlen(toks->content));
+			redirect (cmd, &toks, toks->type, ft_strlen(toks->content));
 		toks = toks->next;
 	}
 	if (toks != NULL && !(toks->type == TOK_PIPE && !toks->next))
