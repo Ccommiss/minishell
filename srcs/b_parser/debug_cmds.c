@@ -1,6 +1,15 @@
 #include "minishell.h"
 
 
+char *interpret(int num)
+{
+	//char unspecified[] = "Redirection not specified\n";
+	if (num == NOT_SPECIFIED)
+		return ("Redirection not specified");
+	else
+		return (ft_itoa(num));
+}
+
 void	debug_cmds(t_cmd *cmds)
 {
 	printf (BCYN"\n\n 			--- COMMAND TABLE ---\n\n"RESET);
@@ -15,9 +24,10 @@ void	debug_cmds(t_cmd *cmds)
 		while (cmds->cmd_args[i])
 			printf ("│  ├─ %s\n", cmds->cmd_args[i++]);
 		printf(BWHT"├─ Redirections\n"RESET);
-		printf("│  ├─> in (<) : %d\n", cmds->io_in);
+		printf("│  ├─> in (<) : %s\n", interpret(cmds->io_in));
 		printf("│  │   ├─> dless : %d\n", cmds->dless);
-		printf("│  ├─> out (>): %d\n", cmds->io_out);
+		printf("│  │   ├─> heredoc : %s\n", cmds->io_here);
+		printf("│  ├─> out (>): %s\n", interpret(cmds->io_out));
 		printf("│  │   ├─> dgreat : %d\n", cmds->dgreat);
 		printf("|------------------------------------------------------------------|\n");
 		cmds = cmds->next;

@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <limits.h>
+#include <errno.h>
 
 
 #include <sys/types.h>
@@ -70,6 +71,7 @@ typedef struct s_cmd
 	char **cmd_args;
 	int io_in; //fd entree commande
 	int dless; // <<
+	char *io_here;
 	int io_out; //fd sortie commande
 	int dgreat; // >>
 

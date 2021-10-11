@@ -8,17 +8,25 @@ void	redirect(t_cmd *cmd, t_token **toks, int type, int len)
 	if (type == TOK_LESS)
 	{
 		if (len == 1)
-			cmd->io_in = open((*toks)->content, O_RDWR | O_TRUNC | O_CREAT);
+			cmd->io_in = open((*toks)->content, O_RDWR | O_TRUNC);
 		if (len == 2)
-			cmd->io_in = open((*toks)->content, O_RDWR | O_APPEND | O_CREAT);
+		{
+			cmd->io_here = ft_strdup((*toks)->content);
+			cmd->dless = TRUE;
+		}
 	}
 	if (type == TOK_GREAT)
 	{
 		if (len == 1)
 			cmd->io_out = open((*toks)->content, O_RDWR | O_TRUNC | O_CREAT);
 		if (len == 2)
+		{
 			cmd->io_out = open((*toks)->content, O_RDWR | O_APPEND | O_CREAT);
+			cmd->dgreat = TRUE;
+		}
 	}
+	if (cmd->io_in == -1 || cmd->io_out == -1)
+		printf("%s : %s \n", cmd->cmd_args[0], strerror(errno));
 }
 
 void	command_and_suffix(t_cmd *cmd, t_token *toks, int *j)
@@ -37,6 +45,7 @@ void	init_cmd(t_cmd *cmd)
 		cmd->index = cmd->prev->index + 1;
 	cmd->io_in = NOT_SPECIFIED;
 	cmd->io_out = NOT_SPECIFIED;
+	cmd->io_here = NULL;
 	cmd->dgreat = FALSE;
 	cmd->dless = FALSE;
 }
