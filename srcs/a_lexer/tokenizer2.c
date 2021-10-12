@@ -126,6 +126,7 @@ void tokenize(char *to_tokenize, t_token *toks, t_env *env) // fonction recursiv
 		toks->type = ref_char;
 		toks->len = strlen(toks->content);
 		toks->next = malloc(sizeof(t_token));
+		toks->next->content = NULL; //faire fonction init 
 		toks->next->prev = toks;
 		toks->next->index = toks->index + 1;
 		toks = toks->next;

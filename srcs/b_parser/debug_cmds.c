@@ -18,6 +18,7 @@ void	debug_cmds(t_cmd *cmds)
 	{
 		printf(MAG"[%2d]\n"RESET, cmds->index);
 		printf(BWHT"├─ Command\n"RESET);
+		if (cmds->cmd_args)
 		printf("│  ├─ %6s\n", cmds->cmd_args[0]);
 		printf(BWHT"├─ Command suffixs\n"RESET);
 		int i = 0;

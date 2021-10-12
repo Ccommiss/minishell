@@ -40,6 +40,7 @@ void	command_and_suffix(t_cmd *cmd, t_token *toks, int *j)
 void	init_cmd(t_cmd *cmd)
 {
 	cmd->cmd_args = malloc(sizeof(char **) * 1);
+	cmd->cmd_args[0] = NULL;
 	cmd->index = 0;
 	if (cmd->prev != NULL)
 		cmd->index = cmd->prev->index + 1;
