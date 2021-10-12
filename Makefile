@@ -13,7 +13,8 @@ SOURCES =	main.c\
 				$(LEX_PATH)/context.c \
 			$(ENV_PATH)/get_the_env.c \
 			$(PAR_PATH)/token_to_cmds.c \
-			$(PAR_PATH)/debug_cmds.c
+			$(PAR_PATH)/debug_cmds.c \
+			$(PAR_PATH)/find_path.c \
 
 
 

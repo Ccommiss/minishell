@@ -134,10 +134,16 @@ void tokenize(char *to_tokenize, t_token *toks, t_env *env) // fonction recursiv
 	to_tokenize = ft_substr(to_tokenize, i, ft_strlen(to_tokenize));
 	if (ft_strlen(to_tokenize) != 0)
 		tokenize(to_tokenize, toks, env); //recursivite
-	else
+	else if (toks && toks->prev)
 	{
 		toks = toks->prev;
 		free(toks->next);
 		toks->next = NULL;
+	}
+	else 
+	{
+		printf ("rien du tout %p \n", toks);
+		toks = NULL;
+		printf ("rien du tout %p \n", toks);
 	}
 }

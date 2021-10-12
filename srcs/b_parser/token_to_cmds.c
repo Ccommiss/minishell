@@ -41,6 +41,7 @@ void	init_cmd(t_cmd *cmd)
 {
 	cmd->cmd_args = malloc(sizeof(char **) * 1);
 	cmd->cmd_args[0] = NULL;
+	cmd->cmdp = NULL;
 	cmd->index = 0;
 	if (cmd->prev != NULL)
 		cmd->index = cmd->prev->index + 1;
@@ -56,10 +57,12 @@ t_cmd	*token_to_cmds(t_cmd *cmd, t_token *toks)
 	int	j;
 
 	j = 0;
+	if (toks->content == NULL && !toks->next)
+		return (NULL);
 	init_cmd(cmd);
 	if (toks->type == TOK_PIPE)
 		toks = toks->next;
-	while (toks && toks->type != TOK_PIPE)
+	while (toks && toks->type != TOK_PIPE) //ajout oks content si le premier et seul tok est espace
 	{
 		if (toks->type == TOK_WORD && ft_strlen(toks->content) > 0)
 			command_and_suffix(cmd, toks, &j);

@@ -50,7 +50,7 @@ int	check_quote(char *line)
 	return (0);
 }
 
-void	start_cmd(t_cmd *cmd)
+void	start_cmd(t_cmd *cmd, t_token *toks)
 {
 	cmd->cmd_args = NULL;
 	cmd->cmdp = NULL;
@@ -60,6 +60,9 @@ void	start_cmd(t_cmd *cmd)
 	cmd->io_out = NOT_SPECIFIED;
 	cmd->dgreat = FALSE;
 	cmd->dless = FALSE;
+
+	toks->index = 0;
+	toks->content = NULL;
 }
 
 
@@ -73,7 +76,7 @@ int	main(int ac, char **av, char **envp)
 	(void)av;
 	t_env *env;
 
-	start_cmd(&cmd);
+	start_cmd(&cmd, &toks);
 	env = NULL;
 	get_the_env(&env, envp);
 	while (1)
@@ -86,6 +89,7 @@ int	main(int ac, char **av, char **envp)
 			tokenize(line, &toks, env);
 			debug_tokens(&toks);
 			token_to_cmds(&cmd, &toks);
+			find_path(&cmd, env);
 			debug_cmds(&cmd);
 		}
 
