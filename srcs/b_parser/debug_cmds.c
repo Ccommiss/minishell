@@ -16,7 +16,7 @@ void	debug_cmds(t_cmd *cmds)
 {
 	printf (BCYN"\n\n 			--- COMMAND TABLE ---\n\n"RESET);
 
-	while (cmds != NULL)
+	while (cmds != NULL && cmds->cmd_args)
 	{
 		printf(MAG"[%2d]\n"RESET, cmds->index);
 		printf(BWHT"├─ Command\n"RESET);

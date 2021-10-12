@@ -57,7 +57,7 @@ t_cmd	*token_to_cmds(t_cmd *cmd, t_token *toks)
 	int	j;
 
 	j = 0;
-	if (toks->content == NULL && !toks->next)
+	if (toks->type == -1) //pas de tok
 		return (NULL);
 	init_cmd(cmd);
 	if (toks->type == TOK_PIPE)
