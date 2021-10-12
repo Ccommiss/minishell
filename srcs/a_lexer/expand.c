@@ -55,7 +55,7 @@ void	expand(char **to_tokenize, int *i, int *context, t_env *env)
 			brace = 1;
 		if ((j > 0 && to_tokenize[0][*i+j] == '$') || (j > 1 && to_tokenize[0][*i+j] == '{'))
 			break ; //si on a deux var collees
-			j++;
+		j++;
 		if (brace == 1 && to_tokenize[0][*i+j] == '}' )
 			break;
 	}
