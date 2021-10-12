@@ -6,11 +6,11 @@
 /*   By: mpochard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/29 17:49:53 by mpochard          #+#    #+#             */
-/*   Updated: 2021/09/29 17:54:56 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/10/12 16:13:03 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+#include "minishell.h"
 
 int	need_to_unset(t_env *env, char *cmd_suffix)
 {

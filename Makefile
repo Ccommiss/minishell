@@ -4,7 +4,8 @@ LEX_PATH = a_lexer
 PAR_PATH = b_parser
 EXEC_PATH = c_exec
 ENV_PATH = d_env
-
+BUILT_PATH = e_builtin
+REDIR_PATH = f_redirection
 
 SOURCES =	main.c\
 			$(LEX_PATH)/tokenizer2.c \
@@ -13,8 +14,13 @@ SOURCES =	main.c\
 			$(LEX_PATH)/debug_tokens.c \
 				$(LEX_PATH)/context.c \
 			$(ENV_PATH)/get_the_env.c \
+			$(ENV_PATH)/the_list.c \
+			$(ENV_PATH)/unset.c \
+			$(ENV_PATH)/export_the_var.c \
 			$(PAR_PATH)/token_to_cmds.c \
-			$(PAR_PATH)/debug_cmds.c
+			$(PAR_PATH)/debug_cmds.c \
+			${BUILT_PATH}/cd.c\
+			${BUILT_PATH}/echo.c\
 
 
 

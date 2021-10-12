@@ -6,11 +6,11 @@
 /*   By: mpochard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 17:06:05 by mpochard          #+#    #+#             */
-/*   Updated: 2021/09/30 15:44:48 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/10/12 16:13:19 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+#include "minishell.h"
 
 char	**ft_split_one_egal(char *str)
 {
@@ -40,7 +40,6 @@ char	**ft_split_one_egal(char *str)
 void	get_the_env(t_env **envp, char **env)
 {
 	int		i;
-	t_env	*temp;
 
 	i = 0;
 	while (env[i])

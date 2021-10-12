@@ -96,14 +96,50 @@ typedef struct	s_env
 	char	*value;
 	char	*env;
 	struct	s_env *next;
+	struct	s_env *prev;
 }				t_env;
+
 
 /* d_env
  * the file for put env in a list chaine or for display this list chainee
  */
 void	printf_the_env(t_env *envp);
 void	get_the_env(t_env **envp, char **env);
-void	export_the_var(t_env **env, char *cmd_suffix);
+int		export_the_var(t_env *env, char *cmd_suffix);
+int		remplace_the_var(t_env *env, char *cmd_suffix);
+char	**ft_split_one_egal(char *str);
+t_env *ft_lstlastenv(t_env *lst);
+void	ft_lstadd_backenv(t_env **alst, t_env *nev);
+t_env	*ft_lstenv(char *content);
+int	need_to_unset(t_env *env, char *cmd_suffix);
+void	delete_the_node(t_env **env, t_env *del);
+int	unset_the_var(t_env *env, char *cmd_suffix);
+void	check_the_cmd(char *cmd_suffix);
+void	do_the_unset(t_env *env, char **cmd_suffix);
+/*
+ * END OF D_ENV
+ * */
+
+/* e_builtin
+ */
+char	*get_pwd(void);
+char	*strjoin_char(char *str, char *str1, char c);
+int	is_home_unset(t_env *tmp);
+void	cd(t_env *env, char *pwd, int redir);
+void	set_thepwd(t_env *env);
+int	check_echo(char *cmd_suffix);
+int		count_double_tab(char **tab);
+void	do_echo(char **cmd_suffix);
+/*
+ * f_redirection
+ * */
+int	is_a_builtin(char *cmd);
+void	redir_in(t_env *env, char **cmd, int fd);
+void	simple_redir_o(t_env *env, int fd, char **cmd);
+/* end of f_redir*/
+
+
+
 void	tokenize(char *to_tokenize, t_token *toks, t_env *env);
 void	init_token(t_token *toks);
 char	*ft_str_replace(char *str, int start, int len, t_env *env);

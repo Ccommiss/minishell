@@ -1,5 +1,5 @@
-#include "../../include/minishell.h"
-
+#include "minishell.h"
+#include <fcntl.h>
 void	simple_redir_o(t_env *env, int fd, char **cmd)
 {
 	pid_t pid;
@@ -24,10 +24,10 @@ void	simple_redir_o(t_env *env, int fd, char **cmd)
 	}
 	else if ( builtin == 0 && fd > -1)
 	{
-	pid = fork;
-	if (fork == -1)
+	pid = fork();
+	if (pid == -1)
 	{
-		perro("fork");
+		perror("fork");
 		return ;
 	}
 	if (pid == 0)
@@ -38,6 +38,5 @@ void	simple_redir_o(t_env *env, int fd, char **cmd)
 	}
 	waitpid(pid, NULL, 0);
 	close(fd);
+	}
 }
-
-void	

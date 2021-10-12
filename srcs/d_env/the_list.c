@@ -6,11 +6,11 @@
 /*   By: mpochard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/30 15:41:11 by mpochard          #+#    #+#             */
-/*   Updated: 2021/09/30 15:46:56 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/10/12 16:12:54 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+#include "minishell.h"
 
 t_env	*ft_lstlastenv(t_env *lst)
 {

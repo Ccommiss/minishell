@@ -1,4 +1,4 @@
-#include "../../include/minishell.h"
+#include "minishell.h"
 #include <fcntl.h>
 
 int	is_a_builtin(char *cmd)
@@ -22,7 +22,7 @@ void	redir_in(t_env *env, char **cmd, int fd)
 	if ( builtin == 2)
 	{
 			cd(env, NULL, 0);
-			set_the_pwd(env);
+			set_thepwd(env);
 			return ;
 	}
 	pid = fork();

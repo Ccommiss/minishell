@@ -6,11 +6,11 @@
 /*   By: mpochard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 17:23:21 by mpochard          #+#    #+#             */
-/*   Updated: 2021/09/30 15:46:59 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/10/12 16:12:24 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+#include "minishell.h"
 
 /*'
  * on parse le cmd_suffix pour savoir si il y a un = et on split dessus

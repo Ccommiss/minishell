@@ -1,4 +1,4 @@
-#include "../../include/minishell.h"
+#include "minishell.h"
 #include <limits.h>
 
 char	*get_pwd(void)
@@ -62,6 +62,7 @@ void	cd(t_env *env, char *pwd, int redir)
 	t_env	*tmp;
 
 	tmp = env;
+	(void)redir;
 	if (pwd == NULL)
 	{
 		
