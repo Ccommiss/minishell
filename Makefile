@@ -1,5 +1,4 @@
 
-
 LEX_PATH = a_lexer
 PAR_PATH = b_parser
 EXEC_PATH = c_exec
@@ -21,6 +20,7 @@ SOURCES =	main.c\
 			$(PAR_PATH)/debug_cmds.c \
 			${BUILT_PATH}/cd.c\
 			${BUILT_PATH}/echo.c\
+			$(PAR_PATH)/find_path.c \
 
 
 
@@ -57,4 +57,3 @@ fclean : clean
 re:	 fclean all
 
 .PHONY: all clean fclean re
-

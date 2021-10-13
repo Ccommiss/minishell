@@ -1,14 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   expand.c                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/06 13:19:09 by ccommiss          #+#    #+#             */
-/*   Updated: 2021/10/06 15:14:42 by ccommiss         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #include "minishell.h"
 
@@ -24,20 +13,25 @@ char *ft_str_replace(char *str, int start, int len, t_env *env)
 	char *value;
 	char *tmp;
 
-	var_name = ft_substr(str, start + 1, len); // recup la name var
+	//printf ("VAR NAME = |%s| s: %d -- len : %d \n", str, start+1, len);
+	if (str[start + 1] == '{') // on enleve les braces
+		var_name = ft_substr(str, start + 2, len - 2); // recup la name var
+	else
+		var_name = ft_substr(str, start + 1, len); // recup la name var
+	//printf ("VAR NAME = |%s|\n", var_name);
 	while (env && ft_strncmp(var_name, env->key, ft_strlen(env->key) + 1) != 0)
 		env = env->next;
 	if (env == NULL)
 		value = ft_strdup("");
 	else
 		value = ft_strdup(env->value);
-	tmp = ft_substr(str, 0, start);
+	tmp = ft_substr(str, 0, start); //ce qui y avait avant
 	new_str = ft_strconcat(tmp, value, start + ft_strlen(value));
 	free(tmp);
 	tmp = ft_strdup(new_str);
 	free(new_str);
-	new_str = ft_strconcat(tmp, str + start + ft_strlen(var_name) + 1,
-		ft_strlen(tmp) + ft_strlen(str) - (start + ft_strlen(var_name)));
+	new_str = ft_strconcat(tmp, str + start + len + 1,
+		ft_strlen(tmp) + ft_strlen(str + start + len));
 	free(tmp);
 	return (new_str);
 }
@@ -49,17 +43,27 @@ char *ft_str_replace(char *str, int start, int len, t_env *env)
 void	expand(char **to_tokenize, int *i, int *context, t_env *env)
 {
 	int j;
+	int brace;
 
 	j = 0;
-	while (to_tokenize[0][*i+j] && to_tokenize[0][*i+j] != ' '
-		&& to_tokenize[0][*i+j] != DQUOTE) //test le +1 pour pas envoyer lespace
+	brace = 0;
+	while (to_tokenize[0][*i+j] && (ft_isalnum(to_tokenize[0][*i+j]) || to_tokenize[0][*i+j] == '$' || to_tokenize[0][*i+j] == '{'
+		|| to_tokenize[0][*i+j] == '}')) 
 	{
 		printf (" test : %c - %c \n", to_tokenize[0][*i+j], to_tokenize[0][*i+j+1]);
-			j++;
+		if (j == 1 && to_tokenize[0][*i+j] == '{')
+			brace = 1;
+		if ((j > 0 && to_tokenize[0][*i+j] == '$') || (j > 1 && to_tokenize[0][*i+j] == '{'))
+			break ; //si on a deux var collees
+		j++;
+		if (brace == 1 && to_tokenize[0][*i+j] == '}' )
+			break;
 	}
+	if (brace == 1)
+		j++;
 	if (j > 1) // si on a plus que juste le $
-		*to_tokenize = ft_str_replace(*to_tokenize, *i, j - *i, env);
-	//printf ("to_tokenize = %s \n",);
+		*to_tokenize = ft_str_replace(*to_tokenize, *i, j - 1, env);
+	printf ("to_tokenize = %s \n", *to_tokenize );
 	handle_quoted_context(context, i, *to_tokenize); // TEST
 
 }

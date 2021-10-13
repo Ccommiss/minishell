@@ -54,7 +54,7 @@ void	start_cmd(t_cmd *cmd)
 {
 	cmd->cmd_args = NULL;
 	cmd->cmdp = NULL;
-	cmd->index = 0;
+	cmd->index = -1;
 	cmd->prev = NULL;
 	cmd->io_in = NOT_SPECIFIED;
 	cmd->io_out = NOT_SPECIFIED;
@@ -73,7 +73,7 @@ int	main(int ac, char **av, char **envp)
 	(void)av;
 	t_env *env;
 
-	start_cmd(&cmd);
+
 	env = NULL;
 	get_the_env(&env, envp);
 	while (1)
@@ -83,9 +83,11 @@ int	main(int ac, char **av, char **envp)
 		{
 			add_history(line);
 			init_token(&toks);
+			start_cmd(&cmd);
 			tokenize(line, &toks, env);
 			debug_tokens(&toks);
 			token_to_cmds(&cmd, &toks);
+			find_path(&cmd, env);
 			debug_cmds(&cmd);
 		}
 	free(line);

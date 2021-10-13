@@ -54,15 +54,19 @@ enum tokens	tok(int x, int y)
 
 void	handle_quoted_context(int *context, int *i, char *to_tokenize)
 {
+	printf ("{handle quote} to_tokenize[%d] = %c \n", *i, to_tokenize[*i]);
 	if (*context != DQUOTE && *context != SQUOTE
-		&& (to_tokenize[*i] == SQUOTE && ft_strchr(to_tokenize + *i +1, SQUOTE)))
+		&& (to_tokenize[*i] == SQUOTE  && ft_strchr(to_tokenize + *i +1, SQUOTE)))
 	{
+		printf ("ici 1\n");
 		*i += 1;
 		*context = SQUOTE;
 	}
 	else if (*context != SQUOTE && *context != DQUOTE
 		&& (to_tokenize[*i] == DQUOTE && ft_strchr(to_tokenize + *i +1, DQUOTE)))
 	{
+		printf ("ici 2\n");
+
 		*i += 1;
 		*context = DQUOTE;
 	}
@@ -70,10 +74,12 @@ void	handle_quoted_context(int *context, int *i, char *to_tokenize)
 		|| (*context == DQUOTE && to_tokenize[*i] == DQUOTE))
 	{
 		*i += 1;
-		*context = corresp[(int)to_tokenize[*i]];
+		*context = WORD;
 	}
-	if ((int)to_tokenize[*i] == SQUOTE
-		|| (int)to_tokenize[*i] == DQUOTE) // test pour gerer si "" collees
+	printf ("context after handle = %c \n", *context);
+//	sleep (2);
+	if (((int)to_tokenize[*i] == SQUOTE && *context != DQUOTE)
+		|| ((int)to_tokenize[*i] == DQUOTE && *context != SQUOTE)) // test pour gerer si "" collees
 		handle_quoted_context(context, i, to_tokenize);
 }
 
@@ -115,9 +121,11 @@ void tokenize(char *to_tokenize, t_token *toks, t_env *env) // fonction recursiv
 	if (ref_char != TOK_EAT)
 	{
 		toks->content = ft_strdup(token);
+		//printf ("content = %s")
 		toks->type = ref_char;
 		toks->len = strlen(toks->content);
 		toks->next = malloc(sizeof(t_token));
+		toks->next->content = NULL; //faire fonction init 
 		toks->next->prev = toks;
 		toks->next->index = toks->index + 1;
 		toks = toks->next;
@@ -125,10 +133,16 @@ void tokenize(char *to_tokenize, t_token *toks, t_env *env) // fonction recursiv
 	to_tokenize = ft_substr(to_tokenize, i, ft_strlen(to_tokenize));
 	if (ft_strlen(to_tokenize) != 0)
 		tokenize(to_tokenize, toks, env); //recursivite
-	else
+	else if (toks && toks->prev)
 	{
 		toks = toks->prev;
 		free(toks->next);
 		toks->next = NULL;
+	}
+	else 
+	{
+		printf ("rien du tout %p \n", toks);
+		toks = NULL;
+		printf ("rien du tout %p \n", toks);
 	}
 }

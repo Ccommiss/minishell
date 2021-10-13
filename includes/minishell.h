@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <limits.h>
+#include <errno.h>
 
 
 #include <sys/types.h>
@@ -57,7 +58,7 @@ typedef struct s_token
 	int type;
 	int index;
 	int len;
-	int to_expand;
+
 	t_token *next;
 	t_token *prev;
 } t_token;
@@ -70,13 +71,12 @@ typedef struct s_cmd
 	char **cmd_args;
 	int io_in; //fd entree commande
 	int dless; // <<
+	char *io_here;
 	int io_out; //fd sortie commande
 	int dgreat; // >>
 
 	t_cmd *next;
 	t_cmd *prev;
-	t_cmd *head;
-
 } t_cmd;
 
 
@@ -159,6 +159,7 @@ enum tokens quote_toks(int c);
 
 
 
+void	find_path(t_cmd *cmds, t_env *env);
 
 
 
