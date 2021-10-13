@@ -48,7 +48,7 @@ void	expand(char **to_tokenize, int *i, int *context, t_env *env)
 	j = 0;
 	brace = 0;
 	while (to_tokenize[0][*i+j] && (ft_isalnum(to_tokenize[0][*i+j]) || to_tokenize[0][*i+j] == '$' || to_tokenize[0][*i+j] == '{'
-		|| to_tokenize[0][*i+j] == '}')) //to_tokenize[0][*i+j] != ' ' && to_tokenize[0][*i+j] != DQUOTE && to_tokenize[0][*i+j] != SQUOTE)
+		|| to_tokenize[0][*i+j] == '}')) 
 	{
 		printf (" test : %c - %c \n", to_tokenize[0][*i+j], to_tokenize[0][*i+j+1]);
 		if (j == 1 && to_tokenize[0][*i+j] == '{')
