@@ -110,7 +110,16 @@ void tokenize(char *to_tokenize, t_token *toks, t_env *env) // fonction recursiv
 		if (ref_char != (int)tok(context, (unsigned char)to_tokenize[i]))
 				break ;
 		if (to_tokenize[i] == '$' && context != SQUOTE)
-			expand(&to_tokenize, &i, &context, env);
+		{
+			if (expand(&to_tokenize, &i, &context, env) == -1) //echec expand
+			{
+				ref_char = TOK_ERR; //trouver la variable fautive 
+				toks->content = ft_strdup("nom var : bad substitution a gerer\n");
+				while (to_tokenize[i] && to_tokenize[i] != '|')
+					i++;
+				break ;
+			}
+		}	
 		if (ref_char != (int)tok(context, (unsigned char)to_tokenize[i]))
 				break ;
 		token[buf_i++] = to_tokenize[i];
@@ -120,7 +129,8 @@ void tokenize(char *to_tokenize, t_token *toks, t_env *env) // fonction recursiv
 	token[buf_i] = '\0';
 	if (ref_char != TOK_EAT)
 	{
-		toks->content = ft_strdup(token);
+		if(toks->content == NULL)
+			toks->content = ft_strdup(token);
 		//printf ("content = %s")
 		toks->type = ref_char;
 		toks->len = strlen(toks->content);

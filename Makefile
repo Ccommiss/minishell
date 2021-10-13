@@ -11,7 +11,7 @@ SOURCES =	main.c\
 			$(LEX_PATH)/init_token.c \
 			$(LEX_PATH)/expand.c \
 			$(LEX_PATH)/debug_tokens.c \
-				$(LEX_PATH)/context.c \
+			$(LEX_PATH)/context.c \
 			$(ENV_PATH)/get_the_env.c \
 			$(ENV_PATH)/the_list.c \
 			$(ENV_PATH)/unset.c \

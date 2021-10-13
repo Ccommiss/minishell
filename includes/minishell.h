@@ -47,6 +47,7 @@ enum tokens
 	TOK_GREAT,
 	TOK_LESS,
 	TOK_EQUAL,
+	TOK_ERR,
 	SQUOTE = '\'',
 	DQUOTE = '\"'
 };
@@ -145,7 +146,7 @@ void	init_token(t_token *toks);
 char	*ft_str_replace(char *str, int start, int len, t_env *env);
 void	debug_tokens(t_token *toks);
 void	debug_cmds(t_cmd *cmds);
-void	expand(char **to_tokenize, int *i, int *context, t_env *env);
+int		expand(char **to_tokenize, int *i, int *context, t_env *env);
 void	handle_quoted_context(int *context, int *i, char *to_tokenize);
 
 

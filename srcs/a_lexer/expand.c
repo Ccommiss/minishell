@@ -40,7 +40,11 @@ char *ft_str_replace(char *str, int start, int len, t_env *env)
 ** 	Expand finds the var name to tokenize in the user input and send it
 **	to be replaced.
 */
-void	expand(char **to_tokenize, int *i, int *context, t_env *env)
+
+
+// PROBLEME : si mauvais subsitution de var, aucun moyen de le dire au token pour le moment 
+// idee ; creer un retour pour expand et si expand -1, on fait pas le token 
+int	expand(char **to_tokenize, int *i, int *context, t_env *env)
 {
 	int j;
 	int brace;
@@ -56,14 +60,22 @@ void	expand(char **to_tokenize, int *i, int *context, t_env *env)
 		if ((j > 0 && to_tokenize[0][*i+j] == '$') || (j > 1 && to_tokenize[0][*i+j] == '{'))
 			break ; //si on a deux var collees
 		j++;
-		if (brace == 1 && to_tokenize[0][*i+j] == '}' )
+		if (to_tokenize[0][*i+j] == '}' )
+		{
+			if (brace == 1) 
+				brace = 2;
 			break;
+		}
 	}
-	if (brace == 1)
+	if (brace == 1){
+		printf ("BRACE ERROR OU MAUVAISE SUBSTITUITION");
+		return (-1);
+	}
+	if (brace == 2)
 		j++;
 	if (j > 1) // si on a plus que juste le $
 		*to_tokenize = ft_str_replace(*to_tokenize, *i, j - 1, env);
 	printf ("to_tokenize = %s \n", *to_tokenize );
 	handle_quoted_context(context, i, *to_tokenize); // TEST
-
+	return (0);
 }
