@@ -6,7 +6,7 @@
 /*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/15 16:46:53 by mpochard          #+#    #+#             */
-/*   Updated: 2021/10/14 18:29:46 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/10/14 18:34:54 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int	main(int ac, char **av, char **envp)
 	while (1)
 	{
 		line = readline(BWHT"> "RESET);
-		if (line)
+		if (line && ft_strlen(line) > 0)
 		{
 			add_history(line);
 			init_token(&toks);
