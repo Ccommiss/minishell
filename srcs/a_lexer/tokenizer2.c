@@ -54,7 +54,7 @@ enum tokens	tok(int x, int y)
 
 void	handle_quoted_context(int *context, int *i, char *to_tokenize)
 {
-	printf ("{handle quote} to_tokenize[%d] = %c \n", *i, to_tokenize[*i]);
+	//printf ("{handle quote} to_tokenize[%d] = %c \n", *i, to_tokenize[*i]);
 	if (*context != DQUOTE && *context != SQUOTE
 		&& (to_tokenize[*i] == SQUOTE  && ft_strchr(to_tokenize + *i +1, SQUOTE)))
 	{
@@ -76,7 +76,7 @@ void	handle_quoted_context(int *context, int *i, char *to_tokenize)
 		*i += 1;
 		*context = WORD;
 	}
-	printf ("context after handle = %c \n", *context);
+	//printf ("context after handle = %c \n", *context);
 //	sleep (2);
 	if (((int)to_tokenize[*i] == SQUOTE && *context != DQUOTE)
 		|| ((int)to_tokenize[*i] == DQUOTE && *context != SQUOTE)) // test pour gerer si "" collees
@@ -114,7 +114,9 @@ void tokenize(char *to_tokenize, t_token *toks, t_env *env) // fonction recursiv
 			if (expand(&to_tokenize, &i, &context, env) == -1) //echec expand
 			{
 				ref_char = TOK_ERR; //trouver la variable fautive 
-				toks->content = ft_strdup("nom var : bad substitution a gerer\n");
+				ft_bzero(token,2048);
+	
+				printf ("\n");
 				while (to_tokenize[i] && to_tokenize[i] != '|')
 					i++;
 				break ;

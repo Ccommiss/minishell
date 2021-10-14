@@ -52,6 +52,23 @@ void	init_cmd(t_cmd *cmd)
 	cmd->dless = FALSE;
 }
 
+
+void 	free_command_items(t_cmd *cmd)
+{
+	int i;
+
+	i = 0;
+	if (cmd->cmd_args)
+	{
+		while (cmd->cmd_args[i])
+			free(cmd->cmd_args[i++]);
+		free(cmd->cmd_args);
+		cmd->cmd_args = NULL;
+	}
+	if (cmd->cmdp)
+		free(cmd->cmdp);
+}
+
 t_cmd	*token_to_cmds(t_cmd *cmd, t_token *toks)
 {
 	int	j;
@@ -64,6 +81,13 @@ t_cmd	*token_to_cmds(t_cmd *cmd, t_token *toks)
 		toks = toks->next;
 	while (toks && toks->type != TOK_PIPE) //ajout oks content si le premier et seul tok est espace
 	{
+		if (toks->type == TOK_ERR)
+		{
+			free_command_items(cmd);
+			while (toks && toks->type != TOK_PIPE)
+				toks = toks->next;
+			break ;
+		}
 		if (toks->type == TOK_WORD && ft_strlen(toks->content) > 0)
 			command_and_suffix(cmd, toks, &j);
 		if (toks->type == TOK_LESS || toks->type == TOK_GREAT)
