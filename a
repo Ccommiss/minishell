@@ -1,0 +1,9 @@
+Makefile
+a
+a.out.dSYM
+includes
+kik
+libft
+minishell
+srcs
+testperror.c

@@ -95,6 +95,7 @@ typedef struct	s_env
 	char	*key;
 	char	*value;
 	char	*env;
+	int		visible;
 	struct	s_env *next;
 	struct	s_env *prev;
 }				t_env;
@@ -124,8 +125,8 @@ void	do_the_unset(t_env *env, char **cmd_suffix);
  */
 char	*get_pwd(void);
 char	*strjoin_char(char *str, char *str1, char c);
-int	is_home_unset(t_env *tmp);
-void	cd(t_env *env, char *pwd, int redir);
+int	is_home_unset(t_env *tmp, char *home);
+void	cd(t_env *env, char *pwd);
 void	set_thepwd(t_env *env);
 int	check_echo(char *cmd_suffix);
 int		count_double_tab(char **tab);
@@ -136,10 +137,11 @@ void	do_echo(char **cmd_suffix);
 int	is_a_builtin(char *cmd);
 void	redir_in(t_env *env, char **cmd, int fd);
 void	simple_redir_o(t_env *env, int fd, char **cmd);
+int		there_is_redir(t_env *env, t_cmd cmd);
 /* end of f_redir*/
 
 
-
+void	cmd_to_exec(t_cmd *cmd, t_env *env);
 void	tokenize(char *to_tokenize, t_token *toks, t_env *env);
 void	init_token(t_token *toks);
 char	*ft_str_replace(char *str, int start, int len, t_env *env);

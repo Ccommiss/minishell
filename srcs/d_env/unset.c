@@ -6,7 +6,7 @@
 /*   By: mpochard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/29 17:49:53 by mpochard          #+#    #+#             */
-/*   Updated: 2021/10/12 16:13:03 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/10/14 15:34:27 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,10 @@
 
 int	need_to_unset(t_env *env, char *cmd_suffix)
 {
+	int		i;
 	t_env	*temp;
 
+	i = 0;
 	temp = env;
 	while (temp)
 	{
@@ -47,7 +49,21 @@ int	unset_the_var(t_env *env, char *cmd_suffix)
 	temp = env;
 	while (temp)
 	{
-		if (strcmp(temp->key, cmd_suffix) == 0)
+		if (strncmp(cmd_suffix, "PWD", 3) == 0 && strcmp(temp->key, "PWD") == 0)
+		{
+			free(temp->value);
+			temp->visible = -1;
+			temp->value = ft_strdup("");
+			return (0);
+		}
+		else if(strcmp(cmd_suffix, "OLDPWD") == 0 && strcmp(temp->key, "OLDPWD") == 0)
+		{
+			temp->visible = -2;
+			free(temp->value);
+			temp->value = ft_strdup("");
+			return (0);
+		}
+		else if (strcmp(temp->key, cmd_suffix) == 0)
 		{
 			delete_the_node(&env, temp);
 			return (1);
@@ -72,9 +88,11 @@ void	check_the_cmd(char *cmd_suffix)
 
 void	do_the_unset(t_env *env, char **cmd_suffix)
 {
+	t_env	*temp;
 	int		i;
 
 	i = 0;
+	temp = env;
 	if (cmd_suffix == NULL)
 		return ;
 	while (cmd_suffix[i])

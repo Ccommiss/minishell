@@ -12,7 +12,7 @@ void	simple_redir_o(t_env *env, int fd, char **cmd)
 			do_echo(cmd);
 		else if (builtin == 2)
 		{
-			cd(env, NULL, 0);
+			cd(env, cmd[0]);
 			set_thepwd(env);
 		}
 		else if (builtin == 3)

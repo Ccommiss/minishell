@@ -21,7 +21,7 @@ void	redir_in(t_env *env, char **cmd, int fd)
 	builtin = is_a_builtin(cmd[0]);
 	if ( builtin == 2)
 	{
-			cd(env, NULL, 0);
+			cd(env, cmd[0]);
 			set_thepwd(env);
 			return ;
 	}
@@ -35,8 +35,11 @@ void	redir_in(t_env *env, char **cmd, int fd)
 	{
 		dup2(fd, 1);
 		if (builtin == 0)
+		{
 			execvp(cmd[0], cmd);
-		else if (builtin == 1)
+			perror(cmd[0]);
+		}
+			else if (builtin == 1)
 		{
 			do_echo(cmd);
 			exit(1);

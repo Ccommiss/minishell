@@ -20,7 +20,13 @@ SOURCES =	main.c\
 			$(PAR_PATH)/debug_cmds.c \
 			${BUILT_PATH}/cd.c\
 			${BUILT_PATH}/echo.c\
-			$(PAR_PATH)/find_path.c \
+			$(PAR_PATH)/find_path.c\
+			${REDIR_PATH}/is_redir.c\
+			${REDIR_PATH}/redir_out.c\
+			${REDIR_PATH}/redir_in.c\
+			${EXEC_PATH}/cmd_to_exec.c\
+
+
 
 
 

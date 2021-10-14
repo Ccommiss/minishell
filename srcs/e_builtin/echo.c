@@ -2,15 +2,22 @@
 
 /*
  * cmd_suffix is the -n
+ *	this fct is for check is the sec arg of echo is -n or not 
+ *	-nnnnm dont work but -nnnnnn  work !!!
  */
 int	check_echo(char *cmd_suffix)
 {
 	int	i;
 
 	i = 0;
+//	printf("cmd_suffix %s\n", cmd_suffix);
 	if (cmd_suffix[i] == '-')
+	{
 		i++;
-	else
+	if ( cmd_suffix[i] == '\0')
+		return (0);
+	}
+		else
 		return (0);
 	while (cmd_suffix[i] == 'n')
 		i++;
@@ -30,15 +37,21 @@ int		count_double_tab(char **tab)
 		i++;
 	return (i);
 }
-
+/*
+ * need to know is echo have arg or not
+ * -in case of echo without arg the program should display \n 
+ * -in case of echo -n withouth arg the program should display nothing
+ *  -the program begin at i = 1 because i = 0 is echo 
+ *  - need to tchek the nbr of arg of echo, security of segfault
+ */
 void	do_echo(char **cmd_suffix)
 {
 	int	i;
 	int	count;
 
-	i = 0;
-	count = count_double_tab(cmd_suffix);
-	if (check_echo(cmd_suffix[i]) == 1)
+	i = 1;
+	count = count_double_tab(cmd_suffix); 
+	if (count > 1 && check_echo(cmd_suffix[i]) == 1)
 	{
 		i++;
 		if (count > 2)
@@ -46,6 +59,8 @@ void	do_echo(char **cmd_suffix)
 		while (cmd_suffix[i])
 		{
 			write(1, cmd_suffix[i], ft_strlen(cmd_suffix[i]));
+			if ( i < count -1)
+				write(1," ", 1);
 			i++;
 		}
 	}
@@ -57,6 +72,8 @@ void	do_echo(char **cmd_suffix)
 		while (cmd_suffix[i])
 		{
 			write(1, cmd_suffix[i], ft_strlen(cmd_suffix[i]));
+			if ( i < count -1)
+				write(1," ", 1);
 			i++;
 		}
 		}

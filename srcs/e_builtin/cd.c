@@ -5,8 +5,10 @@ char	*get_pwd(void)
 {
 	char	*tmp;
 	char	buf[PATH_MAX + 1];
-
-	tmp = getcwd(buf, PATH_MAX);
+	
+	getcwd(buf, PATH_MAX);
+	//printf("tmp %s\n", tmp);
+	tmp = ft_strdup(buf);
 	return (tmp);
 }
 
@@ -39,44 +41,72 @@ char	*strjoin_char(char *str, char *str1, char c)
 	return (final);
 }
 
-int	is_home_unset(t_env *tmp)
+int	is_home_unset(t_env *tmp, char *home)
 {
-	while (tmp)
+	t_env *temp;
+
+	temp = tmp;
+	while (temp)
 	{
-		if (strcmp(tmp->key, "HOME") == 0)
+		if (strcmp(temp->key, "HOME") == 0)
 			break ;
-		tmp = tmp->next;
+		temp = temp->next;
 	}
-	if (tmp == NULL)
+	if (temp == NULL)
 	{
 		write(1, "cd: HOME not set\n", 17);
 		return (-1);
 	}
-	else if (chdir(tmp->value) == -1)
+	while (tmp)
+	{
+			if (strcmp(tmp->key, "OLDPWD") == 0)
+			{
+				free(tmp->value);
+				tmp->value = home;
+				if (tmp->visible == -1)
+					tmp->visible = 0;
+				tmp->env = strjoin_char(tmp->key, tmp->value, '=');
+				break ;
+			}
+			tmp = tmp->next;
+		}
+	if (chdir(temp->value) == -1)
 		perror("cd:");
 	return (0);
 }
 
-void	cd(t_env *env, char *pwd, int redir)
+void	cd(t_env *env, char *pwd)
 {
 	t_env	*tmp;
+	char	*home;
+	t_env	*tmp1;
 
 	tmp = env;
-	(void)redir;
+	tmp1 = env;
+	while(tmp1)
+	{
+		if (strcmp(tmp1->key, "PWD") == 0)
+			break;
+		tmp1 = tmp1->next;
+	}
+	if (tmp1== NULL)
+		home = ft_strdup("");
+	else
+		home = tmp1->value;
 	if (pwd == NULL)
 	{
 		
-		if (is_home_unset(tmp) == -1)
+		if (is_home_unset(tmp,home) == -1)
 			return ;
 	}
-	else
+	else 
 	{
 		while (env)
 		{
 			if (strcmp(env->key, "OLDPWD") == 0)
 			{
 				free(env->value);
-				env->value = ft_strdup(get_pwd());
+				env->value = home;
 				env->env = strjoin_char(env->key, env->value, '=');
 				break ;
 			}
@@ -84,17 +114,16 @@ void	cd(t_env *env, char *pwd, int redir)
 		}
 			if (chdir(pwd) == -1)
 				perror("cd:");
-		}
 	}
+}
 
-void	set_the_pwd(t_env *env)
+void	set_thepwd(t_env *env)
 {
 	while (env)
 	{
 		if (strcmp(env->key, "PWD") == 0)
 		{
-			free(env->value);
-			env->value = ft_strdup(get_pwd());
+			env->value = get_pwd();
 			env->env = strjoin_char(env->key, env->value, '=');
 			break ;
 		}
