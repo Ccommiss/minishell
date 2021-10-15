@@ -1,33 +1,6 @@
 #include "minishell.h"
 
-void	redirect(t_cmd *cmd, t_token **toks, int type, int len)
-{
-	if (!(*toks)->next)
-		return ((void)0);
-	*toks = (*toks)->next;
-	if (type == TOK_LESS)
-	{
-		if (len == 1)
-			cmd->io_in = open((*toks)->content, O_RDWR | O_TRUNC);
-		if (len == 2)
-		{
-			cmd->io_here = ft_strdup((*toks)->content);
-			cmd->dless = TRUE;
-		}
-	}
-	if (type == TOK_GREAT)
-	{
-		if (len == 1)
-			cmd->io_out = open((*toks)->content, O_RDWR | O_TRUNC | O_CREAT);
-		if (len == 2)
-		{
-			cmd->io_out = open((*toks)->content, O_RDWR | O_APPEND | O_CREAT);
-			cmd->dgreat = TRUE;
-		}
-	}
-	if (cmd->io_in == -1 || cmd->io_out == -1)
-		printf("%s : %s \n", cmd->cmd_args[0], strerror(errno));
-}
+
 
 void	command_and_suffix(t_cmd *cmd, t_token *toks, int *j)
 {
@@ -52,6 +25,23 @@ void	init_cmd(t_cmd *cmd)
 	cmd->dless = FALSE;
 }
 
+
+void 	free_command_items(t_cmd *cmd)
+{
+	int i;
+
+	i = 0;
+	if (cmd->cmd_args)
+	{
+		while (cmd->cmd_args[i])
+			free(cmd->cmd_args[i++]);
+		free(cmd->cmd_args);
+		cmd->cmd_args = NULL;
+	}
+	if (cmd->cmdp)
+		free(cmd->cmdp);
+}
+
 t_cmd	*token_to_cmds(t_cmd *cmd, t_token *toks)
 {
 	int	j;
@@ -64,6 +54,13 @@ t_cmd	*token_to_cmds(t_cmd *cmd, t_token *toks)
 		toks = toks->next;
 	while (toks && toks->type != TOK_PIPE) //ajout oks content si le premier et seul tok est espace
 	{
+		if (toks->type == TOK_ERR)
+		{
+			free_command_items(cmd);
+			while (toks && toks->type != TOK_PIPE)
+				toks = toks->next;
+			break ;
+		}
 		if (toks->type == TOK_WORD && ft_strlen(toks->content) > 0)
 			command_and_suffix(cmd, toks, &j);
 		if (toks->type == TOK_LESS || toks->type == TOK_GREAT)

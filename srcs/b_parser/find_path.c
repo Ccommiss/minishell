@@ -11,7 +11,7 @@ void	find_cmdp(t_cmd *cmds, char *path)
     while (cmds) 
     {
        // printf ("INDEX = %d \n", cmds->index);
-        if (cmds->index != -1 && access(cmds->cmd_args[0], F_OK) == 0)
+        if (cmds->index != -1 && cmds->cmd_args && access(cmds->cmd_args[0], F_OK) == 0)
             cmds->cmdp = ft_strdup(cmds->cmd_args[0]);
         while (tab[++j] != NULL && cmds->cmdp == NULL && cmds->cmd_args)
         {

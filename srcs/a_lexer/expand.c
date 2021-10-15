@@ -13,7 +13,7 @@ char *ft_str_replace(char *str, int start, int len, t_env *env)
 	char *value;
 	char *tmp;
 
-	//printf ("VAR NAME = |%s| s: %d -- len : %d \n", str, start+1, len);
+	printf ("VAR NAME = |%s| s: %d -- len : %d \n", str, start+1, len);
 	if (str[start + 1] == '{') // on enleve les braces
 		var_name = ft_substr(str, start + 2, len - 2); // recup la name var
 	else
@@ -40,30 +40,79 @@ char *ft_str_replace(char *str, int start, int len, t_env *env)
 ** 	Expand finds the var name to tokenize in the user input and send it
 **	to be replaced.
 */
-void	expand(char **to_tokenize, int *i, int *context, t_env *env)
+
+
+
+int 	handle_error_inside(char *var_name, int brace)
 {
-	int j;
-	int brace;
+	char	*trimmed_var;
+
+	if (brace == 1)
+	{
+		printf ("%s : brace error, please close them\n", var_name);
+		free(var_name);
+		return (-1);
+	}
+	if (brace == 2)
+	{
+		trimmed_var = ft_substr(var_name, 2, ft_strlen(var_name) - 3);
+		printf ("trimmed var = %s\n", trimmed_var);
+	}
+	else
+		trimmed_var = ft_substr(var_name, 1, ft_strlen(var_name) - 1);
+	if (!ft_isalnum_str(trimmed_var))
+	{
+		printf ("%s : bad substitution\n", var_name);
+		free(var_name);
+		return (-1);
+	}
+	return (0);
+}
+
+
+
+static int is_valid_expand_char(int *brace, int c, int j)
+{printf ("%c %d\n", c, *brace);
+	static int valid_tab[256] =
+	{
+		['A'...'Z'] = 1,
+		['a'...'z'] = 1,
+		['1'...'9'] = 1,
+		['{'] = 1,
+		['}'] = 1,
+		['$'] = 1
+	};
+	if (j == 1 && c == '{')
+		*brace = 1;
+	if (*brace == 0)
+		return (valid_tab[c]);
+	if (*brace == 1 && c == '}')
+	{
+		*brace = 2;
+		return (0);
+	}
+	if (*brace == 1 && ft_isascii(c))
+		return (1);
+	if ((j > 0 && c == '$') || (j > 1 && c == '{'))
+		return (0);
+	return (0);
+}
+
+int	expand(char **to_tokenize, int *i, int *context, t_env *env)
+{
+	int		j;
+	int		brace;
+	char	*var_name;
 
 	j = 0;
 	brace = 0;
-	while (to_tokenize[0][*i+j] && (ft_isalnum(to_tokenize[0][*i+j]) || to_tokenize[0][*i+j] == '$' || to_tokenize[0][*i+j] == '{'
-		|| to_tokenize[0][*i+j] == '}')) 
-	{
-		printf (" test : %c - %c \n", to_tokenize[0][*i+j], to_tokenize[0][*i+j+1]);
-		if (j == 1 && to_tokenize[0][*i+j] == '{')
-			brace = 1;
-		if ((j > 0 && to_tokenize[0][*i+j] == '$') || (j > 1 && to_tokenize[0][*i+j] == '{'))
-			break ; //si on a deux var collees
+	while (to_tokenize[0][*i+j] && is_valid_expand_char(&brace, to_tokenize[0][*i+j], j))
 		j++;
-		if (brace == 1 && to_tokenize[0][*i+j] == '}' )
-			break;
-	}
-	if (brace == 1)
+	if (brace == 2)
 		j++;
+	var_name = ft_substr(*to_tokenize, *(i),  j); // recup la name var verifier erreurs ici
 	if (j > 1) // si on a plus que juste le $
 		*to_tokenize = ft_str_replace(*to_tokenize, *i, j - 1, env);
-	printf ("to_tokenize = %s \n", *to_tokenize );
-	handle_quoted_context(context, i, *to_tokenize); // TEST
-
+	handle_quoted_context(context, i, *to_tokenize);
+	return (handle_error_inside (var_name, brace));
 }

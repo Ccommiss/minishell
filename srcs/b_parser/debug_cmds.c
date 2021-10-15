@@ -16,7 +16,7 @@ void	debug_cmds(t_cmd *cmds)
 {
 	printf (BCYN"\n\n 			--- COMMAND TABLE ---\n\n"RESET);
 
-	while (cmds != NULL && cmds->cmd_args)
+	while (cmds != NULL) // && cmds->cmd_args)
 	{
 		printf(MAG"[%2d]\n"RESET, cmds->index);
 		printf(BWHT"├─ Command\n"RESET);
@@ -25,7 +25,7 @@ void	debug_cmds(t_cmd *cmds)
 		printf("│  ├─ [path] %6s\n", cmds->cmdp);
 		printf(BWHT"├─ Command suffixs\n"RESET);
 		int i = 0;
-		while (cmds->cmd_args[i])
+		while (cmds->cmd_args && cmds->cmd_args[i])
 			printf ("│  ├─ %s\n", cmds->cmd_args[i++]);
 		printf(BWHT"├─ Redirections\n"RESET);
 		printf("│  ├─> in (<) : %s\n", interpret(cmds->io_in));

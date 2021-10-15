@@ -54,7 +54,7 @@ enum tokens	tok(int x, int y)
 
 void	handle_quoted_context(int *context, int *i, char *to_tokenize)
 {
-	printf ("{handle quote} to_tokenize[%d] = %c \n", *i, to_tokenize[*i]);
+	//printf ("{handle quote} to_tokenize[%d] = %c \n", *i, to_tokenize[*i]);
 	if (*context != DQUOTE && *context != SQUOTE
 		&& (to_tokenize[*i] == SQUOTE  && ft_strchr(to_tokenize + *i +1, SQUOTE)))
 	{
@@ -76,7 +76,7 @@ void	handle_quoted_context(int *context, int *i, char *to_tokenize)
 		*i += 1;
 		*context = WORD;
 	}
-	printf ("context after handle = %c \n", *context);
+	//printf ("context after handle = %c \n", *context);
 //	sleep (2);
 	if (((int)to_tokenize[*i] == SQUOTE && *context != DQUOTE)
 		|| ((int)to_tokenize[*i] == DQUOTE && *context != SQUOTE)) // test pour gerer si "" collees
@@ -110,7 +110,18 @@ void tokenize(char *to_tokenize, t_token *toks, t_env *env) // fonction recursiv
 		if (ref_char != (int)tok(context, (unsigned char)to_tokenize[i]))
 				break ;
 		if (to_tokenize[i] == '$' && context != SQUOTE)
-			expand(&to_tokenize, &i, &context, env);
+		{
+			if (expand(&to_tokenize, &i, &context, env) == -1) //echec expand
+			{
+				ref_char = TOK_ERR; //trouver la variable fautive 
+				ft_bzero(token,2048);
+	
+				printf ("\n");
+				while (to_tokenize[i] && to_tokenize[i] != '|')
+					i++;
+				break ;
+			}
+		}	
 		if (ref_char != (int)tok(context, (unsigned char)to_tokenize[i]))
 				break ;
 		token[buf_i++] = to_tokenize[i];
@@ -120,7 +131,8 @@ void tokenize(char *to_tokenize, t_token *toks, t_env *env) // fonction recursiv
 	token[buf_i] = '\0';
 	if (ref_char != TOK_EAT)
 	{
-		toks->content = ft_strdup(token);
+		if(toks->content == NULL)
+			toks->content = ft_strdup(token);
 		//printf ("content = %s")
 		toks->type = ref_char;
 		toks->len = strlen(toks->content);

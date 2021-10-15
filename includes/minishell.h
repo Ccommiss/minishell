@@ -47,6 +47,7 @@ enum tokens
 	TOK_GREAT,
 	TOK_LESS,
 	TOK_EQUAL,
+	TOK_ERR,
 	SQUOTE = '\'',
 	DQUOTE = '\"'
 };
@@ -141,27 +142,29 @@ int		there_is_redir(t_env *env, t_cmd cmd);
 /* end of f_redir*/
 
 
-void	cmd_to_exec(t_cmd *cmd, t_env *env);
-void	tokenize(char *to_tokenize, t_token *toks, t_env *env);
-void	init_token(t_token *toks);
-char	*ft_str_replace(char *str, int start, int len, t_env *env);
-void	debug_tokens(t_token *toks);
-void	debug_cmds(t_cmd *cmds);
-void	expand(char **to_tokenize, int *i, int *context, t_env *env);
-void	handle_quoted_context(int *context, int *i, char *to_tokenize);
 
+/*
+** Lexer
+*/
+void		tokenize(char *to_tokenize, t_token *toks, t_env *env);
+void		init_token(t_token *toks);
+char		*ft_str_replace(char *str, int start, int len, t_env *env);
+void		debug_tokens(t_token *toks);
 
-
-
-t_cmd *token_to_cmds(t_cmd *cmd, t_token *toks);
-
+int			expand(char **to_tokenize, int *i, int *context, t_env *env);
+void		handle_quoted_context(int *context, int *i, char *to_tokenize);
 enum tokens op_toks(int c);
 enum tokens word_toks(int c);
 enum tokens quote_toks(int c);
 
+/*
+** Parser
+*/
 
-
-void	find_path(t_cmd *cmds, t_env *env);
+t_cmd		*token_to_cmds(t_cmd *cmd, t_token *toks);
+void		redirect(t_cmd *cmd, t_token **toks, int type, int len);
+void		debug_cmds(t_cmd *cmds);
+void		find_path(t_cmd *cmds, t_env *env);
 
 
 

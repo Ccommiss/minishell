@@ -11,16 +11,17 @@ SOURCES =	main.c\
 			$(LEX_PATH)/init_token.c \
 			$(LEX_PATH)/expand.c \
 			$(LEX_PATH)/debug_tokens.c \
-				$(LEX_PATH)/context.c \
+			$(LEX_PATH)/context.c \
+			$(PAR_PATH)/find_path.c \
+			$(PAR_PATH)/redirect.c \
+			$(PAR_PATH)/token_to_cmds.c \
+			$(PAR_PATH)/debug_cmds.c \
 			$(ENV_PATH)/get_the_env.c \
 			$(ENV_PATH)/the_list.c \
 			$(ENV_PATH)/unset.c \
 			$(ENV_PATH)/export_the_var.c \
-			$(PAR_PATH)/token_to_cmds.c \
-			$(PAR_PATH)/debug_cmds.c \
 			${BUILT_PATH}/cd.c\
 			${BUILT_PATH}/echo.c\
-			$(PAR_PATH)/find_path.c\
 			${REDIR_PATH}/is_redir.c\
 			${REDIR_PATH}/redir_out.c\
 			${REDIR_PATH}/redir_in.c\
