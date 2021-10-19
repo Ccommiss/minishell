@@ -46,10 +46,10 @@ int	export_the_var(t_env *env, char *cmd_suffix)
 
 int	remplace_the_var(t_env *env, char *cmd_suffix)
 {
-	int		i;
+	//int		i;
 	char	**tab;
 
-	i = 0;
+	//i = 0;
 	tab = ft_split_one_egal(cmd_suffix);
 	while (env)
 	{

@@ -8,7 +8,7 @@ void	find_cmdp(t_cmd *cmds, char *path)
 
 	j = -1;
 	tab = ft_split(path, ':');
-    while (cmds) 
+    while (cmds && path) 
     {
        // printf ("INDEX = %d \n", cmds->index);
         if (cmds->index != -1 && cmds->cmd_args && access(cmds->cmd_args[0], F_OK) == 0)
@@ -38,5 +38,9 @@ void	find_path(t_cmd *cmds, t_env *env)
     }
 	while (env && ft_strncmp(env->key, "PATH", 4) != 0)
 		env = env->next;
-	find_cmdp(cmds, env->value);
+    if (env != NULL) // si on a trouve var path 
+	    find_cmdp(cmds, env->value);
+    else
+        cmds->cmdp = ft_strdup(""); // si on a unset path
+
 }

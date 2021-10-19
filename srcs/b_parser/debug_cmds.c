@@ -32,7 +32,7 @@ void	debug_cmds(t_cmd *cmds)
 		printf("│  │   ├─> dless : %d\n", cmds->dless);
 		printf("│  │   ├─> heredoc :");
 		int j = 0;
-		while (cmds->io_here[j] != NULL){
+		while (cmds->io_here && cmds->io_here[j] != NULL){
 			printf (" [%d] |%s| ", j, cmds->io_here[j]);
 			j++;
 		}

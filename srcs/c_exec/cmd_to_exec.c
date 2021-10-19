@@ -76,7 +76,7 @@ void	cmd_to_exec(t_cmd *cmd, t_env *env)
 
 				pid = fork();
 				if (pid == 0)
-					if (execvp(cmd->cmd_args[0], cmd->cmd_args) == -1)
+					if (execvp(cmd->cmdp, cmd->cmd_args) == -1)
 						perror(cmd->cmd_args[0]);
 				waitpid(pid, NULL, 0);
 			}
