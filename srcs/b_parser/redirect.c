@@ -22,7 +22,7 @@ void redirect_in(t_cmd *cmd, t_token **toks, int len)
 		if (!cmd->io_here)
 			cmd->io_here = malloc(sizeof(char *) * (cmd->here_words + 2));
 		else
-			cmd->io_here = realloc(cmd->io_here, sizeof(char *) * (cmd->here_words + 2));
+			cmd->io_here = realloc(cmd->io_here, sizeof(char *) * (cmd->here_words + 2)); //realloc a double tab 
 		cmd->io_here[cmd->here_words] = ft_strdup((*toks)->content);
 		cmd->io_here[cmd->here_words + 1] = NULL;
 		cmd->here_words += 1;

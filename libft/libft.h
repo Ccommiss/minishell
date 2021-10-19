@@ -67,6 +67,8 @@ char				*ft_strconcat(char *s1, char *s2, int size);
 int					ft_malloc_char_pointer(int size, char **ptr);
 int					ft_malloc_int_pointer(int size, int	**ptr);
 int					ft_isalnum_str(char *str);
+void				*ft_realloc(void *ptr, size_t cursize, size_t newsize);
+
 
 
 
