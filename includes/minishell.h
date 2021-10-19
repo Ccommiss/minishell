@@ -72,7 +72,8 @@ typedef struct s_cmd
 	char **cmd_args;
 	int io_in; //fd entree commande
 	int dless; // <<
-	char *io_here;
+	char **io_here;
+	int here_words; //compte le nb de io_here pour faire io_here[here_words]
 	int io_out; //fd sortie commande
 	int dgreat; // >>
 
@@ -135,6 +136,8 @@ void	do_echo(char **cmd_suffix);
 /*
  * f_redirection
  * */
+void	cmd_to_exec(t_cmd *cmd, t_env *env);
+
 int	is_a_builtin(char *cmd);
 void	redir_in(t_env *env, char **cmd, int fd);
 void	simple_redir_o(t_env *env, int fd, char **cmd);

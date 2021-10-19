@@ -21,6 +21,7 @@ void	init_cmd(t_cmd *cmd)
 	cmd->io_in = NOT_SPECIFIED;
 	cmd->io_out = NOT_SPECIFIED;
 	cmd->io_here = NULL;
+	cmd->here_words= 0;
 	cmd->dgreat = FALSE;
 	cmd->dless = FALSE;
 }

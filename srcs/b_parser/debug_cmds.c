@@ -9,7 +9,7 @@ char *interpret(int num)
 	if (num == NOT_SPECIFIED)
 		return ("Redirection not specified");
 	else
-		return (ft_itoa(num)); //itoa ne fonctionne aps avec negatifs?? ? 
+		return (ft_itoa(num)); //itoa ne fonctionne aps avec negatifs?? ?
 }
 
 void	debug_cmds(t_cmd *cmds)
@@ -30,7 +30,13 @@ void	debug_cmds(t_cmd *cmds)
 		printf(BWHT"├─ Redirections\n"RESET);
 		printf("│  ├─> in (<) : %s\n", interpret(cmds->io_in));
 		printf("│  │   ├─> dless : %d\n", cmds->dless);
-		printf("│  │   ├─> heredoc : %s\n", cmds->io_here);
+		printf("│  │   ├─> heredoc :");
+		int j = 0;
+		while (cmds->io_here[j] != NULL){
+			printf (" [%d] |%s| ", j, cmds->io_here[j]);
+			j++;
+		}
+		printf("\n");
 		printf("│  ├─> out (>): %s\n", interpret(cmds->io_out));
 		printf("│  │   ├─> dgreat : %d\n", cmds->dgreat);
 		printf("|------------------------------------------------------------------|\n");
