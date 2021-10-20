@@ -1,3 +1,5 @@
+#include "libft.h"
+
 void		**ft_realloc_tab(void **tab, int currsize, int newsize)
 {
 	int	i;
