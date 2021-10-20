@@ -1,7 +1,4 @@
 #include "libft.h"
-#include <stdio.h>
-#include <malloc/malloc.h>
-
 
 void	*ft_realloc(void *ptr, size_t cursize, size_t newsize)
 {
