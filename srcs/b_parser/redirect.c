@@ -16,7 +16,7 @@ void redirect_out(t_cmd *cmd, t_token **toks, int len)
 void redirect_in(t_cmd *cmd, t_token **toks, int len)
 {
 	if (len == 1)
-		cmd->io_in = open((*toks)->content, O_RDWR | O_TRUNC, 0666);
+		cmd->io_in = open((*toks)->content, O_RDWR,  0666);
 	if (len == 2)
 	{
 		if (!cmd->io_here)
@@ -28,8 +28,8 @@ void redirect_in(t_cmd *cmd, t_token **toks, int len)
 		cmd->here_words += 1;
 		cmd->dless = TRUE;
 	}
-	if (cmd->io_in == -1 )
-        printf("i%s : %s \n", cmd->cmd_args[0], strerror(errno));
+	if (cmd->io_in == -1  && cmd->dless == FALSE)
+        printf("%s : %s \n", cmd->cmd_args[0], strerror(errno));
 }
 
 void redirect(t_cmd *cmd, t_token **toks, int type, int len)
