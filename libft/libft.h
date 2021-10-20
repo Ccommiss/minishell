@@ -6,7 +6,7 @@
 /*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/21 17:22:14 by mpochard          #+#    #+#             */
-/*   Updated: 2021/09/28 14:54:33 by ccommiss         ###   ########.fr       */
+/*   Updated: 2021/10/20 16:25:02 by ccommiss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,8 @@ int					ft_malloc_char_pointer(int size, char **ptr);
 int					ft_malloc_int_pointer(int size, int	**ptr);
 int					ft_isalnum_str(char *str);
 void				*ft_realloc(void *ptr, size_t cursize, size_t newsize);
+void				**ft_realloc_double_pointer(void **ptr, size_t cursize, size_t newsize);
+
 
 
 
