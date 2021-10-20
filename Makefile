@@ -25,6 +25,7 @@ SOURCES =	main.c\
 			${REDIR_PATH}/is_redir.c\
 			${REDIR_PATH}/redir_out.c\
 			${REDIR_PATH}/redir_in.c\
+			${REDIR_PATH}/here_doc.c\
 			${EXEC_PATH}/cmd_to_exec.c\
 
 

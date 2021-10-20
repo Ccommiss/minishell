@@ -14,10 +14,10 @@
 
 int	need_to_unset(t_env *env, char *cmd_suffix)
 {
-	//int		i;
+	int		i;
 	t_env	*temp;
 
-	//i = 0;
+	i = 0;
 	temp = env;
 	while (temp)
 	{
@@ -88,11 +88,11 @@ void	check_the_cmd(char *cmd_suffix)
 
 void	do_the_unset(t_env *env, char **cmd_suffix)
 {
-	//t_env	*temp;
+	t_env	*temp;
 	int		i;
 
 	i = 0;
-	//temp = env;
+	temp = env;
 	if (cmd_suffix == NULL)
 		return ;
 	while (cmd_suffix[i])

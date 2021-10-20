@@ -6,7 +6,7 @@
 /*   By: mpochard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 17:23:21 by mpochard          #+#    #+#             */
-/*   Updated: 2021/10/12 16:12:24 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/10/20 11:14:21 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,18 @@ int	export_the_var(t_env *env, char *cmd_suffix)
 
 int	remplace_the_var(t_env *env, char *cmd_suffix)
 {
-	//int		i;
+	int		i;
 	char	**tab;
 
-	//i = 0;
+	i = 0;
+	while(cmd_suffix[i])
+	{
+		if (cmd_suffix[i] == '=')
+			break;
+		i++;
+	}
+	if ( (size_t)i == ft_strlen(cmd_suffix))
+			return (-1);
 	tab = ft_split_one_egal(cmd_suffix);
 	while (env)
 	{

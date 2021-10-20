@@ -6,7 +6,7 @@
 /*   By: mpochard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/13 10:05:27 by mpochard          #+#    #+#             */
-/*   Updated: 2021/10/14 18:30:54 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/10/18 15:43:46 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,11 @@ void	cmd_to_exec(t_cmd *cmd, t_env *env)
 		}
 		else if ( there_is_redir(env, *cmd) == 0)
 		{
-			printf("AYA REDIR\n");
+			
 		}
 		else 
 		{
-
+			
 			if (strcmp(cmd->cmd_args[0], "echo") == 0)
 				do_echo(cmd->cmd_args);
 			else if (strcmp(cmd->cmd_args[0], "cd") == 0)
@@ -76,8 +76,8 @@ void	cmd_to_exec(t_cmd *cmd, t_env *env)
 
 				pid = fork();
 				if (pid == 0)
-					if (execvp(cmd->cmdp, cmd->cmd_args) == -1)
-						perror(cmd->cmd_args[0]);
+					if (execvp(cmd->cmd_args[0], cmd->cmd_args) == -1)
+						perror(">");
 				waitpid(pid, NULL, 0);
 			}
 		}

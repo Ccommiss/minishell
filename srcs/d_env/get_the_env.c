@@ -17,11 +17,11 @@ char	**ft_split_one_egal(char *str)
 	int		i;
 	int		j;
 	char	**tab;
-	//int		count;
+	int		count;
 
 	i = 0;
 	j = 0;
-	//count = 0;
+	count = 0;
 	tab = malloc(sizeof(char *) *(2 + 1));
 	if (tab == NULL)
 		return (NULL);

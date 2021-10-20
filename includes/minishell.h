@@ -128,21 +128,23 @@ void	do_the_unset(t_env *env, char **cmd_suffix);
  */
 char	*get_pwd(void);
 char	*strjoin_char(char *str, char *str1, char c);
-int	is_home_unset(t_env *tmp, char *home);
+int		is_home_unset(t_env *tmp, char *home);
 void	cd(t_env *env, char *pwd);
 void	set_thepwd(t_env *env);
-int	check_echo(char *cmd_suffix);
+int		check_echo(char *cmd_suffix);
 int		count_double_tab(char **tab);
 void	do_echo(char **cmd_suffix);
 /*
  * f_redirection
  * */
 void	cmd_to_exec(t_cmd *cmd, t_env *env);
-
-int	is_a_builtin(char *cmd);
+int		is_a_builtin(char *cmd);
 void	redir_in(t_env *env, char **cmd, int fd);
 void	simple_redir_o(t_env *env, int fd, char **cmd);
 int		there_is_redir(t_env *env, t_cmd cmd);
+void	both_redir(t_env *env, char **cmd, int in, int out);
+int		fill_thefd(t_cmd cmd);
+void	here_doc(t_env *env, t_cmd cmd , int fd);
 /* end of f_redir*/
 
 
