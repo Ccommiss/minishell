@@ -65,23 +65,18 @@ void	start_cmd(t_cmd *cmd)
 void intHandler(int sig)
 {
 	(void)sig;
-	//if (sig == SIGINT)
-
 	rl_reset_line_state ();
 	printf("\n");
-	//rl_replace_line("", 0);
-//	rl_line_buffer();
-	//printf("\n");
-	//rl_on_new_line ();
 	rl_replace_line("", 0);
-	rl_redisplay(); 
-	
-//	kill();
-	//printf ("%d %d \n", getpid(), getppid());
-//	printf ("\n");
-//	printf ("coucou %d\n", sig);
+	rl_redisplay(); 	
 }
 
+void 	quithandler()
+{
+	printf ("SIGNAL QUIT\n");
+	//kill(getpid(), SIGQUIT);
+	//printf ("%d %d\n", getpid(), getppid());
+}
 
 int	main(int ac, char **av, char **envp)
 {
@@ -96,13 +91,12 @@ int	main(int ac, char **av, char **envp)
 
 
 	env = NULL;
-	//int i = 0;
-	//while (i < 31)
-
 	get_the_env(&env, envp);
 	while (1)
 	{
 		signal(SIGINT, intHandler);
+		signal(SIGQUIT, quithandler);
+
 		line = readline(BWHT"> "RESET);
 		if (line && ft_strlen(line) > 0)
 		{

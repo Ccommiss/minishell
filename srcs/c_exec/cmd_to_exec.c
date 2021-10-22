@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
+
 /*
  * permet d'articulier le parser avec mes builtin 
  * echo is good 
@@ -76,11 +77,13 @@ void	cmd_to_exec(t_cmd *cmd, t_env *env)
 
 				pid = fork();
 				if (pid == 0)
+				{
 					if (execvp(cmd->cmd_args[0], cmd->cmd_args) == -1)
 					{
 						perror(">");
 						exit (127);
 					}
+				}
 				waitpid(pid, NULL, 0);
 			}
 		}

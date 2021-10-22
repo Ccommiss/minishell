@@ -77,7 +77,9 @@ t_cmd	*token_to_cmds(t_cmd *cmd, t_token *toks)
 	{
 		if (toks->type == TOK_ERR)
 		{
-			free_command_items(cmd);
+			//free_command_items(cmd);
+			printf ("ERREUR DE COMMANDE\n");
+			cmd->error = TRUE;
 			while (toks && toks->type != TOK_PIPE)
 				toks = toks->next;
 			break ;
