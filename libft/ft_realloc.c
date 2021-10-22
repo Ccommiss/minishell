@@ -2,10 +2,8 @@
 
 void	*ft_realloc(void *ptr, size_t cursize, size_t newsize)
 {
-	int i;
 	void *newptr;
 
-	i = 0;
 	newptr = malloc(newsize);
 	newptr = ft_bzero(newptr, newsize);
 	newptr = memcpy(newptr, ptr, cursize);

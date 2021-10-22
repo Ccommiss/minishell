@@ -84,6 +84,11 @@ static int is_valid_expand_char(int *brace, int c, int j)
 	};
 	if (j == 1 && c == '{')
 		*brace = 1;
+	if (*brace == 0 && ((j > 0 && c == '$') || (j > 1 && c == '{')) ) //je crois 
+	{
+		printf("newvar\n");
+		return (0);
+	}
 	if (*brace == 0)
 		return (valid_tab[c]);
 	if (*brace == 1 && c == '}')
@@ -93,8 +98,7 @@ static int is_valid_expand_char(int *brace, int c, int j)
 	}
 	if (*brace == 1 && ft_isascii(c))
 		return (1);
-	if ((j > 0 && c == '$') || (j > 1 && c == '{'))
-		return (0);
+
 	return (0);
 }
 

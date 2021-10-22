@@ -44,11 +44,30 @@ void 	free_command_items(t_cmd *cmd)
 		free(cmd->cmdp);
 }
 
+void free_toks(t_token *toks)
+{
+	t_token *tmp;
+	while (toks->index != 0)
+	{
+		toks = toks->prev;
+	}
+	while (toks)
+	{
+		tmp = toks;
+		toks = toks->next;
+		free(tmp->content);
+		if (tmp->index != 0)
+		free(tmp);
+	}
+}
+
 t_cmd	*token_to_cmds(t_cmd *cmd, t_token *toks)
 {
 	int	j;
 
 	j = 0;
+	t_token *head;
+	head = toks;
 	if (toks->type == -1) //pas de tok
 		return (NULL);
 	init_cmd(cmd);
@@ -75,7 +94,9 @@ t_cmd	*token_to_cmds(t_cmd *cmd, t_token *toks)
 		cmd->next->prev = cmd;
 		token_to_cmds(cmd->next, toks);
 	}
-	else
+	else {
 		cmd->next = NULL;
+		free_toks(head);
+	}
 	return (cmd);
 }

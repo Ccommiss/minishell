@@ -23,7 +23,7 @@ void	find_cmdp(t_cmd *cmds, char *path)
                 cmds->cmdp = ft_strdup(command_path);
             free(command_path);
         }
-        //ft_free_double_tab(tab);
+        ft_free_double_tab(tab);
         cmds = cmds->next;
         j = -1;
     }

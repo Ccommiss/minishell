@@ -65,11 +65,23 @@ void	start_cmd(t_cmd *cmd)
 void intHandler(int sig)
 {
 	(void)sig;
+	//if (sig == SIGINT)
+
+	rl_reset_line_state ();
+	printf("\n");
+	//rl_replace_line("", 0);
+//	rl_line_buffer();
+	//printf("\n");
+	//rl_on_new_line ();
+	rl_replace_line("", 0);
+	rl_redisplay(); 
+	
 //	kill();
-	printf ("%d %d \n", getpid(), getppid());
+	//printf ("%d %d \n", getpid(), getppid());
 //	printf ("\n");
-	printf ("coucou %d\n", sig);
+//	printf ("coucou %d\n", sig);
 }
+
 
 int	main(int ac, char **av, char **envp)
 {
@@ -84,13 +96,17 @@ int	main(int ac, char **av, char **envp)
 
 
 	env = NULL;
-	signal(SIGINT, intHandler);
+	//int i = 0;
+	//while (i < 31)
+
 	get_the_env(&env, envp);
 	while (1)
 	{
+		signal(SIGINT, intHandler);
 		line = readline(BWHT"> "RESET);
 		if (line && ft_strlen(line) > 0)
 		{
+			//printf ("main %d %d \n", getpid(), getppid());
 			add_history(line);
 			init_token(&toks);
 			start_cmd(&cmd);
@@ -100,8 +116,13 @@ int	main(int ac, char **av, char **envp)
 			find_path(&cmd, env);
 			debug_cmds(&cmd);
 			cmd_to_exec(&cmd,env);
+			//printf ("main 2 %d %d \n", getpid(), getppid());
 		}
-	free(line);
+		else if (!line)
+			exit(0);
+
+	//free(line);
 	}
+	
 	return (0);
 }

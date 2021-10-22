@@ -69,6 +69,10 @@ int					ft_malloc_int_pointer(int size, int	**ptr);
 int					ft_isalnum_str(char *str);
 void				*ft_realloc(void *ptr, size_t cursize, size_t newsize);
 void				**ft_realloc_double_pointer(void **ptr, size_t cursize, size_t newsize);
+void				ft_free_double_tab(char **tab);
+char				*ft_auto_substr(char const *s, unsigned int start, size_t len);
+
+
 
 
 
