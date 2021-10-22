@@ -39,9 +39,9 @@ SRCS  += $(addprefix $(SPATH), $(SOURCES))
 
 OBJS	= 	${SRCS:.c=.o}
 
-CC = gcc
+CC = clang
 
-CFLAGS = -g -I.$(INCLUDES) -Wall -Werror -Wextra -fsanitize=address
+CFLAGS = -g -I.$(INCLUDES) -Wall -Werror -Wextra -fsanitize=address -fno-omit-frame-pointer
 
 RM = rm -f
 

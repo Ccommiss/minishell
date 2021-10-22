@@ -6,7 +6,7 @@
 /*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/15 16:46:53 by mpochard          #+#    #+#             */
-/*   Updated: 2021/10/15 15:42:35 by ccommiss         ###   ########.fr       */
+/*   Updated: 2021/10/21 17:31:04 by ccommiss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,14 @@ void	start_cmd(t_cmd *cmd)
 	cmd->dless = FALSE;
 }
 
+void intHandler(int sig)
+{
+	(void)sig;
+//	kill();
+	printf ("%d %d \n", getpid(), getppid());
+//	printf ("\n");
+	printf ("coucou %d\n", sig);
+}
 
 int	main(int ac, char **av, char **envp)
 {
@@ -74,7 +82,9 @@ int	main(int ac, char **av, char **envp)
 	t_env *env;
 
 
+
 	env = NULL;
+	signal(SIGINT, intHandler);
 	get_the_env(&env, envp);
 	while (1)
 	{
