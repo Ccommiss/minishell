@@ -175,6 +175,9 @@ void		debug_cmds(t_cmd *cmds);
 void		find_path(t_cmd *cmds, t_env *env);
 
 
+void 	quithandler();
+
+
 
 
 

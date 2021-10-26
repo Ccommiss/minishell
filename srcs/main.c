@@ -74,7 +74,18 @@ void intHandler(int sig)
 void 	quithandler()
 {
 	printf ("SIGNAL QUIT\n");
-	//kill(getpid(), SIGQUIT);
+	printf ("%d %d\n", getpid(), getppid());
+	//kill(getppid(), SIGQUIT);
+	//printf ("%d %d\n", getpid(), getppid());
+}
+
+
+void 	quithandler2()
+{
+	printf ("SIGNAWESH L QUIT\n");
+	printf ("%d %d\n", getpid(), getppid());
+	kill(0, SIGQUIT);
+	
 	//printf ("%d %d\n", getpid(), getppid());
 }
 
@@ -92,11 +103,10 @@ int	main(int ac, char **av, char **envp)
 
 	env = NULL;
 	get_the_env(&env, envp);
+	signal(SIGINT, intHandler);
+	signal(SIGQUIT, SIG_IGN);
 	while (1)
 	{
-		signal(SIGINT, intHandler);
-		signal(SIGQUIT, quithandler);
-
 		line = readline(BWHT"> "RESET);
 		if (line && ft_strlen(line) > 0)
 		{
@@ -110,7 +120,6 @@ int	main(int ac, char **av, char **envp)
 			find_path(&cmd, env);
 			debug_cmds(&cmd);
 			cmd_to_exec(&cmd,env);
-			//printf ("main 2 %d %d \n", getpid(), getppid());
 		}
 		else if (!line)
 			exit(0);

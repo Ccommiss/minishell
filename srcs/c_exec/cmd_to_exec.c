@@ -78,12 +78,17 @@ void	cmd_to_exec(t_cmd *cmd, t_env *env)
 				pid = fork();
 				if (pid == 0)
 				{
+					signal(SIGQUIT, quithandler);
 					if (execvp(cmd->cmd_args[0], cmd->cmd_args) == -1)
 					{
 						perror(">");
 						exit (127);
 					}
+					//signal(SIGQUIT, quithandler);
+
 				}
+				//else
+				//	signal(SIGQUIT, SIG_IGN);
 				waitpid(pid, NULL, 0);
 			}
 		}
