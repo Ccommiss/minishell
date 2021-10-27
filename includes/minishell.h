@@ -37,6 +37,14 @@ enum bool
 enum io{
 	NOT_SPECIFIED = -100
 };
+
+enum signal_location
+{
+	MAIN_PROCESS,
+	CHILD,
+	CHILD_HANDLING
+};
+
 enum tokens
 {
 	OP = 4,
@@ -174,8 +182,14 @@ void		redirect(t_cmd *cmd, t_token **toks, int type, int len);
 void		debug_cmds(t_cmd *cmds);
 void		find_path(t_cmd *cmds, t_env *env);
 
+void	handle_signal(int state);
+
 
 void 	quithandler();
+void 	quithandler2();
+
+
+
 
 
 
