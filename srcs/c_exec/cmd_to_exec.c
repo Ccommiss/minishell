@@ -27,7 +27,7 @@
 void	cmd_to_exec(t_cmd *cmd, t_env *env)
 {
 
-//	int i = 0;
+	int status = 0;
 	(void)env;
 	char *buf;
 /*	while ( cmd->cmd_args[i])
@@ -81,13 +81,15 @@ void	cmd_to_exec(t_cmd *cmd, t_env *env)
 					handle_signal(CHILD);
 					if (execvp(cmd->cmd_args[0], cmd->cmd_args) == -1)
 					{
-						perror(">");
-						exit (127);
+						perror("> exec error");
+						exit (127);	
 					}
+					
 				}
 				else
 					handle_signal(CHILD_HANDLING);
-				waitpid(pid, NULL, 0);
+				waitpid(pid, &status, 0);
+				printf ("STATUS = %d \n", WEXITSTATUS(status));
 			}
 		}
 		cmd = cmd->next;

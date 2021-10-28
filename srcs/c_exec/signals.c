@@ -35,9 +35,9 @@ void 	quithandler()
 **      so that command is effectively killed 
 **  3) CHILD_HANDLING : after forking, when in the parent, 
 **      prompts "core dump" as in Linux after the command 
-**      was killed 
-**      
+**      was killed   
 */
+
 void	handle_signal(int state)
 {
     if (state == MAIN_PROCESS)

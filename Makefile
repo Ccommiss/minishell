@@ -42,7 +42,7 @@ OBJS	= 	${SRCS:.c=.o}
 
 CC = gcc
 
-CFLAGS = -g -I.$(INCLUDES) -Wall -Werror -Wextra -fsanitize=address
+CFLAGS = -g -I.$(INCLUDES) -Wall -Werror -Wextra
 
 RM = rm -f
 
