@@ -80,9 +80,9 @@ int	main(int ac, char **av, char **envp)
 
 	while (1)
 	{
-		
-		line = readline(BWHT"> "RESET);
 		handle_signal(MAIN_PROCESS);
+		line = readline(BWHT"> "RESET);
+		
 		if (line && ft_strlen(line) > 0)
 		{
 			//printf ("main %d %d \n", getpid(), getppid());

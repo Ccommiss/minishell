@@ -3,12 +3,9 @@
 
 void intHandler()
 {
-    rl_reset_line_state ();
+    rl_reset_line_state();
     printf("\n");
     rl_replace_line("", 0);
-    //printf(" ");
-   // if (process == MAIN_PROCESS)
-	//rl_redisplay();
 }
 
 void intHandlerMain()
@@ -16,12 +13,8 @@ void intHandlerMain()
     rl_reset_line_state ();
     printf("\n");
     rl_replace_line("", 0);
-    //printf(" ");
 	rl_redisplay();
 }
-
-
-
 
 void 	quithandler()
 {
