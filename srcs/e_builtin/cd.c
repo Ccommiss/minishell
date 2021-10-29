@@ -80,6 +80,7 @@ void	cd(t_env *env, char *pwd)
 	t_env	*tmp;
 	char	*home;
 	t_env	*tmp1;
+	void	*temp;
 
 	tmp = env;
 	tmp1 = env;
@@ -105,6 +106,7 @@ void	cd(t_env *env, char *pwd)
 		{
 			if (strcmp(env->key, "OLDPWD") == 0)
 			{
+				temp = ft_strdup(env->value);
 				free(env->value);
 				env->value = home;
 				env->env = strjoin_char(env->key, env->value, '=');
@@ -112,8 +114,27 @@ void	cd(t_env *env, char *pwd)
 			}
 			env = env->next;
 		}
-			if (chdir(pwd) == -1)
+			if (ft_strncmp(pwd,"~", 2) == 0)
+			{
+				if (chdir((getenv("HOME"))) == -1)
+					perror("cd:");
+			}
+			else if (ft_strncmp(pwd,"-", 2) == 0)
+			{
+				if (env != NULL)
+				{
+					if (chdir(temp) == -1)
+						perror("cd:");
+				}
+				else if ( env == NULL)
+					write(2,">: cd: « OLDPWD » non defini\n",2);
+			}
+
+			else
+				if (chdir(pwd) == -1)
 				perror("cd:");
+		free(temp);
+		return ;
 	}
 }
 

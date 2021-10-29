@@ -26,17 +26,17 @@ int	there_is_redir(t_env *env,t_cmd cmd)
 		return (0);
 	else if ( cmd.io_out > 0 && cmd.io_in <= 0)
 	{
-		redir_in(env, cmd.cmd_args, cmd.io_out);
+		redir_in(env, cmd.cmd_args, cmd.io_out, cmd.cmdp);
 		return (0);
 	}
 	else if (cmd.io_out <= 0 && cmd.io_in > 0)
 	{
-		simple_redir_o(env, cmd.io_in, cmd.cmd_args);
+		simple_redir_o(env, cmd.io_in, cmd.cmd_args, cmd.cmdp);
 		return (0);
 	}
 	else if (cmd.io_out > 0 && cmd.io_in > 0)
 	{
-		both_redir(env, cmd.cmd_args, cmd.io_in , cmd.io_out);
+		both_redir(env, cmd, cmd.io_in , cmd.io_out);
 		return (0);
 	}
 	return (1);

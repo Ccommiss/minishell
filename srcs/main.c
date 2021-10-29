@@ -73,22 +73,23 @@ int	main(int ac, char **av, char **envp)
 	(void)av;
 	t_env *env;
 
-
 	env = NULL;
+	if (envp[0]  == NULL)
+		return (printf(" need environment\n"));
 	get_the_env(&env, envp);
 	while (1)
 	{
-		line = readline(BWHT"> "RESET);
+		line = readline("> ");
 		if (line && ft_strlen(line) > 0)
 		{
 			add_history(line);
 			init_token(&toks);
 			start_cmd(&cmd);
 			tokenize(line, &toks, env);
-			debug_tokens(&toks);
+		//	debug_tokens(&toks);
 			token_to_cmds(&cmd, &toks);
 			find_path(&cmd, env);
-			debug_cmds(&cmd);
+		//	debug_cmds(&cmd);
 			cmd_to_exec(&cmd,env);
 		}
 	free(line);

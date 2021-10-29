@@ -50,6 +50,8 @@ int	remplace_the_var(t_env *env, char *cmd_suffix)
 	char	**tab;
 
 	i = 0;
+	if ( cmd_suffix == NULL)
+		return (print_the_export(env));
 	while(cmd_suffix[i])
 	{
 		if (cmd_suffix[i] == '=')

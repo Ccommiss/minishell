@@ -71,13 +71,13 @@ typedef struct s_cmd
 	int index;
 	char *cmdp; //le path
 	char **cmd_args;
+	int		test;
 	int io_in; //fd entree commande
 	int dless; // <<
 	char **io_here;
 	int here_words; //compte le nb de io_here pour faire io_here[here_words]
 	int io_out; //fd sortie commande
 	int dgreat; // >>
-	int error;
 
 	t_cmd *next;
 	t_cmd *prev;
@@ -103,7 +103,17 @@ typedef struct	s_env
 	struct	s_env *next;
 	struct	s_env *prev;
 }				t_env;
-
+/*
+ * struct for the pipe bc 4 args in fct is too light
+ */
+typedef struct s_pipe
+{
+	int		i;
+	int		*pipefd;
+	pid_t	*pid;
+	int		nbr_cmd;
+	int		nbr_p;
+}				t_pipe;
 
 /* d_env
  * the file for put env in a list chaine or for display this list chainee
@@ -121,6 +131,7 @@ void	delete_the_node(t_env **env, t_env *del);
 int	unset_the_var(t_env *env, char *cmd_suffix);
 void	check_the_cmd(char *cmd_suffix);
 void	do_the_unset(t_env *env, char **cmd_suffix);
+char	**list_to_cmd(t_env *env);
 /*
  * END OF D_ENV
  * */
@@ -140,15 +151,18 @@ void	do_echo(char **cmd_suffix);
  * */
 void	cmd_to_exec(t_cmd *cmd, t_env *env);
 int		is_a_builtin(char *cmd);
-void	redir_in(t_env *env, char **cmd, int fd);
-void	simple_redir_o(t_env *env, int fd, char **cmd);
+void	redir_in(t_env *env, char **cmd, int fd, char *path);
+void	simple_redir_o(t_env *env, int fd, char **cmd, char *ath);
 int		there_is_redir(t_env *env, t_cmd cmd);
-void	both_redir(t_env *env, char **cmd, int in, int out);
+void	both_redir(t_env *env, t_cmd cmd, int in, int out);
 int		fill_thefd(t_cmd cmd);
 void	here_doc(t_env *env, t_cmd cmd , int fd);
 /* end of f_redir*/
 
-
+/*
+ * g_pipe
+ */
+	int	do_the_pipe(t_cmd *cmd, t_env *env);
 
 /*
 ** Lexer

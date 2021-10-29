@@ -13,10 +13,11 @@ int	is_a_builtin(char *cmd)
 		return (4);
 	return (0);
 }
-void	redir_in(t_env *env, char **cmd, int fd)
+void	redir_in(t_env *env, char **cmd, int fd, char *path)
 {
 	pid_t pid;
 	int	builtin;
+	char	**tenvp;
 
 	builtin = is_a_builtin(cmd[0]);
 	if ( builtin == 2)
@@ -25,6 +26,7 @@ void	redir_in(t_env *env, char **cmd, int fd)
 			set_thepwd(env);
 			return ;
 	}
+	tenvp = list_to_cmd(env);
 	pid = fork();
 	if (pid == -1)
 	{
@@ -36,8 +38,11 @@ void	redir_in(t_env *env, char **cmd, int fd)
 		dup2(fd, 1);
 		if (builtin == 0)
 		{
-			execvp(cmd[0], cmd);
-			perror(">");
+			if (execve(path, cmd, tenvp) == -1)
+			{
+				perror(cmd[0]);
+				exit(1);
+			}
 		}
 			else if (builtin == 1)
 		{

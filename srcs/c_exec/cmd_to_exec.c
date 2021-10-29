@@ -21,24 +21,20 @@
  * gerer le export btw
  * mettre export en **
  */
-
+// fo incremeter les shlvl  de +1 au debut comme ca  cgerer 
 
 void	cmd_to_exec(t_cmd *cmd, t_env *env)
 {
 
-//	int i = 0;
-	(void)env;
 	char *buf;
-/*	while ( cmd->cmd_args[i])
-	{
+	char	**tenvp;
 	
-		printf("cmd is %s\n", cmd->cmd_args[i]);
-	i++;
-	}*/
 	while (cmd)
 	{
 		if (cmd->next)
 		{
+			if (do_the_pipe(cmd, env) == 0)
+				return ;
 			printf ("AYA YA UN PIPE\n");
 		}
 		else if ( there_is_redir(env, *cmd) == 0)
@@ -73,12 +69,17 @@ void	cmd_to_exec(t_cmd *cmd, t_env *env)
 			else 
 			{
 				pid_t pid;
-
+				tenvp = list_to_cmd(env);
 				pid = fork();
 				if (pid == 0)
-					if (execvp(cmd->cmd_args[0], cmd->cmd_args) == -1)
-						perror(">");
+					if (execve(cmd->cmdp, cmd->cmd_args,tenvp) == -1)
+				{
+					perror(cmd->cmd_args[0]);
+					exit(127);
+				}
 				waitpid(pid, NULL, 0);
+				//free the tenvp
+
 			}
 		}
 		cmd = cmd->next;

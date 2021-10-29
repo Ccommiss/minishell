@@ -4,7 +4,7 @@
 
 void	command_and_suffix(t_cmd *cmd, t_token *toks, int *j)
 {
-	cmd->cmd_args = (char **)ft_realloc_double_pointer((void**)cmd->cmd_args, sizeof(char *) * (*j - 1 + 2), sizeof(char *) * (*j + 2)); //realloc double tab
+	cmd->cmd_args = realloc(cmd->cmd_args, (sizeof(char **) * (*j + 2))); //realloc double tab
 	cmd->cmd_args[*j] = ft_strdup(toks->content);
 	*j += 1;
 	cmd->cmd_args[*j] = NULL;
@@ -24,7 +24,6 @@ void	init_cmd(t_cmd *cmd)
 	cmd->here_words= 0;
 	cmd->dgreat = FALSE;
 	cmd->dless = FALSE;
-	cmd->error = FALSE;
 }
 
 

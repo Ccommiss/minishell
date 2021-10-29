@@ -5,6 +5,7 @@ EXEC_PATH = c_exec
 ENV_PATH = d_env
 BUILT_PATH = e_builtin
 REDIR_PATH = f_redirection
+PIPE_PATH = g_pipe
 
 SOURCES =	main.c\
 			$(LEX_PATH)/tokenizer2.c \
@@ -20,6 +21,7 @@ SOURCES =	main.c\
 			$(ENV_PATH)/the_list.c \
 			$(ENV_PATH)/unset.c \
 			$(ENV_PATH)/export_the_var.c \
+			$(ENV_PATH)/list_to_tab.c \
 			${BUILT_PATH}/cd.c\
 			${BUILT_PATH}/echo.c\
 			${REDIR_PATH}/is_redir.c\
@@ -27,6 +29,7 @@ SOURCES =	main.c\
 			${REDIR_PATH}/redir_in.c\
 			${REDIR_PATH}/here_doc.c\
 			${EXEC_PATH}/cmd_to_exec.c\
+			${PIPE_PATH}/do_pipe.c\
 
 
 
@@ -41,7 +44,7 @@ OBJS	= 	${SRCS:.c=.o}
 
 CC = gcc
 
-CFLAGS = -g -I.$(INCLUDES) -Wall -Werror -Wextra -fsanitize=address
+CFLAGS = -g -I.$(INCLUDES) -Wall -Werror -Wextra# -fsanitize=address
 
 RM = rm -f
 
