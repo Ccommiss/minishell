@@ -18,13 +18,16 @@ char *ft_str_replace(char *str, int start, int len, t_env *env)
 		var_name = ft_substr(str, start + 2, len - 2); // recup la name var
 	else
 		var_name = ft_substr(str, start + 1, len); // recup la name var
-	//printf ("VAR NAME = |%s|\n", var_name);
+	printf ("VAR NAME = |%s|\n", var_name);
 	while (env && ft_strncmp(var_name, env->key, ft_strlen(env->key) + 1) != 0)
 		env = env->next;
-	if (env == NULL)
-		value = ft_strdup("");
+	if (ft_strncmp(var_name, "?", 1) == 0) //si on demande le retour
+		value = ft_itoa(return_value);
+	else if (env == NULL)
+		value = ft_strdup(""); 
 	else
 		value = ft_strdup(env->value);
+	printf ("value = %s \n", value);
 	tmp = ft_substr(str, 0, start); //ce qui y avait avant
 	new_str = ft_strconcat(tmp, value, start + ft_strlen(value));
 	free(tmp);
@@ -60,7 +63,7 @@ int 	handle_error_inside(char *var_name, int brace)
 	}
 	else
 		trimmed_var = ft_substr(var_name, 1, ft_strlen(var_name) - 1);
-	if (!ft_isalnum_str(trimmed_var))
+	if (!ft_isalnum_str(trimmed_var) && ft_strncmp(trimmed_var, "?", 2) != 0)
 	{
 		printf ("%s : bad substitution\n", var_name);
 		free(var_name);
@@ -80,7 +83,8 @@ static int is_valid_expand_char(int *brace, int c, int j)
 		['1'...'9'] = 1,
 		['{'] = 1,
 		['}'] = 1,
-		['$'] = 1
+		['$'] = 1,
+		['?'] = 1
 	};
 	if (j == 1 && c == '{')
 		*brace = 1;

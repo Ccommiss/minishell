@@ -15,6 +15,9 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
+
+
+
 int	check_quote(char *line)
 {
 	int	i;
@@ -31,7 +34,7 @@ int	check_quote(char *line)
 			while (line[i]  && line[i] != '\'')
 				i++;
 			if (line[i] && line[i] == '\'')
-				check = 2;
+				check = 2; 
 		}
 		if (line[i] == '\"')
 		{

@@ -19,6 +19,9 @@
 #include <readline/history.h>
 #include "../libft/libft.h"
 
+
+int return_value; //globale 
+
 typedef struct s_arg
 {
 	int s_quote;
@@ -183,6 +186,7 @@ void		debug_cmds(t_cmd *cmds);
 void		find_path(t_cmd *cmds, t_env *env);
 
 void	handle_signal(int state);
+void 	debug_status(int status);
 
 
 void 	quithandler();
