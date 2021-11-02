@@ -11,6 +11,8 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+
 /*
  * permet d'articulier le parser avec mes builtin 
  * echo is good 
@@ -26,6 +28,8 @@
 void	cmd_to_exec(t_cmd *cmd, t_env *env)
 {
 
+	int status = 0;
+	(void)env;
 	char *buf;
 	char	**tenvp;
 	
@@ -72,14 +76,28 @@ void	cmd_to_exec(t_cmd *cmd, t_env *env)
 				tenvp = list_to_cmd(env);
 				pid = fork();
 				if (pid == 0)
-					if (execve(cmd->cmdp, cmd->cmd_args,tenvp) == -1)
 				{
-					perror(cmd->cmd_args[0]);
-					exit(127);
+					handle_signal(CHILD);
+					if (execve(cmd->cmdp, cmd->cmd_args,tenvp) == -1)
+					{
+						perror(cmd->cmd_args[0]);
+						exit (127);	
+					}
+					//free the tenvp
 				}
-				waitpid(pid, NULL, 0);
-				//free the tenvp
-
+				else
+					handle_signal(CHILD_HANDLING);
+				waitpid(pid, &status, 0);
+				printf ("errno : %d %s \n", errno, strerror(errno));
+				printf ("brut status = %d \n", status);
+				if (errno == 2 &&	status == 2)
+				{
+					printf ("ici \n");
+					status = 130;
+				}
+				debug_status(status);
+				printf ("RET_VALUE = %d \n", return_value);
+				errno = 0;
 			}
 		}
 		cmd = cmd->next;

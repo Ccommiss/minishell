@@ -30,6 +30,9 @@ SOURCES =	main.c\
 			${REDIR_PATH}/here_doc.c\
 			${EXEC_PATH}/cmd_to_exec.c\
 			${PIPE_PATH}/do_pipe.c\
+			${EXEC_PATH}/signals.c \
+			${EXEC_PATH}/debug_status.c
+
 
 
 
@@ -44,7 +47,11 @@ OBJS	= 	${SRCS:.c=.o}
 
 CC = gcc
 
+<<<<<<< HEAD
 CFLAGS = -g -I.$(INCLUDES) -Wall -Werror -Wextra# -fsanitize=address
+=======
+CFLAGS = -g -I.$(INCLUDES) -Wall -Werror -Wextra
+>>>>>>> ccommiss
 
 RM = rm -f
 

@@ -142,8 +142,8 @@ void tokenize(char *to_tokenize, t_token *toks, t_env *env) // fonction recursiv
 		toks->next->index = toks->index + 1;
 		toks = toks->next;
 	}
-	to_tokenize = ft_substr(to_tokenize, i, ft_strlen(to_tokenize));
-	if (ft_strlen(to_tokenize) != 0)
+	to_tokenize = ft_auto_substr(to_tokenize, i, ft_strlen(to_tokenize));
+	if (to_tokenize && ft_strlen(to_tokenize) != 0)
 		tokenize(to_tokenize, toks, env); //recursivite
 	else if (toks && toks->prev)
 	{

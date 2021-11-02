@@ -6,7 +6,7 @@
 /*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/15 16:46:53 by mpochard          #+#    #+#             */
-/*   Updated: 2021/10/15 15:42:35 by ccommiss         ###   ########.fr       */
+/*   Updated: 2021/10/21 17:31:04 by ccommiss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,9 @@
 #include <stdio.h>
 #include <readline/readline.h>
 #include <readline/history.h>
+
+
+
 
 int	check_quote(char *line)
 {
@@ -31,7 +34,7 @@ int	check_quote(char *line)
 			while (line[i]  && line[i] != '\'')
 				i++;
 			if (line[i] && line[i] == '\'')
-				check = 2;
+				check = 2; 
 		}
 		if (line[i] == '\"')
 		{
@@ -73,26 +76,34 @@ int	main(int ac, char **av, char **envp)
 	(void)av;
 	t_env *env;
 
+
 	env = NULL;
 	if (envp[0]  == NULL)
 		return (printf(" need environment\n"));
 	get_the_env(&env, envp);
+
 	while (1)
 	{
-		line = readline("> ");
+		handle_signal(MAIN_PROCESS);
+		line = readline(BWHT"> "RESET);
+		
 		if (line && ft_strlen(line) > 0)
 		{
 			add_history(line);
 			init_token(&toks);
 			start_cmd(&cmd);
 			tokenize(line, &toks, env);
-		//	debug_tokens(&toks);
+			debug_tokens(&toks);
 			token_to_cmds(&cmd, &toks);
 			find_path(&cmd, env);
-		//	debug_cmds(&cmd);
+			debug_cmds(&cmd);
 			cmd_to_exec(&cmd,env);
 		}
-	free(line);
+		else if (!line)
+			exit(0);
+
+	//free(line);
 	}
+	
 	return (0);
 }
