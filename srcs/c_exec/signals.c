@@ -18,7 +18,7 @@ void intHandlerMain()
 
 void 	quithandler()
 {
-	printf ("Core Dumped\n");
+	printf ("Quit (core dumped)");
 	rl_reset_line_state ();
 	printf("\n");
 	rl_replace_line("", 0);

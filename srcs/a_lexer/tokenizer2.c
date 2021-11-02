@@ -58,14 +58,14 @@ void	handle_quoted_context(int *context, int *i, char *to_tokenize)
 	if (*context != DQUOTE && *context != SQUOTE
 		&& (to_tokenize[*i] == SQUOTE  && ft_strchr(to_tokenize + *i +1, SQUOTE)))
 	{
-		printf ("ici 1\n");
+		//printf ("ici 1\n");
 		*i += 1;
 		*context = SQUOTE;
 	}
 	else if (*context != SQUOTE && *context != DQUOTE
 		&& (to_tokenize[*i] == DQUOTE && ft_strchr(to_tokenize + *i +1, DQUOTE)))
 	{
-		printf ("ici 2\n");
+		//printf ("ici 2\n");
 
 		*i += 1;
 		*context = DQUOTE;
@@ -76,8 +76,6 @@ void	handle_quoted_context(int *context, int *i, char *to_tokenize)
 		*i += 1;
 		*context = WORD;
 	}
-	//printf ("context after handle = %c \n", *context);
-//	sleep (2);
 	if (((int)to_tokenize[*i] == SQUOTE && *context != DQUOTE)
 		|| ((int)to_tokenize[*i] == DQUOTE && *context != SQUOTE)) // test pour gerer si "" collees
 		handle_quoted_context(context, i, to_tokenize);
@@ -97,8 +95,6 @@ void tokenize(char *to_tokenize, t_token *toks, t_env *env) // fonction recursiv
 	int context;
 
 	ft_bzero(token, 2048);
-
-//	printf ("tok 0 = %d // corresp = %d \n", (unsigned char)to_tokenize[0], corresp[(unsigned char)to_tokenize[0]]);
 	ref_char = tok(corresp[(unsigned char)to_tokenize[0]], (unsigned char)to_tokenize[0]);
 	context = corresp[(unsigned char)to_tokenize[0]];
 	if (context == SQUOTE || context == DQUOTE)
@@ -115,7 +111,6 @@ void tokenize(char *to_tokenize, t_token *toks, t_env *env) // fonction recursiv
 			{
 				ref_char = TOK_ERR; //trouver la variable fautive 
 				ft_bzero(token,2048);
-	
 				printf ("\n");
 				while (to_tokenize[i] && to_tokenize[i] != '|')
 					i++;

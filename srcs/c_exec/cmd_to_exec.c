@@ -82,24 +82,14 @@ void	cmd_to_exec(t_cmd *cmd, t_env *env)
 					handle_signal(CHILD);
 					if (execvp(cmd->cmd_args[0], cmd->cmd_args) == -1)
 					{
-						perror("> exec error");
+						printf ("%s : Command not found\n", cmd->cmd_args[0]);
 						exit (127);	
 					}
-					
 				}
 				else
 					handle_signal(CHILD_HANDLING);
 				waitpid(pid, &status, 0);
-				printf ("errno : %d %s \n", errno, strerror(errno));
-				printf ("brut status = %d \n", status);
-				if (errno == 2 &&	status == 2)
-				{
-					printf ("ici \n");
-					status = 130;
-				}
-				debug_status(status);
-				printf ("RET_VALUE = %d \n", return_value);
-				errno = 0;
+				set_status(status);
 			}
 		}
 		cmd = cmd->next;

@@ -84,19 +84,21 @@ int	main(int ac, char **av, char **envp)
 	while (1)
 	{
 		handle_signal(MAIN_PROCESS);
-		line = readline(BWHT"> "RESET);
-		
+		if (return_value != 0)
+			line = readline(BWHT"Minishell "BRED"> "RESET);
+		else 
+			line = readline(BWHT"Minishell "BGRN"> "RESET);
 		if (line && ft_strlen(line) > 0)
 		{
-			//printf ("main %d %d \n", getpid(), getppid());
 			add_history(line);
 			init_token(&toks);
 			start_cmd(&cmd);
 			tokenize(line, &toks, env);
-			debug_tokens(&toks);
+			//debug_tokens(&toks);
 			token_to_cmds(&cmd, &toks);
 			find_path(&cmd, env);
-			debug_cmds(&cmd);
+			//debug_cmds(&cmd);
+			
 			cmd_to_exec(&cmd,env);
 		}
 		else if (!line)
