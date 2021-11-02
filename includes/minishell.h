@@ -90,6 +90,7 @@ typedef struct s_cmd
 	int here_words; //compte le nb de io_here pour faire io_here[here_words]
 	int io_out; //fd sortie commande
 	int dgreat; // >>
+	int error;
 
 	t_cmd *next;
 	t_cmd *prev;

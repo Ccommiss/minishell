@@ -47,11 +47,7 @@ OBJS	= 	${SRCS:.c=.o}
 
 CC = gcc
 
-<<<<<<< HEAD
 CFLAGS = -g -I.$(INCLUDES) -Wall -Werror -Wextra# -fsanitize=address
-=======
-CFLAGS = -g -I.$(INCLUDES) -Wall -Werror -Wextra
->>>>>>> ccommiss
 
 RM = rm -f
 
