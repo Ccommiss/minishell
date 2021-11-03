@@ -24,7 +24,7 @@ char *ft_str_replace(char *str, int start, int len, t_env *env)
 	if (ft_strncmp(var_name, "?", 1) == 0) //si on demande le retour
 		value = ft_itoa(return_value);
 	else if (env == NULL)
-		value = ft_strdup(""); 
+		value = ft_strdup("");
 	else
 		value = ft_strdup(env->value);
 	tmp = ft_substr(str, 0, start); //ce qui y avait avant
@@ -65,6 +65,7 @@ int 	handle_error_inside(char *var_name, int brace)
 	if (!ft_isalnum_str(trimmed_var) && ft_strncmp(trimmed_var, "?", 2) != 0)
 	{
 		printf ("%s : bad substitution\n", var_name);
+		//return_value = 1;
 		free(var_name);
 		return (-1);
 	}
@@ -90,7 +91,7 @@ static int is_valid_expand_char(int *brace, int c, int j)
 		*brace = 3; //test
 	if (j == 1 && c == '{')
 		*brace = 1;
-	if (*brace == 0 && ((j > 0 && c == '$') || (j > 1 && c == '{')) ) //je crois 
+	if (*brace == 0 && ((j > 0 && c == '$') || (j > 1 && c == '{')) ) //je crois
 	{
 		//printf("newvar\n");
 		return (0);
@@ -111,7 +112,7 @@ static int is_valid_expand_char(int *brace, int c, int j)
 int	expand(char **to_tokenize, int *i, int *context, t_env *env)
 {
 	int		j;
-	int		brace; // va servir aussi si ? 
+	int		brace; // va servir aussi si ?
 	char	*var_name;
 
 	j = 0;

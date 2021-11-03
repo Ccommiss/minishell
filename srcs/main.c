@@ -6,7 +6,7 @@
 /*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/15 16:46:53 by mpochard          #+#    #+#             */
-/*   Updated: 2021/10/21 17:31:04 by ccommiss         ###   ########.fr       */
+/*   Updated: 2021/11/03 15:51:13 by ccommiss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	check_quote(char *line)
 			while (line[i]  && line[i] != '\'')
 				i++;
 			if (line[i] && line[i] == '\'')
-				check = 2; 
+				check = 2;
 		}
 		if (line[i] == '\"')
 		{
@@ -77,7 +77,6 @@ int	main(int ac, char **av, char **envp)
 	t_env *env;
 
 
-
 	env = NULL;
 	get_the_env(&env, envp);
 
@@ -86,8 +85,9 @@ int	main(int ac, char **av, char **envp)
 		handle_signal(MAIN_PROCESS);
 		if (return_value != 0)
 			line = readline(BWHT"Minishell "BRED"> "RESET);
-		else 
+		else
 			line = readline(BWHT"Minishell "BGRN"> "RESET);
+
 		if (line && ft_strlen(line) > 0)
 		{
 			add_history(line);
@@ -98,14 +98,15 @@ int	main(int ac, char **av, char **envp)
 			token_to_cmds(&cmd, &toks);
 			find_path(&cmd, env);
 			//debug_cmds(&cmd);
-			
+
 			cmd_to_exec(&cmd,env);
 		}
 		else if (!line)
 			exit(0);
 
+
 	//free(line);
 	}
-	
+
 	return (0);
 }

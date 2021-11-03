@@ -10,10 +10,10 @@ void intHandler()
 
 void intHandlerMain()
 {
-    rl_reset_line_state ();
+	return_value = 130;
     printf("\n");
     rl_replace_line("", 0);
-	rl_redisplay();
+	printf ("%s", BWHT"Minishell "BRED"> "RESET);
 }
 
 void 	quithandler()
@@ -28,14 +28,14 @@ void 	quithandler()
 /*
 **  Handles signal according to the current situation
 **
-**  1) MAIN PROCESS : while prompt in interactive mode, 
+**  1) MAIN PROCESS : while prompt in interactive mode,
 **          ignores ctrl \, and displays ^C + a newline
 **  2) CHILD : when child process is created, just before
 **      executing, restores default signal handling (SIG_DFL)
-**      so that command is effectively killed 
-**  3) CHILD_HANDLING : after forking, when in the parent, 
-**      prompts "core dump" as in Linux after the command 
-**      was killed   
+**      so that command is effectively killed
+**  3) CHILD_HANDLING : after forking, when in the parent,
+**      prompts "core dump" as in Linux after the command
+**      was killed
 */
 
 void	handle_signal(int state)

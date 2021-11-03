@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_to_exec.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpochard <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/13 10:05:27 by mpochard          #+#    #+#             */
-/*   Updated: 2021/10/18 15:43:46 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/11/03 14:35:50 by ccommiss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 
 /*
- * permet d'articulier le parser avec mes builtin 
- * echo is good 
+ * permet d'articulier le parser avec mes builtin
+ * echo is good
  */
 /* !!!!!!!
  * need to gerer export a ca va s'afficher dans export
@@ -33,7 +33,7 @@ void	cmd_to_exec(t_cmd *cmd, t_env *env)
 	char *buf;
 /*	while ( cmd->cmd_args[i])
 	{
-	
+
 		printf("cmd is %s\n", cmd->cmd_args[i]);
 	i++;
 	}*/
@@ -45,11 +45,11 @@ void	cmd_to_exec(t_cmd *cmd, t_env *env)
 		}
 		else if ( there_is_redir(env, *cmd) == 0)
 		{
-			
+
 		}
-		else 
+		else
 		{
-			
+
 			if (strcmp(cmd->cmd_args[0], "echo") == 0)
 				do_echo(cmd->cmd_args);
 			else if (strcmp(cmd->cmd_args[0], "cd") == 0)
@@ -72,7 +72,7 @@ void	cmd_to_exec(t_cmd *cmd, t_env *env)
 			}
 			else if (strcmp(cmd->cmd_args[0], "unset") == 0)
 				do_the_unset(env, cmd->cmd_args);
-			else 
+			else
 			{
 				pid_t pid;
 
@@ -82,8 +82,8 @@ void	cmd_to_exec(t_cmd *cmd, t_env *env)
 					handle_signal(CHILD);
 					if (execvp(cmd->cmd_args[0], cmd->cmd_args) == -1)
 					{
-						printf ("%s : Command not found\n", cmd->cmd_args[0]);
-						exit (127);	
+						printf ("minishell: command not found: %s\n", cmd->cmd_args[0]);
+						exit (127);
 					}
 				}
 				else
