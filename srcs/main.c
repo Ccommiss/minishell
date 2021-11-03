@@ -6,7 +6,7 @@
 /*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/15 16:46:53 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/03 15:51:13 by ccommiss         ###   ########.fr       */
+/*   Updated: 2021/11/03 17:17:59 by ccommiss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,6 @@ int	main(int ac, char **av, char **envp)
 			line = readline(BWHT"Minishell "BRED"> "RESET);
 		else
 			line = readline(BWHT"Minishell "BGRN"> "RESET);
-
 		if (line && ft_strlen(line) > 0)
 		{
 			add_history(line);

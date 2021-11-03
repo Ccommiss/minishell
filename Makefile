@@ -47,8 +47,8 @@ OBJS	= 	${SRCS:.c=.o}
 
 CC = gcc
 
-CFLAGS = -g -I.$(INCLUDES) -Wall -Werror -Wextra# -fsanitize=address
-#CFLAGS = -g -I.$(INCLUDES) -I/usr/local/opt/readline/include  -Wall -Werror -Wextra -fsanitize=address
+#CFLAGS = -g -I.$(INCLUDES) -Wall -Werror -Wextra# -fsanitize=address
+CFLAGS = -g -I.$(INCLUDES) -I/usr/local/opt/readline/include  -Wall -Werror -Wextra -fsanitize=address
 
 RM = rm -f
 

@@ -6,7 +6,7 @@
 /*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/13 10:05:27 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/03 16:05:20 by ccommiss         ###   ########.fr       */
+/*   Updated: 2021/11/03 17:23:41 by ccommiss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void	cmd_to_exec(t_cmd *cmd, t_env *env)
 	char *buf;
 	char	**tenvp;
 
+	return_value = 0;
 	while (cmd)
 	{
 		if (cmd->next)
