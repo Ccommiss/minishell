@@ -139,12 +139,14 @@ char	**ft_split_one_egal(char *str);
 t_env *ft_lstlastenv(t_env *lst);
 void	ft_lstadd_backenv(t_env **alst, t_env *nev);
 t_env	*ft_lstenv(char *content);
+t_env	*ft_lstenv_inv(char *content);
 int	need_to_unset(t_env *env, char *cmd_suffix);
 void	delete_the_node(t_env **env, t_env *del);
 int	unset_the_var(t_env *env, char *cmd_suffix);
 void	check_the_cmd(char *cmd_suffix);
 void	do_the_unset(t_env *env, char **cmd_suffix);
 char	**list_to_cmd(t_env *env);
+
 /*
  * END OF D_ENV
  * */

@@ -48,15 +48,6 @@ int	fill_thefd(t_cmd cmd)
 		cmd.here_words--;
 		close(fd);
 	}
-/*	fd = open (".here_doc", O_RDWR);
-	char buf[42];
-	int ret = read(fd, buf , 42);
-	buf[42] = '\0';
-	printf ("ret = %d\n[", ret);
-	for (int j = 0; j <42; j++)
-		printf("%c", buf[j]);
-	printf("]\n");
-	close(fd);*/
 	return (fd);
 }
 
@@ -70,6 +61,11 @@ void	here_doc(t_env *env, t_cmd cmd, int fd)
 	char	**tenvp;
 
 	(void)fd;
+	if ( cmd.cmd_args[0] == NULL)
+	{
+		unlink(".here_doc");
+		return ;
+	}
 	builtin = is_a_builtin(cmd.cmd_args[0]);
 	if (builtin == 2)
 	{

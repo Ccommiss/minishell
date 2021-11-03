@@ -5,7 +5,12 @@ void	simple_redir_o(t_env *env, int fd, char **cmd, char *path)
 	pid_t pid;
 	int builtin;
 	char	**tenvp;
-
+	
+	if (cmd[0] == NULL)
+	{
+		close(fd);
+		return ;
+	}
 	builtin = is_a_builtin(cmd[0]);
 	if ((builtin >= 1 && builtin <= 4) && fd > -1)
 	{
@@ -52,6 +57,12 @@ void	both_redir(t_env *env, t_cmd cmd, int in, int out)
 	pid_t pid;
 	char	**tenvp;
 
+	if ( cmd.cmd_args[0] ==  NULL)
+	{
+		close(in);
+		close(out);
+		return ;
+	}
 	builtin = is_a_builtin(cmd.cmd_args[0]);
 	if (builtin == 2 && in >= -1 && out >= -1)
 	{

@@ -19,6 +19,11 @@ void	redir_in(t_env *env, char **cmd, int fd, char *path)
 	int	builtin;
 	char	**tenvp;
 
+	if ( cmd[0] == NULL)
+	{
+		close(fd);
+		return ;
+	}
 	builtin = is_a_builtin(cmd[0]);
 	if ( builtin == 2)
 	{

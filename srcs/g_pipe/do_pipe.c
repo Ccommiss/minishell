@@ -13,24 +13,22 @@ int	nbr_of_pipe(t_cmd *cmd)
 	return (nbr);
 }	
 
-int	malloc_of_pipe(t_cmd *cmd, t_pipe *pip)
+int	malloc_of_pipe(t_cmd *cmd, int **pipefd, pid_t **pid, int *nbr_cmd)
 {
 	t_cmd *tmp;
 
 	tmp = cmd;
-	pip->i = 0;
-	pip->nbr_p = nbr_of_pipe(tmp);
-	pip->nbr_cmd = pip->nbr_p + 1;
-	pip->pipefd = malloc(sizeof(int) * (pip->nbr_p * 2));
-	if ( pip->pipefd == NULL)
+	*nbr_cmd = nbr_of_pipe(tmp) + 1;
+	*pipefd = malloc(sizeof(int) * ((*nbr_cmd -1) * 2));
+	if ( *pipefd == NULL)
 	{
 		perror("malloc");
 		return (-1);
 	}
-	pip->pid = malloc(sizeof(int) * (pip->nbr_cmd));
-	if (pip->pid == NULL)
+	*pid = malloc(sizeof(int) * ( *nbr_cmd));
+	if (pid == NULL)
 	{
-		free (pip->pipefd);
+		free (pipefd);
 		perror("malloc");
 		return (-1);
 	}
@@ -80,13 +78,11 @@ int	which_redir(t_cmd cmd)
 		return (4);
 	return (0);
 }
-int	first_pid(t_cmd cmd, t_env *env, int *pipefd, int nbr_p, int save )
+int	first_pid(t_cmd cmd, t_env *env, int *pipefd, int nbr_p )
 {
 	int redir;
-	int	fd;
 	char	**tenvp;
 
-	(void)save;
 	redir = which_redir(cmd);
 	tenvp = list_to_cmd(env);
 	if (redir == 0) // aucune redir
@@ -110,7 +106,6 @@ int	first_pid(t_cmd cmd, t_env *env, int *pipefd, int nbr_p, int save )
 			exit(127);
 			return (-1);
 		}
-		exit(1);
 	}
 	else if (redir == 2) // redir <
 	{
@@ -124,17 +119,11 @@ int	first_pid(t_cmd cmd, t_env *env, int *pipefd, int nbr_p, int save )
 			return (-1);
 		}
 	}
-	else if (redir == 3) // redir << 
+	else if ( redir == 4) // redir > < 
 	{
-
-		fd = open(".here_doc", O_RDWR | 0666);
-		dup2(fd, 0);
-		if ( cmd.io_out > 0)
-			dup2(cmd.io_out, 1);
-		else
-			dup2(pipefd[1], 1);
+		dup2(cmd.io_in, 0);
+		dup2(cmd.io_out, 1);
 		close_all_p(pipefd, nbr_p);
-		close(fd);
 		if ( execve(cmd.cmdp, cmd.cmd_args,tenvp) == -1)
 		{
 			perror(cmd.cmd_args[0]);
@@ -142,8 +131,6 @@ int	first_pid(t_cmd cmd, t_env *env, int *pipefd, int nbr_p, int save )
 			return (-1);
 		}
 	}
-//	else if ( redir == 4) // redir > < 
-	unlink(".here_doc");
 	return (0);
 }
 
@@ -151,7 +138,6 @@ int	last_pid(t_cmd cmd, t_env *env, int *pipefd, int nbr_p)
 {
 	char **tenvp;
 	int	redir;
-	int fd;
 
 	tenvp = list_to_cmd(env);
 	redir = which_redir(cmd);
@@ -166,10 +152,9 @@ int	last_pid(t_cmd cmd, t_env *env, int *pipefd, int nbr_p)
 			return (-1);
 		}
 	}
-		else if ( redir == 1) // redir >
+	else if ( redir == 1) // redir >
 	{
 		dup2(cmd.io_out, 1);
-		close(cmd.io_out);
 		dup2(pipefd[nbr_p - 2], 0);
 		close_all_p(pipefd, nbr_p);
 		if ( execve(cmd.cmdp, cmd.cmd_args,tenvp) == -1)
@@ -178,13 +163,11 @@ int	last_pid(t_cmd cmd, t_env *env, int *pipefd, int nbr_p)
 			exit(127);
 			return (-1);
 		}
-		exit(1);
-		}
+	}
 	else if ( redir == 2) // redir <
 	{
 		dup2(cmd.io_in, 0);
-		close(cmd.io_in);
-	//	dup2(pipefd[nbr_p - 1], 1);
+		dup2(pipefd[nbr_p - 1], 1);
 		close_all_p(pipefd, nbr_p);
 		if ( execve(cmd.cmdp, cmd.cmd_args,tenvp) == -1)
 		{
@@ -193,15 +176,11 @@ int	last_pid(t_cmd cmd, t_env *env, int *pipefd, int nbr_p)
 			return (-1);
 		}
 	}
-	else if ( redir == 3) // redir <<
+	else if ( redir == 4) // redir > < 
 	{
-		
+		dup2(cmd.io_in, 0);
+		dup2(cmd.io_out, 1);
 		close_all_p(pipefd, nbr_p);
-		if ( cmd.io_out > 0)
-			dup2(cmd.io_out, 1);
-		fd = open(".here_doc", O_RDWR, 0666);
-		dup2(fd, 0);
-		close(fd);
 		if ( execve(cmd.cmdp, cmd.cmd_args,tenvp) == -1)
 		{
 			perror(cmd.cmd_args[0]);
@@ -209,9 +188,64 @@ int	last_pid(t_cmd cmd, t_env *env, int *pipefd, int nbr_p)
 			return (-1);
 		}
 	}
-	exit(1);
-//	else if ( redir == 4) // redir > < 
-	unlink (".here_doc");
+	return (0);
+}
+
+int	other_pid(t_cmd cmd, t_env * env,int *pipefd, int i, int nbr_p)
+{
+	char	**tenvp;
+	int		redir;
+
+	redir = which_redir(cmd);
+	tenvp = list_to_cmd(env);
+	if ( redir == 0) // no redir
+	{
+		dup2(pipefd[i + (i - 2)], 0);
+		dup2(pipefd[i + i + 1], 1);
+		close_all_p(pipefd, nbr_p);
+		if ( execve(cmd.cmdp, cmd.cmd_args,tenvp) == -1)
+		{
+			perror(cmd.cmd_args[0]);
+			exit(127);
+			return (-1);
+		}
+	}
+	else if ( redir == 1) //redir > 
+	{
+		dup2(pipefd[i + (i - 2)], 0);
+		dup2(cmd.io_out ,1);
+		close_all_p(pipefd, nbr_p);
+		if ( execve(cmd.cmdp, cmd.cmd_args,tenvp) == -1)
+		{
+			perror(cmd.cmd_args[0]);
+			exit(127);
+			return (-1);
+		}
+	}
+	else if ( redir == 2)// redir < 
+	{
+		dup2(pipefd[i + i + 1], 1);
+		dup2(cmd.io_in ,0);
+		close_all_p(pipefd, nbr_p);
+		if ( execve(cmd.cmdp, cmd.cmd_args,tenvp) == -1)
+		{
+			perror(cmd.cmd_args[0]);
+			exit(127);
+			return (-1);
+		}
+	}
+	else if ( redir == 4) // redir > < 
+	{
+		dup2(cmd.io_in, 0);
+		dup2(cmd.io_out, 1);
+		close_all_p(pipefd, nbr_p);
+		if ( execve(cmd.cmdp, cmd.cmd_args,tenvp) == -1)
+		{
+			perror(cmd.cmd_args[0]);
+			exit(127);
+			return (-1);
+		}
+	}
 	return (0);
 }
 
@@ -230,120 +264,61 @@ void	we_wait(pid_t *pid, int nbr_cmd ,int *pipefd, int pipee)
 	free(pipefd);
 }
 
-int	other_pid(t_cmd cmd, t_env *env, t_pipe pip)
-{
-	char	**tenvp;
-	int		redir;
-	int		fd;
-
-	redir = which_redir(cmd);
-	tenvp = list_to_cmd(env);
-	if (redir == 0) // pas de redir
-	{
-		dup2(pip.pipefd[pip.i + (pip.i  - 2)], 0);
-		dup2(pip.pipefd[pip.i + (pip.i  + 1)], 1);
-		close_all_p(pip.pipefd, (pip.nbr_p * 2));
-		if ( execve(cmd.cmdp, cmd.cmd_args,tenvp) == -1)
-		{
-			perror(cmd.cmd_args[0]);
-			exit(127);
-			return (-1);
-		}
-	}
-	else if (redir == 1) //redir >
-	{
-		dup2(pip.pipefd[pip.i + (pip.i  - 2)], 0);
-		dup2(cmd.io_out, 1);
-		close_all_p(pip.pipefd, (pip.nbr_p * 2));
-		if ( execve(cmd.cmdp, cmd.cmd_args,tenvp) == -1)
-		{
-			perror(cmd.cmd_args[0]);
-			exit(127);
-			return (-1);
-		}
-	}
-	else if ( redir == 2) // redir < 
-	{
-		dup2(cmd.io_in, 0);
-		dup2(pip.pipefd[pip.i + (pip.i  + 1)], 1);
-		close_all_p(pip.pipefd, (pip.nbr_p * 2));
-		if ( execve(cmd.cmdp, cmd.cmd_args,tenvp) == -1)
-		{
-			perror(cmd.cmd_args[0]);
-			exit(127);
-			return (-1);
-		}
-	}
-	else if ( redir == 3) // redir << 
-	{
-		fd = open(".here_doc", O_RDWR , 0666);
-		dup2(fd , 0);
-		close(fd);
-		if ( cmd.io_out > 0)
-		{
-			dup2(cmd.io_out , 1);
-			close(cmd.io_out);
-		}
-		else
-			dup2(pip.pipefd[pip.i + (pip.i  + 1)], 1);
-		close_all_p(pip.pipefd, (pip.nbr_p * 2));
-		if ( execve(cmd.cmdp, cmd.cmd_args,tenvp) == -1)
-		{
-			perror(cmd.cmd_args[0]);
-			exit(127);
-			return (-1);
-		}
-	}
-//	else if ( redir == 4) // redir > < 
-	unlink(".here_doc");
-	return (0);
-}
-
 int	do_the_pipe(t_cmd *cmd, t_env *env)
 {
-	t_pipe	pip;
+	int		nbr_cmd;
+	int		*pipefd;
+	pid_t		*pid;
+	int			i;
 
-	int	save = 0;
-
-//	save = dup(1);
-	if (malloc_of_pipe(cmd, &pip) == -1)
+	i = 0;
+	if (malloc_of_pipe(cmd, &pipefd, &pid, &nbr_cmd) == -1)
 		return (-1);
-	if (deploy_pipe(pip.pipefd, pip.pid, pip.nbr_cmd, ((pip.nbr_p) * 2)) == -1)
+	if (deploy_pipe(pipefd, pid, nbr_cmd, ((nbr_cmd - 1) * 2)) == -1)
 		return (-1);
-	while (cmd)
+	while (i < nbr_cmd)
 	{
-			if ( cmd->dless == 1)
-		pip.pid[pip.i] = fork();
-		if (pip.pid[pip.i] == 0)
+		if (cmd->dless == 1)
+			fill_thefd(*cmd);
+		pid[i] = fork();
+		if (pid[i] == 0)
 		{
-		if (cmd->next != NULL && cmd->dless == 1 )
+			if (cmd->dless == 1)
 			{
-			here_doc(env, *cmd, 0);
+				if ( cmd->io_out < 0 && i == 0)
+					dup2(pipefd[1], 1);
+				else if ( cmd->io_out && i < nbr_cmd - 1)
+					dup2(pipefd[i + i + 1], 1);
+				here_doc( env, *cmd, 0);
+				close_all_p(pipefd, (nbr_cmd - 1) * 2);
+				exit(1);
 			}
-			if (pip.i == 0)
-		{
-				if (first_pid(*cmd, env, pip.pipefd, ((pip.nbr_p) * 2), save) == -1)
+			else if (i == 0)
+			{
+				if (first_pid(*cmd, env, pipefd, ((nbr_cmd - 1) * 2)) == -1)
 					return (-1);
 			}
-			else if (pip.i == pip.nbr_cmd -1)
+			else if (i == nbr_cmd -1)
 			{
-				if (last_pid(*cmd, env, pip.pipefd, ((pip.nbr_p) * 2)) == -1)
+				if (last_pid(*cmd, env, pipefd, ((nbr_cmd - 1) * 2)) == -1)
 					return (-1);
 			}
 			else
-				if (other_pid(*cmd, env, pip) == -1)
+			{
+				if (other_pid(*cmd, env, pipefd, i, (nbr_cmd - 1) * 2 ) == -1)
 					return (-1);
-		}
-		}
-		if ( cmd->io_out > 0)
-			close(cmd->io_out);
-		if ( cmd->io_in > 0)
-			close(cmd->io_in);
-		
-		pip.i++;
+			}
+	}
+			if ( cmd->dless == 1)
+				waitpid(pid[i], NULL, 0);
+			if ( cmd->io_out > 0)
+				close(cmd->io_out);
+			if ( cmd->io_in > 0)
+				close(cmd->io_in);
+		i++;
 		cmd = cmd->next;
 	}
-	we_wait(pip.pid, pip.nbr_cmd, pip.pipefd, ((pip.nbr_p) *2));
-		unlink(".here_doc");
+	we_wait(pid, nbr_cmd, pipefd, ((nbr_cmd -1) *2));
+	unlink(".here_doc");
 	return (0);
 }

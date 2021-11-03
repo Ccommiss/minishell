@@ -79,5 +79,4 @@ void	do_echo(char **cmd_suffix)
 		}
 		write(1, "\n", 1);
 	}
-	return_value = 0;
 }
