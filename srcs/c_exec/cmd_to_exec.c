@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_to_exec.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpochard <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/13 10:05:27 by mpochard          #+#    #+#             */
-/*   Updated: 2021/10/18 15:43:46 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/11/03 16:05:20 by ccommiss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 
 /*
- * permet d'articulier le parser avec mes builtin 
- * echo is good 
+ * permet d'articulier le parser avec mes builtin
+ * echo is good
  */
 /* !!!!!!!
  * need to gerer export a ca va s'afficher dans export
@@ -23,7 +23,7 @@
  * gerer le export btw
  * mettre export en **
  */
-// fo incremeter les shlvl  de +1 au debut comme ca  cgerer 
+// fo incremeter les shlvl  de +1 au debut comme ca  cgerer
 
 void	cmd_to_exec(t_cmd *cmd, t_env *env)
 {
@@ -32,7 +32,7 @@ void	cmd_to_exec(t_cmd *cmd, t_env *env)
 	(void)env;
 	char *buf;
 	char	**tenvp;
-	
+
 	while (cmd)
 	{
 		if (cmd->next)
@@ -43,11 +43,11 @@ void	cmd_to_exec(t_cmd *cmd, t_env *env)
 		}
 		else if ( there_is_redir(env, *cmd) == 0)
 		{
-			
+
 		}
-		else 
+		else
 		{
-			
+
 			if (strcmp(cmd->cmd_args[0], "echo") == 0)
 				do_echo(cmd->cmd_args);
 			else if (strcmp(cmd->cmd_args[0], "cd") == 0)
@@ -70,7 +70,7 @@ void	cmd_to_exec(t_cmd *cmd, t_env *env)
 			}
 			else if (strcmp(cmd->cmd_args[0], "unset") == 0)
 				do_the_unset(env, cmd->cmd_args);
-			else 
+			else
 			{
 				pid_t pid;
 				tenvp = list_to_cmd(env);
@@ -80,24 +80,14 @@ void	cmd_to_exec(t_cmd *cmd, t_env *env)
 					handle_signal(CHILD);
 					if (execve(cmd->cmdp, cmd->cmd_args,tenvp) == -1)
 					{
-						perror(cmd->cmd_args[0]);
-						exit (127);	
+						printf ("minishell: command not found: %s\n", cmd->cmd_args[0]);
+						exit (127);
 					}
-					//free the tenvp
 				}
 				else
 					handle_signal(CHILD_HANDLING);
 				waitpid(pid, &status, 0);
-				printf ("errno : %d %s \n", errno, strerror(errno));
-				printf ("brut status = %d \n", status);
-				if (errno == 2 &&	status == 2)
-				{
-					printf ("ici \n");
-					status = 130;
-				}
-				debug_status(status);
-				printf ("RET_VALUE = %d \n", return_value);
-				errno = 0;
+				set_status(status);
 			}
 		}
 		cmd = cmd->next;
