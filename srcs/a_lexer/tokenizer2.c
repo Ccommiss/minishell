@@ -109,17 +109,20 @@ void tokenize(char *to_tokenize, t_token *toks, t_env *env) // fonction recursiv
 		{
 			if (expand(&to_tokenize, &i, &context, env) == -1) //echec expand
 			{
-				ref_char = TOK_ERR; //trouver la variable fautive 
+				ref_char = TOK_ERR; //trouver la variable fautive
 				ft_bzero(token,2048);
 				printf ("\n");
 				while (to_tokenize[i] && to_tokenize[i] != '|')
 					i++;
 				break ;
 			}
-		}	
+			if (to_tokenize[i] == '$' && to_tokenize[i+1] && to_tokenize[i+1] != ' ' && to_tokenize[i+1] != '$')
+				break ;
+		}
 		if (ref_char != (int)tok(context, (unsigned char)to_tokenize[i]))
 				break ;
 		token[buf_i++] = to_tokenize[i];
+		//printf ("tok %c \n", token[buf_i - 1]);
 		if (to_tokenize[i])
 			i++;
 	}
@@ -132,7 +135,7 @@ void tokenize(char *to_tokenize, t_token *toks, t_env *env) // fonction recursiv
 		toks->type = ref_char;
 		toks->len = strlen(toks->content);
 		toks->next = malloc(sizeof(t_token));
-		toks->next->content = NULL; //faire fonction init 
+		toks->next->content = NULL; //faire fonction init
 		toks->next->prev = toks;
 		toks->next->index = toks->index + 1;
 		toks = toks->next;
@@ -146,7 +149,7 @@ void tokenize(char *to_tokenize, t_token *toks, t_env *env) // fonction recursiv
 		free(toks->next);
 		toks->next = NULL;
 	}
-	else 
+	else
 	{
 		printf ("rien du tout %p \n", toks);
 		toks = NULL;

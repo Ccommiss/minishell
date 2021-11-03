@@ -1,7 +1,14 @@
 
 #include "minishell.h"
 
-
+void	extract_var_name(char **var_name, int len, int start, char *str)
+{
+	if (str[start + 1] == '{') // on enleve les braces
+		*var_name = ft_substr(str, start + 2, len - 2); // recup la name var
+	else
+		*var_name = ft_substr(str, start + 1, len); // recup la name var
+	printf ("VAR NAME = |%s|\n", *var_name);
+}
 /*
 **	ft_str_replace finds the value associated to the provided variable
 **	key iterating through the env variable.
@@ -13,12 +20,7 @@ char *ft_str_replace(char *str, int start, int len, t_env *env)
 	char *value;
 	char *tmp;
 
-	//printf ("VAR NAME = |%s| s: %d -- len : %d \n", str, start+1, len);
-	if (str[start + 1] == '{') // on enleve les braces
-		var_name = ft_substr(str, start + 2, len - 2); // recup la name var
-	else
-		var_name = ft_substr(str, start + 1, len); // recup la name var
-	//printf ("VAR NAME = |%s|\n", var_name);
+	extract_var_name(&var_name, len, start, str);
 	while (env && ft_strncmp(var_name, env->key, ft_strlen(env->key) + 1) != 0)
 		env = env->next;
 	if (ft_strncmp(var_name, "?", 1) == 0) //si on demande le retour
@@ -93,7 +95,7 @@ static int is_valid_expand_char(int *brace, int c, int j)
 		*brace = 1;
 	if (*brace == 0 && ((j > 0 && c == '$') || (j > 1 && c == '{')) ) //je crois
 	{
-		//printf("newvar\n");
+		//j > 1 car $$ va afficher un chiffre
 		return (0);
 	}
 	if (*brace == 0)
@@ -122,8 +124,11 @@ int	expand(char **to_tokenize, int *i, int *context, t_env *env)
 	if (brace == 2 || brace == 3)
 		j++;
 	var_name = ft_substr(*to_tokenize, *(i),  j); // recup la name var verifier erreurs ici
+
+	printf ("previsualize var name= %s , %d \n", var_name, j);
 	if (j > 1) // si on a plus que juste le $
 		*to_tokenize = ft_str_replace(*to_tokenize, *i, j - 1, env);
+	//printf ("to_tok = %s \n", *to_tokenize);
 	handle_quoted_context(context, i, *to_tokenize);
 	return (handle_error_inside (var_name, brace));
 }

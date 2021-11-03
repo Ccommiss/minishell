@@ -1,6 +1,5 @@
 #include "minishell.h"
 
-
 /*
 **	These functions, called according to the contexte, return a token
 **	defining how to interpret the current char given the context.
@@ -8,9 +7,9 @@
 **	character, while not if in a quoted context.
 */
 
-enum tokens op_toks(int c)
+enum	tokens	op_toks(int c)
 {
-	enum tokens tok[256] = {
+	static enum tokens	tok[256] = {
 			['|'] = TOK_PIPE,
 			['<'] = TOK_LESS,
 			['>'] = TOK_GREAT,
@@ -20,9 +19,9 @@ enum tokens op_toks(int c)
 	return (tok[c]);
 }
 
-enum tokens word_toks(int c)
+enum	tokens	word_toks(int c)
 {
-	enum tokens tok[256] = {
+	static enum tokens	tok[256] = {
 			['\0'...' '] = TOK_EAT, // CARACTERES D'ARRET
 			['#'...'&'] = TOK_WORD, // 35 a 38
 			['('...'/'] = TOK_WORD, //40 a 47
@@ -41,12 +40,12 @@ enum tokens word_toks(int c)
 			['\"'] = TOK_WORD, //34
 		};
 
-		return (tok[c]);
+	return (tok[c]);
 }
 
-enum tokens quote_toks(int c)
+enum	tokens	quote_toks(int c)
 {
-	enum tokens tok[256] = {
+	static enum tokens	tok[256] = {
 		['\0'...u'ÿ'] = TOK_WORD
 	};
 
