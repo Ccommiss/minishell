@@ -93,6 +93,7 @@ void tokenize(char *to_tokenize, t_token *toks, t_env *env) // fonction recursiv
 	int buf_i = 0;
 	char token[2048];
 	int context;
+	int res = 0;
 
 	ft_bzero(token, 2048);
 	ref_char = tok(corresp[(unsigned char)to_tokenize[0]], (unsigned char)to_tokenize[0]);
@@ -105,9 +106,10 @@ void tokenize(char *to_tokenize, t_token *toks, t_env *env) // fonction recursiv
 		handle_quoted_context(&context, &i, to_tokenize);
 		if (ref_char != (int)tok(context, (unsigned char)to_tokenize[i]))
 				break ;
-		if (to_tokenize[i] == '$' && context != SQUOTE)
+		while (to_tokenize[i] == '$' && context != SQUOTE && res != 2) //2 voudra dire juste un seul $
 		{
-			if (expand(&to_tokenize, &i, &context, env) == -1) //echec expand
+			res = expand(&to_tokenize, &i, &context, env);
+			if (res == -1) //echec expand
 			{
 				ref_char = TOK_ERR; //trouver la variable fautive
 				ft_bzero(token,2048);
@@ -116,8 +118,6 @@ void tokenize(char *to_tokenize, t_token *toks, t_env *env) // fonction recursiv
 					i++;
 				break ;
 			}
-			if (to_tokenize[i] == '$' && to_tokenize[i+1] && to_tokenize[i+1] != ' ' && to_tokenize[i+1] != '$')
-				break ;
 		}
 		if (ref_char != (int)tok(context, (unsigned char)to_tokenize[i]))
 				break ;

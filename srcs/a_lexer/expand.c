@@ -25,6 +25,8 @@ char *ft_str_replace(char *str, int start, int len, t_env *env)
 		env = env->next;
 	if (ft_strncmp(var_name, "?", 1) == 0) //si on demande le retour
 		value = ft_itoa(return_value);
+	else if (ft_strncmp(var_name, "$", 1) == 0) //si on demande le retour
+		value = ft_itoa(getpid());
 	else if (env == NULL)
 		value = ft_strdup("");
 	else
@@ -64,10 +66,10 @@ int 	handle_error_inside(char *var_name, int brace)
 	}
 	else
 		trimmed_var = ft_substr(var_name, 1, ft_strlen(var_name) - 1);
-	if (!ft_isalnum_str(trimmed_var) && ft_strncmp(trimmed_var, "?", 2) != 0)
+	if (!ft_isalnum_str(trimmed_var) && ft_strncmp(trimmed_var, "?", 2) != 0 && ft_strncmp(trimmed_var, "$", 2) != 0)
 	{
 		printf ("%s : bad substitution\n", var_name);
-		//return_value = 1;
+		return_value = 1;
 		free(var_name);
 		return (-1);
 	}
@@ -89,7 +91,7 @@ static int is_valid_expand_char(int *brace, int c, int j)
 		['$'] = 1,
 		['?'] = 1
 	};
-	if (j == 1 && c == '?')
+	if (j == 1 && (c == '?' || c == '$'))
 		*brace = 3; //test
 	if (j == 1 && c == '{')
 		*brace = 1;
@@ -126,9 +128,12 @@ int	expand(char **to_tokenize, int *i, int *context, t_env *env)
 	var_name = ft_substr(*to_tokenize, *(i),  j); // recup la name var verifier erreurs ici
 
 	printf ("previsualize var name= %s , %d \n", var_name, j);
-	if (j > 1) // si on a plus que juste le $
+	if (j > 1)// || (j == 1 && ft_strncmp((const char *)var_name, "$", 2) == 0)) // si on a plus que juste le $
 		*to_tokenize = ft_str_replace(*to_tokenize, *i, j - 1, env);
+	if (j == 1)
+		return 2;
 	//printf ("to_tok = %s \n", *to_tokenize);
+
 	handle_quoted_context(context, i, *to_tokenize);
 	return (handle_error_inside (var_name, brace));
 }
