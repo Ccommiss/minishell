@@ -11,8 +11,11 @@ char	*ft_auto_substr(char const *s, unsigned int start, size_t len)
 	if (!s)
 		return (NULL);
 	if (start >= ft_strlen(s))
+	{
+		free((char *)s);
         return (NULL);
-	s1 = malloc(sizeof(char) * len + 1);
+	}
+	s1 = malloc(sizeof(char) * (len + 1));
 	if (!(s1))
 		return (NULL);
 	while (i < start)
@@ -20,7 +23,7 @@ char	*ft_auto_substr(char const *s, unsigned int start, size_t len)
 	while (s[i] && j < len)
 		s1[j++] = s[i++];
 	s1[j] = '\0';
-    free((void *)s);
+    free((char *)s);
     s = NULL;
 	return (s1);
 }

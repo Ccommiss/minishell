@@ -51,3 +51,60 @@ enum	tokens	quote_toks(int c)
 
 	return (tok[c]);
 }
+
+
+/*
+**	Memo ASCII
+**
+**	0 a 32 : non-printable characters
+**	33 ... 47 : ponctuation
+**		├─> 34 : "
+**		├─> 36 : $
+**		├─> 39 : '
+**	48 a 57 : chiffres
+**	58 a 64 : operateurs
+**		├─> 60 : <
+**		├─> 62 : >
+**	65 a 90 : A a Z
+**	91 a 96 : ponctuation '[' a '`'
+**	97 a 122 : a a z
+**	123 a 127 : ponctuation { a ~ puis DEL
+**	128 a 254 : Ascii extended
+*/
+
+enum tokens corresp(int c)
+{
+	static enum tokens	corresp[256] = {
+		['|'] = OP,
+		['<'] = OP,
+		['>'] = OP,
+		['\0'...'!'] = WORD, // 0 a 33
+		['#'...'&'] = WORD, // 35 a 38
+		['('...'/'] = WORD, //40 a 47
+		['0'...'9'] = WORD, //48 a 57
+		[':'...';'] = WORD,
+		['='] = WORD,
+		['?'...'@'] = WORD, // 58 a 59 et 61, 63, 64
+		['A'...'Z'] = WORD, //65 a 90
+		['['...'`'] = WORD, // 91 a 96
+		['a'...'z'] = WORD, //97 a 122
+		['{'] = WORD,
+		['}'] = WORD,
+		['~'...u'ÿ'] = WORD, // 126 a la fin
+		['\''] = SQUOTE, //39
+		['\"'] = DQUOTE, //34
+	};
+	return (corresp[c]);
+}
+
+enum tokens	tok(int x, int y)
+{
+	if (x == OP)
+		return (op_toks(y));
+	if (x == WORD)
+		return (word_toks(y));
+	if (x == SQUOTE || x == DQUOTE)
+		return (quote_toks(y));
+
+	return (WORD);
+}

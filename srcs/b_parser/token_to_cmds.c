@@ -54,6 +54,7 @@ void free_toks(t_token *toks)
 	{
 		tmp = toks;
 		toks = toks->next;
+		printf ("toks : free %s\n", tmp->content);
 		free(tmp->content);
 		if (tmp->index != 0)
 		free(tmp);

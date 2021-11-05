@@ -20,7 +20,7 @@
 #include "../libft/libft.h"
 
 
-int return_value; //globale 
+int return_value; //globale
 
 typedef struct s_arg
 {
@@ -64,6 +64,28 @@ enum tokens
 	SQUOTE = '\'',
 	DQUOTE = '\"'
 };
+
+
+/*
+** s_lex struct
+**
+** 	- token : buffer to fill for current token
+**	- buf_i : index of char for token buffer
+**	- context : context to interpret char (single quote,
+**		double quote, or word)
+**	- ref_char : token type of the first char of the token
+**	- exp_res : result of expand
+*/
+typedef struct s_lex t_lex;
+typedef struct s_lex
+{
+	char	token[2048];
+	int		buf_i;
+	int		context;
+	int		ref_char;
+	int		exp_res;
+}	t_lex;
+
 
 typedef struct s_token t_token;
 typedef struct s_token
@@ -180,21 +202,37 @@ void	here_doc(t_env *env, t_cmd cmd , int fd);
 	int	do_the_pipe(t_cmd *cmd, t_env *env);
 
 /*
-** Lexer
+**									[LEXER]
 */
-void		tokenize(char *to_tokenize, t_token *toks, t_env *env);
+
+/*
+** tokenizer.c
+*/
+
 void		init_token(t_token *toks);
-char		*ft_str_replace(char *str, int start, int len, t_env *env);
+void		tokenize(char *to_tokenize, t_token *toks, t_env *env);
 void		debug_tokens(t_token *toks);
 
-int			expand(char **to_tokenize, int *i, int *context, t_env *env);
-void		handle_quoted_context(int *context, int *i, char *to_tokenize);
+/*
+** context.c
+*/
+
+enum tokens corresp(int c);
+enum tokens	tok(int x, int y);
 enum tokens op_toks(int c);
 enum tokens word_toks(int c);
 enum tokens quote_toks(int c);
 
 /*
-** Parser
+** expand.c
+*/
+char		*ft_str_replace(char *str, int start, int len, t_env *env);
+int			expand(char **to_tokenize, int *i, int *context, t_env *env);
+void		handle_quoted_context(int *context, int *i, char *to_tokenize);
+
+
+/*
+** 									[PARSER]
 */
 
 t_cmd		*token_to_cmds(t_cmd *cmd, t_token *toks);

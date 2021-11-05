@@ -1,14 +1,41 @@
-
 #include "minishell.h"
 
+
+/*
+**	extract_var_name : modifies var_name so it removes
+**		- case 1 : $ symbole and {} both braces (eg: ${PATH} becomes PATH)
+**		- case 2 : only $ symbol
+*/
 void	extract_var_name(char **var_name, int len, int start, char *str)
 {
-	if (str[start + 1] == '{') // on enleve les braces
-		*var_name = ft_substr(str, start + 2, len - 2); // recup la name var
+	if (str[start + 1] == '{')
+		*var_name = ft_substr(str, start + 2, len - 2);
 	else
-		*var_name = ft_substr(str, start + 1, len); // recup la name var
+		*var_name = ft_substr(str, start + 1, len);
+	free(str);
 	printf ("VAR NAME = |%s|\n", *var_name);
 }
+
+/*
+**	assign_value : return "values" as the expanded var
+**		- 1) handles 2 special cases : $$ and $?
+**		- 2) iterates through the env to see if one
+**			value match the provided key (var_name)
+*/
+char	*assign_value(t_env *env, char *var_name)
+{
+	if (ft_strncmp(var_name, "?", 1) == 0) //si on demande le retour
+		return(ft_itoa(return_value));
+	else if (ft_strncmp(var_name, "$", 1) == 0) //si on demande le retour
+		return(ft_itoa(getpid()));
+	while (env && ft_strncmp(var_name, env->key, ft_strlen(env->key) + 1) != 0)
+		env = env->next;
+	if (env == NULL)
+		return(ft_strdup(""));
+	else
+		return(ft_strdup(env->value));
+}
+
 /*
 **	ft_str_replace finds the value associated to the provided variable
 **	key iterating through the env variable.
@@ -21,16 +48,9 @@ char *ft_str_replace(char *str, int start, int len, t_env *env)
 	char *tmp;
 
 	extract_var_name(&var_name, len, start, str);
-	while (env && ft_strncmp(var_name, env->key, ft_strlen(env->key) + 1) != 0)
-		env = env->next;
-	if (ft_strncmp(var_name, "?", 1) == 0) //si on demande le retour
-		value = ft_itoa(return_value);
-	else if (ft_strncmp(var_name, "$", 1) == 0) //si on demande le retour
-		value = ft_itoa(getpid());
-	else if (env == NULL)
-		value = ft_strdup("");
-	else
-		value = ft_strdup(env->value);
+	value = assign_value(env, var_name);
+	free(var_name);
+
 	tmp = ft_substr(str, 0, start); //ce qui y avait avant
 	new_str = ft_strconcat(tmp, value, start + ft_strlen(value));
 	free(tmp);
@@ -39,6 +59,7 @@ char *ft_str_replace(char *str, int start, int len, t_env *env)
 	new_str = ft_strconcat(tmp, str + start + len + 1,
 		ft_strlen(tmp) + ft_strlen(str + start + len));
 	free(tmp);
+	free(value);
 	return (new_str);
 }
 
@@ -46,8 +67,6 @@ char *ft_str_replace(char *str, int start, int len, t_env *env)
 ** 	Expand finds the var name to tokenize in the user input and send it
 **	to be replaced.
 */
-
-
 
 int 	handle_error_inside(char *var_name, int brace)
 {
@@ -57,7 +76,7 @@ int 	handle_error_inside(char *var_name, int brace)
 	{
 		printf ("%s : brace error, please close them\n", var_name);
 		free(var_name);
-		return (-1);
+		return (ERROR);
 	}
 	if (brace == 2)
 	{
@@ -71,8 +90,10 @@ int 	handle_error_inside(char *var_name, int brace)
 		printf ("%s : bad substitution\n", var_name);
 		return_value = 1;
 		free(var_name);
-		return (-1);
+		return (ERROR);
 	}
+	free(trimmed_var);
+	free(var_name);
 	return (0);
 }
 
@@ -116,7 +137,7 @@ static int is_valid_expand_char(int *brace, int c, int j)
 int	expand(char **to_tokenize, int *i, int *context, t_env *env)
 {
 	int		j;
-	int		brace; // va servir aussi si ?
+	int		brace; // va servir aussi si ? et $
 	char	*var_name;
 
 	j = 0;
@@ -127,13 +148,10 @@ int	expand(char **to_tokenize, int *i, int *context, t_env *env)
 		j++;
 	var_name = ft_substr(*to_tokenize, *(i),  j); // recup la name var verifier erreurs ici
 
-	printf ("previsualize var name= %s , %d \n", var_name, j);
-	if (j > 1)// || (j == 1 && ft_strncmp((const char *)var_name, "$", 2) == 0)) // si on a plus que juste le $
-		*to_tokenize = ft_str_replace(*to_tokenize, *i, j - 1, env);
 	if (j == 1)
-		return 2;
-	//printf ("to_tok = %s \n", *to_tokenize);
-
+		return (2);
+	if (j > 1)
+		*to_tokenize = ft_str_replace(*to_tokenize, *i, j - 1, env);
 	handle_quoted_context(context, i, *to_tokenize);
 	return (handle_error_inside (var_name, brace));
 }
