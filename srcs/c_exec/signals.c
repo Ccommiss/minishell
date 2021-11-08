@@ -12,7 +12,7 @@ void intHandlerMain()
 {
 	return_value = 130;
     printf("\n");
-    rl_replace_line("", 0);
+   rl_replace_line("", 0);
 	printf ("%s", BWHT"Minishell "BRED"> "RESET);
 }
 

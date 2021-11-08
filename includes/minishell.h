@@ -146,7 +146,7 @@ int	unset_the_var(t_env *env, char *cmd_suffix);
 void	check_the_cmd(char *cmd_suffix);
 void	do_the_unset(t_env *env, char **cmd_suffix);
 char	**list_to_cmd(t_env *env);
-
+int		export_the(t_env *env, char **cmd_suffix);
 /*
  * END OF D_ENV
  * */
@@ -166,19 +166,36 @@ void	do_echo(char **cmd_suffix);
  * */
 void	cmd_to_exec(t_cmd *cmd, t_env *env);
 int		is_a_builtin(char *cmd);
-void	redir_in(t_env *env, char **cmd, int fd, char *path);
-void	simple_redir_o(t_env *env, int fd, char **cmd, char *ath);
+void	redir_in(t_env *env, t_cmd cmd, int fd, char *path);
+void	simple_redir_o(t_env *env, int fd, t_cmd cmd, char *ath);
 int		there_is_redir(t_env *env, t_cmd cmd);
 void	both_redir(t_env *env, t_cmd cmd, int in, int out);
 int		fill_thefd(t_cmd cmd);
 void	here_doc(t_env *env, t_cmd cmd , int fd);
+void	no_cmd(int fd);
+void	no_cmd_d(int fd, int fd1);
+void	fork_fail(char *str, int fd, char **tenvp);
+void	fork_fail_d(char *str, int in, int out,  char **tenvp);
+void	ft_execve(char *path, char **cmd, char **tenvp);
+void	redir_in_built(t_env *env, char **cmd, int fd , int builtin);
+void	redir_out_built(t_env *env, char **cmd, int fd , int builtin);
+void	redir_double_built(t_env *env, t_cmd cmd, int builtin);
 /* end of f_redir*/
 
 /*
  * g_pipe
  */
-	int	do_the_pipe(t_cmd *cmd, t_env *env);
-
+int	do_the_pipe(t_cmd *cmd, t_env *env);
+int		first_pid(t_cmd, t_env *env, int *pipefd, int nbr_p);
+int		last_pid(t_cmd, t_env *env, int *pipefd, int nbr_p);
+int		other_pid(t_cmd, t_env *env, int *pipefd, int i, int nbr_p);
+int		nb_of_pipe(t_cmd *cmd);
+int		malloc_of_pipe(t_cmd *cmd, int **pipefd, pid_t **pid, int *nbr_cmd);
+void	close_all_p(int *fd, int nbr);
+int		deploy_pipe(int *pipefd, pid_t *pid, int nbr_cmd, int nbr_p);
+int		which_redir(t_cmd cmd);
+void	we_wait(pid_t *pid, int nbr_cmd, int *pipefd, int pipee);
+void	exec_builtin(t_env *env, char **cmd, int builtin);
 /*
 ** Lexer
 */

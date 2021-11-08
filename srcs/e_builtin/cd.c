@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cd.c                                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mpochard <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/11/05 17:41:53 by mpochard          #+#    #+#             */
+/*   Updated: 2021/11/05 17:41:54 by mpochard         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 #include <limits.h>
 
@@ -5,7 +17,7 @@ char	*get_pwd(void)
 {
 	char	*tmp;
 	char	buf[PATH_MAX + 1];
-
+	
 	getcwd(buf, PATH_MAX);
 	//printf("tmp %s\n", tmp);
 	tmp = ft_strdup(buf);
@@ -84,7 +96,7 @@ void	cd(t_env *env, char *pwd)
 
 	tmp = env;
 	tmp1 = env;
-	temp = NULL;
+	temp =NULL;
 	while(tmp1)
 	{
 		if (strcmp(tmp1->key, "PWD") == 0)
@@ -97,11 +109,11 @@ void	cd(t_env *env, char *pwd)
 		home = tmp1->value;
 	if (pwd == NULL)
 	{
-
+		
 		if (is_home_unset(tmp,home) == -1)
 			return ;
 	}
-	else
+	else 
 	{
 		while (env)
 		{

@@ -6,7 +6,7 @@
 /*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/13 10:05:27 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/03 17:23:41 by ccommiss         ###   ########.fr       */
+/*   Updated: 2021/11/08 14:59:18 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,9 @@ void	cmd_to_exec(t_cmd *cmd, t_env *env)
 				printf_the_env(env);
 			else if(strcmp(cmd->cmd_args[0], "export") == 0)
 			{
-				if (remplace_the_var(env, cmd->cmd_args[1]) == 0)
-					export_the_var(env, cmd->cmd_args[1]);
+				export_the(env, cmd->cmd_args);
+		//		if (remplace_the_var(env, cmd->cmd_args[1]) == 0)
+		//			export_the_var(env, cmd->cmd_args[1]);
 			}
 			else if (strcmp(cmd->cmd_args[0], "unset") == 0)
 				do_the_unset(env, cmd->cmd_args);

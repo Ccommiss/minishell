@@ -6,7 +6,7 @@
 /*   By: mpochard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 17:06:05 by mpochard          #+#    #+#             */
-/*   Updated: 2021/10/13 16:35:19 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/11/08 13:52:14 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,16 +23,53 @@ char	**ft_split_one_egal(char *str)
 	tab = malloc(sizeof(char *) *(2 + 1));
 	if (tab == NULL)
 		return (NULL);
-	while (str[i] && str[i] != '=')
+	while ((ft_isalnum(str[i]) == 1 || str[i] == '_') && str[i] != '=')
 		i++;
 	tab[j] = strndup(str, i);
 	j++;
+	if ( str[i] == '+')
+		i++;
 	if (str[i] == '=')
 		i++;
 	tab[j] = ft_strdup(&str[i]);
 	j++;
 	tab[j] = 0;
 	return (tab);
+}
+
+static	void	init(int *i, int *k)
+{
+	*i = 0;
+	*k = 0;
+}
+
+char	*ft_strjoin_char(char *str, char *str1, char c)
+{
+	int		i;
+	int		j;
+	int		k;
+	char	*fi;
+
+	init(&i, &k);
+	j = ft_strlen(str) + ft_strlen(str1) + 1;
+	fi = malloc(sizeof(char *) * (j + 1));
+	if (!(fi))
+		return (NULL);
+	while (str[i])
+	{
+		fi[i] = str[i];
+		i++;
+	}
+	fi[i] = c;
+	i++;
+	while (str1[k])
+	{
+		fi[i] = str1[k];
+		k++;
+		i++;
+	}
+	fi[i] = '\0';
+	return (fi);
 }
 
 void	set_the_pwd_inv(t_env *env)
@@ -47,6 +84,35 @@ void	set_the_pwd_inv(t_env *env)
 	env = env->next;
 	}
 }
+
+int	shlvl(t_env *env)
+{
+	t_env *tmp;
+	int	temp;
+
+	tmp = env;
+	while (tmp)
+	{
+		if (ft_strncmp(tmp->key, "SHLVL", 6) == 0)
+			{
+				free(tmp->env);
+				temp = ft_atoi(tmp->value);
+				free(tmp->value);
+				tmp->value = ft_itoa((temp +1));
+				if (tmp->value == NULL)
+				{
+					perror("malloc failed");
+					return (-1);
+				}
+				tmp->env = ft_strjoin_char(tmp->key, tmp->value, '=');
+			break;
+			}
+		tmp = tmp->next;
+	}
+return (0);
+}
+
+
 
 void	get_the_env(t_env **envp, char **env)
 {
@@ -67,7 +133,7 @@ void	get_the_env(t_env **envp, char **env)
 		ft_lstadd_backenv(envp, ft_lstenv("OLDPWD= "));
 		set_the_pwd_inv(*envp);
 	}
-
+	shlvl(*envp);
 }
 
 void	printf_the_env(t_env *envp)

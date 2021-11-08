@@ -6,7 +6,7 @@
 /*   By: mpochard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/30 15:41:11 by mpochard          #+#    #+#             */
-/*   Updated: 2021/10/13 15:48:07 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/11/08 14:45:21 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,9 @@ t_env	*ft_lstenv(char *content)
 	if (tab == NULL)
 		return (NULL);
 	res->key = tab[0];
-	res->env = content;
-	res->visible = 0;
 	res->value = tab[1];
+	res->env = strjoin_char(res->key, res->value, '=');
+	res->visible = 0;
 	res->next = 0;
 	return (res);
 }
