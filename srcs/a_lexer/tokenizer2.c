@@ -1,56 +1,6 @@
 #include "minishell.h"
 
-/*
-**	Memo ASCII
-**
-**	0 a 32 : non-printable characters
-**	33 ... 47 : ponctuation
-**		├─> 34 : "
-**		├─> 36 : $
-**		├─> 39 : '
-**	48 a 57 : chiffres
-**	58 a 64 : operateurs
-**		├─> 60 : <
-**		├─> 62 : >
-**	65 a 90 : A a Z
-**	91 a 96 : ponctuation '[' a '`'
-**	97 a 122 : a a z
-**	123 a 127 : ponctuation { a ~ puis DEL
-**	128 a 254 : Ascii extended
-*/
 
-static enum tokens	corresp[256] = {
-	['|'] = OP,
-	['<'] = OP,
-	['>'] = OP,
-	['\0'...'!'] = WORD, // 0 a 33
-	['#'...'&'] = WORD, // 35 a 38
-	['('...'/'] = WORD, //40 a 47
-	['0'...'9'] = WORD, //48 a 57
-	[':'...';'] = WORD,
-	['='] = WORD,
-	['?'...'@'] = WORD, // 58 a 59 et 61, 63, 64
-	['A'...'Z'] = WORD, //65 a 90
-	['['...'`'] = WORD, // 91 a 96
-	['a'...'z'] = WORD, //97 a 122
-	['{'] = WORD,
-	['}'] = WORD,
-	['~'...u'ÿ'] = WORD, // 126 a la fin
-	['\''] = SQUOTE, //39
-	['\"'] = DQUOTE, //34
-};
-
-enum tokens	tok(int x, int y)
-{
-	if (x == OP)
-		return (op_toks(y));
-	if (x == WORD)
-		return (word_toks(y));
-	if (x == SQUOTE || x == DQUOTE)
-		return (quote_toks(y));
-
-	return (WORD);
-}
 
 void	handle_quoted_context(int *context, int *i, char *to_tokenize)
 {
@@ -82,61 +32,98 @@ void	handle_quoted_context(int *context, int *i, char *to_tokenize)
 }
 
 
+void	init_lexer_struct(t_lex *lex, char *to_tokenize)
+{
+	ft_bzero(lex->token, 2048);
+	lex->buf_i = 0;
+	lex->ref_char = tok(corresp((unsigned char)to_tokenize[0]), (unsigned char)to_tokenize[0]);
+	lex->context = corresp((unsigned char)to_tokenize[0]);
+	if (lex->context == SQUOTE || lex->context == DQUOTE)
+		lex->context = WORD;
+}
+
+void	lex_error_detector(t_token *toks)
+{
+	char tok_op;
+
+	if (toks->type == TOK_GREAT)
+			tok_op = '>';
+	if (toks->type == TOK_LESS)
+		tok_op = '<';
+	if (toks->type == TOK_PIPE)
+		tok_op = '|';
+
+	if (((toks->type == TOK_GREAT || toks->type == TOK_LESS) && toks->len > 2)
+	|| (toks->type == TOK_PIPE &&  toks->len > 1))
+	{
+		toks->type = SYNT_ERR;
+		if (return_value != 2)
+		printf("minishell : syntax error near \"%c\"\n", tok_op);
+		return_value = 2;
+	}
+	// if (toks->type == TOK_PIPE &&  toks->len > 1)
+	// {
+	// 	toks->type = SYNT_ERR;
+	// 	printf("minishell : syntax error near \"%c\"\n", toks->type);
+	// 	return_value = 2;
+	// }
+}
+
+void	create_token(t_token **toks, t_lex *l)
+{
+	if ((*toks)->content == NULL)
+		(*toks)->content = ft_strdup(l->token);
+		//printf ("content = %s")
+	(*toks)->type = l->ref_char;
+	(*toks)->len = strlen((*toks)->content);
+	lex_error_detector(*toks);
+	(*toks)->next = malloc(sizeof(t_token));
+	(*toks)->next->content = NULL; //faire fonction init
+	(*toks)->next->prev = (*toks);
+	(*toks)->next->index = (*toks)->index + 1;
+	(*toks) = (*toks)->next;
+}
 /*
 **	@param to_tokenize : chaine de commande
 **	@t_token
 */
-void tokenize(char *to_tokenize, t_token *toks, t_env *env) // fonction recursive
+void tokenize(char *line, t_token *toks, t_env *env) // fonction recursive
 {
-	int i = 0;
-	int ref_char = -100;
-	int buf_i = 0;
-	char token[2048];
-	int context;
+	t_lex	l;
+	int		i;
+	char	*to_tokenize;
 
-	ft_bzero(token, 2048);
-	ref_char = tok(corresp[(unsigned char)to_tokenize[0]], (unsigned char)to_tokenize[0]);
-	context = corresp[(unsigned char)to_tokenize[0]];
-	if (context == SQUOTE || context == DQUOTE)
-		context = WORD;
+	to_tokenize = ft_strdup(line);
+	init_lexer_struct(&l, to_tokenize);
+	i = 0;
 
-	while ((to_tokenize[i]) && ref_char == (int)tok(context, (unsigned char)to_tokenize[i]))
+	while ((to_tokenize[i]) && l.ref_char == (int)tok(l.context, (unsigned char)to_tokenize[i]))
 	{
-		handle_quoted_context(&context, &i, to_tokenize);
-		if (ref_char != (int)tok(context, (unsigned char)to_tokenize[i]))
+		handle_quoted_context(&(l.context), &i, to_tokenize);
+		if (l.ref_char != (int)tok(l.context, (unsigned char)to_tokenize[i]))
 				break ;
-		if (to_tokenize[i] == '$' && context != SQUOTE)
+		while (to_tokenize[i] == '$' && l.context != SQUOTE && l.exp_res != 2) //2 voudra dire juste un seul $
 		{
-			if (expand(&to_tokenize, &i, &context, env) == -1) //echec expand
+			l.exp_res = expand(&to_tokenize, &i, &l.context, env);
+			if (l.exp_res == -1) //echec expand
 			{
-				ref_char = TOK_ERR; //trouver la variable fautive 
-				ft_bzero(token,2048);
+				l.ref_char = TOK_ERR; //trouver la variable fautive
+				ft_bzero(l.token, 2048);
 				printf ("\n");
 				while (to_tokenize[i] && to_tokenize[i] != '|')
 					i++;
 				break ;
 			}
-		}	
-		if (ref_char != (int)tok(context, (unsigned char)to_tokenize[i]))
+		}
+		if (l.ref_char != (int)tok(l.context, (unsigned char)to_tokenize[i]))
 				break ;
-		token[buf_i++] = to_tokenize[i];
+		l.token[l.buf_i++] = to_tokenize[i];
 		if (to_tokenize[i])
 			i++;
 	}
-	token[buf_i] = '\0';
-	if (ref_char != TOK_EAT)
-	{
-		if(toks->content == NULL)
-			toks->content = ft_strdup(token);
-		//printf ("content = %s")
-		toks->type = ref_char;
-		toks->len = strlen(toks->content);
-		toks->next = malloc(sizeof(t_token));
-		toks->next->content = NULL; //faire fonction init 
-		toks->next->prev = toks;
-		toks->next->index = toks->index + 1;
-		toks = toks->next;
-	}
+	l.token[l.buf_i] = '\0';
+	if (l.ref_char != TOK_EAT)
+		create_token(&toks, &l);
 	to_tokenize = ft_auto_substr(to_tokenize, i, ft_strlen(to_tokenize));
 	if (to_tokenize && ft_strlen(to_tokenize) != 0)
 		tokenize(to_tokenize, toks, env); //recursivite
@@ -145,11 +132,14 @@ void tokenize(char *to_tokenize, t_token *toks, t_env *env) // fonction recursiv
 		toks = toks->prev;
 		free(toks->next);
 		toks->next = NULL;
+		free(to_tokenize);
+		to_tokenize = NULL;
 	}
-	else 
+	else
 	{
 		printf ("rien du tout %p \n", toks);
 		toks = NULL;
 		printf ("rien du tout %p \n", toks);
 	}
+	free(to_tokenize);
 }

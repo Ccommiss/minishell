@@ -36,7 +36,8 @@ SOURCES =	main.c\
 			${PIPE_PATH}/last_pid.c\
 			${PIPE_PATH}/util_pipe.c\
 			${EXEC_PATH}/signals.c \
-			${EXEC_PATH}/set_status.c
+			${EXEC_PATH}/set_status.c \
+			utils.c
 
 
 
