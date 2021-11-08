@@ -79,10 +79,7 @@ int 	handle_error_inside(char *var_name, int brace)
 		return (ERROR);
 	}
 	if (brace == 2)
-	{
 		trimmed_var = ft_substr(var_name, 2, ft_strlen(var_name) - 3);
-		//printf ("trimmed var = %s\n", trimmed_var);
-	}
 	else
 		trimmed_var = ft_substr(var_name, 1, ft_strlen(var_name) - 1);
 	if (!ft_isalnum_str(trimmed_var) && ft_strncmp(trimmed_var, "?", 2) != 0 && ft_strncmp(trimmed_var, "$", 2) != 0)

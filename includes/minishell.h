@@ -60,11 +60,11 @@ enum tokens
 	TOK_GREAT,
 	TOK_LESS,
 	TOK_EQUAL,
-	TOK_ERR,
+	TOK_ERR, // expand erreur
+	SYNT_ERR, //erreur builtin syntax 
 	SQUOTE = '\'',
 	DQUOTE = '\"'
 };
-
 
 /*
 ** s_lex struct
@@ -209,7 +209,7 @@ void	here_doc(t_env *env, t_cmd cmd , int fd);
 ** tokenizer.c
 */
 
-void		init_token(t_token *toks);
+void		init_tok_and_cmd(t_token *toks, t_cmd *cmd);
 void		tokenize(char *to_tokenize, t_token *toks, t_env *env);
 void		debug_tokens(t_token *toks);
 
@@ -248,9 +248,10 @@ void 	quithandler();
 void 	quithandler2();
 
 
-
-
-
+/*
+**	utils.c
+*/
+void cleanup(t_cmd *cmd, t_token *toks, char *line);
 
 
 

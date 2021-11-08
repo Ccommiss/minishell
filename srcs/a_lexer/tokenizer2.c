@@ -42,7 +42,14 @@ void	init_lexer_struct(t_lex *lex, char *to_tokenize)
 		lex->context = WORD;
 }
 
-
+void	lex_error_detector(t_token *toks)
+{
+	if ((toks->type == TOK_GREAT || toks->type == TOK_LESS)
+		&& toks->len > 2)
+		toks->type = SYNT_ERR;
+	if (toks->type == TOK_PIPE &&  toks->len > 1)
+		toks->type = SYNT_ERR;
+}
 
 void	create_token(t_token **toks, t_lex *l)
 {
@@ -51,6 +58,7 @@ void	create_token(t_token **toks, t_lex *l)
 		//printf ("content = %s")
 	(*toks)->type = l->ref_char;
 	(*toks)->len = strlen((*toks)->content);
+	lex_error_detector(*toks);
 	(*toks)->next = malloc(sizeof(t_token));
 	(*toks)->next->content = NULL; //faire fonction init
 	(*toks)->next->prev = (*toks);
@@ -98,10 +106,7 @@ void tokenize(char *line, t_token *toks, t_env *env) // fonction recursive
 	l.token[l.buf_i] = '\0';
 	if (l.ref_char != TOK_EAT)
 		create_token(&toks, &l);
-	printf ("avant substr %s \n", to_tokenize);
 	to_tokenize = ft_auto_substr(to_tokenize, i, ft_strlen(to_tokenize));
-	printf ("apres %s \n", to_tokenize);
-
 	if (to_tokenize && ft_strlen(to_tokenize) != 0)
 		tokenize(to_tokenize, toks, env); //recursivite
 	else if (toks && toks->prev)
@@ -116,10 +121,7 @@ void tokenize(char *line, t_token *toks, t_env *env) // fonction recursive
 	{
 		printf ("rien du tout %p \n", toks);
 		toks = NULL;
-		free(to_tokenize);
 		printf ("rien du tout %p \n", toks);
 	}
-	printf ("ON VA FREE\n");
-	printf ("%s \n", to_tokenize);
 	free(to_tokenize);
 }

@@ -31,7 +31,8 @@ SOURCES =	main.c\
 			${EXEC_PATH}/cmd_to_exec.c\
 			${PIPE_PATH}/do_pipe.c\
 			${EXEC_PATH}/signals.c \
-			${EXEC_PATH}/set_status.c
+			${EXEC_PATH}/set_status.c \
+			utils.c
 
 
 
@@ -48,7 +49,7 @@ OBJS	= 	${SRCS:.c=.o}
 CC = gcc
 
 #CFLAGS = -g -I.$(INCLUDES) -Wall -Werror -Wextra# -fsanitize=address
-CFLAGS = -g -I.$(INCLUDES) -I/usr/local/opt/readline/include  -Wall -Werror -Wextra #-fsanitize=address
+CFLAGS = -g -I.$(INCLUDES) -I/usr/local/opt/readline/include  -Wall -Werror -Wextra -fsanitize=address
 
 RM = rm -f
 

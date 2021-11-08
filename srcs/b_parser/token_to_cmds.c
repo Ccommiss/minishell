@@ -1,8 +1,6 @@
 #include "minishell.h"
 
-
-
-void	command_and_suffix(t_cmd *cmd, t_token *toks, int *j)
+void command_and_suffix(t_cmd *cmd, t_token *toks, int *j)
 {
 	cmd->cmd_args = realloc(cmd->cmd_args, (sizeof(char **) * (*j + 2))); //realloc double tab
 	cmd->cmd_args[*j] = ft_strdup(toks->content);
@@ -10,7 +8,7 @@ void	command_and_suffix(t_cmd *cmd, t_token *toks, int *j)
 	cmd->cmd_args[*j] = NULL;
 }
 
-void	init_cmd(t_cmd *cmd)
+void init_cmd(t_cmd *cmd)
 {
 	cmd->cmd_args = malloc(sizeof(char **) * 1);
 	cmd->cmd_args[0] = NULL;
@@ -21,13 +19,12 @@ void	init_cmd(t_cmd *cmd)
 	cmd->io_in = NOT_SPECIFIED;
 	cmd->io_out = NOT_SPECIFIED;
 	cmd->io_here = NULL;
-	cmd->here_words= 0;
+	cmd->here_words = 0;
 	cmd->dgreat = FALSE;
 	cmd->dless = FALSE;
 }
 
-
-void 	free_command_items(t_cmd *cmd)
+void free_command_items(t_cmd *cmd)
 {
 	int i;
 
@@ -48,46 +45,70 @@ void free_toks(t_token *toks)
 	t_token *tmp;
 	while (toks->index != 0)
 	{
+		printf("on a besoin de passer la \n");
 		toks = toks->prev;
 	}
 	while (toks)
 	{
 		tmp = toks;
 		toks = toks->next;
-		printf ("toks : free %s\n", tmp->content);
+		printf("toks : free %s\n", tmp->content);
 		free(tmp->content);
 		if (tmp->index != 0)
-		free(tmp);
+			free(tmp);
 	}
 }
 
-t_cmd	*token_to_cmds(t_cmd *cmd, t_token *toks)
+int check_syn_err(t_token *toks)
 {
-	int	j;
+	t_token *head;
+
+	head = toks;
+	while (toks)
+	{
+		if (toks->type == SYNT_ERR)
+			return ERROR;
+		toks = toks->next;
+	}
+	toks = head;
+	return (TRUE);
+}
+
+t_cmd *token_to_cmds(t_cmd *cmd, t_token *toks)
+{
+	int j;
 
 	j = 0;
 	t_token *head;
 	head = toks;
-	if (toks->type == -1) //pas de tok
+	if (toks->index == 0 && check_syn_err(toks) == ERROR)
+	{
+		//free_toks(head);
+		cmd->error = 1;
+		free_command_items(cmd);
 		return (NULL);
+	}
+	if (toks->type == -1) //pas de tok
+	{
+		cmd->error = 1;
+		return (NULL);
+	}
 	init_cmd(cmd);
 	if (toks->type == TOK_PIPE)
 		toks = toks->next;
 	while (toks && toks->type != TOK_PIPE) //ajout oks content si le premier et seul tok est espace
 	{
-		if (toks->type == TOK_ERR)
+		if (toks->type == TOK_ERR) // on ne fait pas cette commande
 		{
-			//free_command_items(cmd);
-			printf ("ERREUR DE COMMANDE\n");
 			cmd->error = TRUE;
 			while (toks && toks->type != TOK_PIPE)
 				toks = toks->next;
-			break ;
+			break;
 		}
 		if (toks->type == TOK_WORD && ft_strlen(toks->content) > 0)
 			command_and_suffix(cmd, toks, &j);
 		if (toks->type == TOK_LESS || toks->type == TOK_GREAT)
-			redirect (cmd, &toks, toks->type, ft_strlen(toks->content));
+			redirect(cmd, &toks, toks->type, ft_strlen(toks->content));
 		toks = toks->next;
 	}
 	if (toks != NULL && !(toks->type == TOK_PIPE && !toks->next))
@@ -96,7 +117,8 @@ t_cmd	*token_to_cmds(t_cmd *cmd, t_token *toks)
 		cmd->next->prev = cmd;
 		token_to_cmds(cmd->next, toks);
 	}
-	else {
+	else
+	{
 		cmd->next = NULL;
 		free_toks(head);
 	}
