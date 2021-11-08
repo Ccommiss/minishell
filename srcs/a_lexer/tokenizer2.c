@@ -44,11 +44,29 @@ void	init_lexer_struct(t_lex *lex, char *to_tokenize)
 
 void	lex_error_detector(t_token *toks)
 {
-	if ((toks->type == TOK_GREAT || toks->type == TOK_LESS)
-		&& toks->len > 2)
+	char tok_op;
+
+	if (toks->type == TOK_GREAT)
+			tok_op = '>';
+	if (toks->type == TOK_LESS)
+		tok_op = '<';
+	if (toks->type == TOK_PIPE)
+		tok_op = '|';
+
+	if (((toks->type == TOK_GREAT || toks->type == TOK_LESS) && toks->len > 2)
+	|| (toks->type == TOK_PIPE &&  toks->len > 1))
+	{
 		toks->type = SYNT_ERR;
-	if (toks->type == TOK_PIPE &&  toks->len > 1)
-		toks->type = SYNT_ERR;
+		if (return_value != 2)
+		printf("minishell : syntax error near \"%c\"\n", tok_op);
+		return_value = 2;
+	}
+	// if (toks->type == TOK_PIPE &&  toks->len > 1)
+	// {
+	// 	toks->type = SYNT_ERR;
+	// 	printf("minishell : syntax error near \"%c\"\n", toks->type);
+	// 	return_value = 2;
+	// }
 }
 
 void	create_token(t_token **toks, t_lex *l)

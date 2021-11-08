@@ -61,7 +61,7 @@ enum tokens
 	TOK_LESS,
 	TOK_EQUAL,
 	TOK_ERR, // expand erreur
-	SYNT_ERR, //erreur builtin syntax 
+	SYNT_ERR, //erreur builtin syntax
 	SQUOTE = '\'',
 	DQUOTE = '\"'
 };
@@ -252,7 +252,7 @@ void 	quithandler2();
 **	utils.c
 */
 void cleanup(t_cmd *cmd, t_token *toks, char *line);
-
-
+void free_toks(t_token *toks);
+void free_cmds(t_cmd *cmd);
 
 #endif

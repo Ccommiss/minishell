@@ -40,24 +40,7 @@ void free_command_items(t_cmd *cmd)
 		free(cmd->cmdp);
 }
 
-void free_toks(t_token *toks)
-{
-	t_token *tmp;
-	while (toks->index != 0)
-	{
-		printf("on a besoin de passer la \n");
-		toks = toks->prev;
-	}
-	while (toks)
-	{
-		tmp = toks;
-		toks = toks->next;
-		printf("toks : free %s\n", tmp->content);
-		free(tmp->content);
-		if (tmp->index != 0)
-			free(tmp);
-	}
-}
+
 
 int check_syn_err(t_token *toks)
 {

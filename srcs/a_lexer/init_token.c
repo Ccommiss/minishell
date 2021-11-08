@@ -20,6 +20,7 @@ void	start_cmd(t_cmd *cmd)
 	cmd->io_out = NOT_SPECIFIED;
 	cmd->dgreat = FALSE;
 	cmd->dless = FALSE;
+	cmd->error = FALSE;
 }
 
 void	init_tok_and_cmd(t_token *toks, t_cmd *cmd)
