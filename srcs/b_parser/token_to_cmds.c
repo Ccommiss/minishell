@@ -45,14 +45,18 @@ void free_command_items(t_cmd *cmd)
 int check_syn_err(t_token *toks)
 {
 	t_token *head;
+	int error;
 
 	head = toks;
+	error = 0;
 	while (toks)
 	{
 		if (toks->type == SYNT_ERR)
-			return ERROR;
+			error = TRUE;
 		toks = toks->next;
 	}
+	if (error)
+		return (ERROR);
 	toks = head;
 	return (TRUE);
 }
