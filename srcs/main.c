@@ -6,7 +6,7 @@
 /*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/15 16:46:53 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/08 14:16:22 by ccommiss         ###   ########.fr       */
+/*   Updated: 2021/11/08 17:32:56 by ccommiss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ int main(int ac, char **av, char **envp)
 			token_to_cmds(&cmd, &toks);
 			find_path(&cmd, env);
 			debug_cmds(&cmd);
-			//cmd_to_exec(&cmd, env);
+			cmd_to_exec(&cmd, env);
 			cleanup(&cmd, &toks, line);
 		}
 		else if (!line)

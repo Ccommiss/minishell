@@ -12,7 +12,7 @@ void	extract_var_name(char **var_name, int len, int start, char *str)
 		*var_name = ft_substr(str, start + 2, len - 2);
 	else
 		*var_name = ft_substr(str, start + 1, len);
-	free(str);
+	//free(str); MAUVAIS FREE QUI A TOUT CASSE
 	printf ("VAR NAME = |%s|\n", *var_name);
 }
 
@@ -31,7 +31,10 @@ char	*assign_value(t_env *env, char *var_name)
 	while (env && ft_strncmp(var_name, env->key, ft_strlen(env->key) + 1) != 0)
 		env = env->next;
 	if (env == NULL)
-		return(ft_strdup(""));
+	{
+		sleep(2);
+		return (ft_strdup(""));
+	}
 	else
 		return(ft_strdup(env->value));
 }
