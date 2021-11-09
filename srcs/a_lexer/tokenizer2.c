@@ -4,9 +4,8 @@
 
 void	handle_quoted_context(int *context, int *i, char *to_tokenize)
 {
-	if (!to_tokenize[*i]) // test 
+	if (!to_tokenize[*i]) // test
 		return ;
-	printf(" %c \n", to_tokenize[*i]);
 	//printf ("{handle quote} to_tokenize[%d] = %c \n", *i, to_tokenize[*i]);
 	if (*context != DQUOTE && *context != SQUOTE
 		&& (to_tokenize[*i] == SQUOTE  && ft_strchr(to_tokenize + *i +1, SQUOTE)))
