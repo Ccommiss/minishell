@@ -68,7 +68,7 @@ void	cmd_to_exec(t_cmd *cmd, t_env *env)
 				printf_the_env(env);
 			else if(strcmp(cmd->cmd_args[0], "export") == 0)
 			{
-				export_the(env, cmd->cmd_args);
+				export_the(env, &cmd->cmd_args[1]);
 		//		if (remplace_the_var(env, cmd->cmd_args[1]) == 0)
 		//			export_the_var(env, cmd->cmd_args[1]);
 			}

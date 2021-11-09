@@ -69,8 +69,8 @@ t_env	*ft_lstenv_inv(char *content)
 	res = malloc(sizeof(t_env));
 	if (!(res))
 		return (NULL);
-	res->key = content;
-	res->env = content;
+	res->key = ft_strdup(content);
+	res->env = ft_strdup(content);
 	res->visible = 1;
 	res->value = ft_strdup("");
 	res->next = 0;

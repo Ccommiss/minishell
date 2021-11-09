@@ -54,7 +54,7 @@ void	no_cmd_here(int in , int out)
 		close(in);
 	if (out > 0)
 		close(out);
-		unlink(".here_doc");
+	unlink(".here_doc");
 	return ;
 }
 
