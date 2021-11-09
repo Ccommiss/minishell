@@ -6,11 +6,8 @@ void free_toks(t_token *toks)
 
 	while (toks && toks->index > 0 && toks->index != 0)
 		toks = toks->prev;
-
-	//tmp = toks;
 	while (toks)
 	{
-		printf("index = %d\n", toks->index);
 		tmp = toks;
 		toks = toks->next;
 		if (tmp->content)
@@ -23,11 +20,10 @@ void free_toks(t_token *toks)
 			tmp->index = -1;
 			free(tmp);
 			tmp = NULL;
-			printf("null = %p \n\n", tmp);
 		}
-		if (!toks)
-			printf("nulle add\n");
-		printf(" %p %p toks\n", toks, tmp);
+		// if (!toks)
+		// 	printf("nulle add\n");
+		// printf(" %p %p toks\n", toks, tmp);
 	}
 }
 
@@ -56,8 +52,6 @@ void free_cmds(t_cmd *cmd)
 
 void cleanup(t_cmd *cmd, t_token *toks, char *line)
 {
-	printf("CLLEANUP\n");
-	printf("CLLEANUP\n");
 	free_cmds(cmd);
 	// if (toks && toks->next)
 	// 	free_toks(toks);

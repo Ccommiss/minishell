@@ -13,7 +13,7 @@ void	extract_var_name(char **var_name, int len, int start, char *str)
 	else
 		*var_name = ft_substr(str, start + 1, len);
 	//free(str); MAUVAIS FREE QUI A TOUT CASSE
-	printf ("VAR NAME = |%s|\n", *var_name);
+	//printf ("VAR NAME = |%s|\n", *var_name);
 }
 
 /*
