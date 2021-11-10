@@ -11,6 +11,7 @@ SOURCES =	main.c\
 			$(LEX_PATH)/tokenizer2.c \
 			$(LEX_PATH)/init_token.c \
 			$(LEX_PATH)/expand.c \
+			$(LEX_PATH)/quotes.c \
 			$(LEX_PATH)/debug_tokens.c \
 			$(LEX_PATH)/context.c \
 			$(PAR_PATH)/find_path.c \

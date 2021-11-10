@@ -48,6 +48,14 @@ enum signal_location
 	CHILD_HANDLING
 };
 
+enum expand
+{
+	NO_BRACE,
+	OPEN_BRACE = 1,
+	CLOSE_BRACE = 2,
+	DOL_OR_QUEST = 3
+};
+
 enum tokens
 {
 	OP = 4,
@@ -246,6 +254,11 @@ enum tokens quote_toks(int c);
 char		*ft_str_replace(char *str, int start, int len, t_env *env);
 int			expand(char **to_tokenize, int *i, int *context, t_env *env);
 void		handle_quoted_context(int *context, int *i, char *to_tokenize);
+
+/*
+** quotes.c
+*/
+void handle_quoted_context(int *context, int *i, char *to_tokenize);
 
 
 /*

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_the_var.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpochard <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 17:23:21 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/08 14:45:54 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/11/09 14:44:59 by ccommiss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ char	**fill_thexport(t_env *env)
 	int		i;
 	t_env *tmp;
 	char	**exp;
-	
+
 	tmp = env;
 	i = nb_export(env);
 	exp = malloc(sizeof(char *) * (i + 1));
@@ -184,6 +184,7 @@ int	remplace(t_env *env, int egal, char *cmd_suffix)
 	char	**tab;
 
 	tab = ft_split_one_egal(cmd_suffix);
+	printf("CMD SUFF %s %s %s\n", cmd_suffix, tab[0], env->key);
 	if (tab == NULL)
 	{
 		perror("malloc failed\n");
