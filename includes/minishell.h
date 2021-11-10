@@ -33,6 +33,7 @@ typedef struct s_arg
 enum bool
 {
 	ERROR = -1,
+	BREAK = -1,
 	FALSE,
 	TRUE
 };
@@ -231,11 +232,14 @@ void	exec_builtin(t_env *env, char **cmd, int builtin);
 */
 
 /*
-** tokenizer.c
+** tokenizer.c, lex_error_detector.c
 */
 
 void		init_tok_and_cmd(t_token *toks, t_cmd *cmd);
 void		tokenize(char *to_tokenize, t_token *toks, t_env *env);
+void 		syntax_error_detector(t_token *toks);
+int			expand_substitution_error_detector(char *var_name, int exception);
+
 void		debug_tokens(t_token *toks);
 
 /*

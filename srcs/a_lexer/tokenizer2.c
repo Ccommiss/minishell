@@ -12,38 +12,52 @@ void	init_lexer_struct(t_lex *lex, char *to_tokenize)
 	lex->exp_res = 0;
 }
 
-void	lex_error_detector(t_token *toks)
-{
-	char	tok_op;
-
-	if (toks->type == TOK_GREAT)
-		tok_op = '>';
-	if (toks->type == TOK_LESS)
-		tok_op = '<';
-	if (toks->type == TOK_PIPE)
-		tok_op = '|';
-	if (((toks->type == TOK_GREAT || toks->type == TOK_LESS) && toks->len > 2)
-		|| (toks->type == TOK_PIPE && toks->len > 1))
-	{
-		toks->type = SYNT_ERR;
-		if (return_value != 2)
-			printf("minishell : syntax error near \"%c\"\n", tok_op);
-		return_value = 2;
-	}
-}
-
 void	create_token(t_token **toks, t_lex *l)
 {
 	if ((*toks)->content == NULL)
 		(*toks)->content = ft_strdup(l->token);
 	(*toks)->type = l->ref_char;
 	(*toks)->len = strlen((*toks)->content);
-	lex_error_detector(*toks);
+	syntax_error_detector(*toks);
 	(*toks)->next = malloc(sizeof(t_token));
 	(*toks)->next->content = NULL;
 	(*toks)->next->prev = (*toks);
 	(*toks)->next->index = (*toks)->index + 1;
 	(*toks) = (*toks)->next;
+}
+
+int	handle_expand(char **to_tokenize, int *i, t_lex *l, t_env *env)
+{
+	while (to_tokenize[0][*i] == '$' && l->context != SQUOTE && l->exp_res != 2)
+	{
+		l->exp_res = expand(to_tokenize, i, &l->context, env);
+		if (l->exp_res == ERROR)
+		{
+			l->ref_char = TOK_ERR;
+			ft_bzero(l->token, 2048);
+			while (to_tokenize[0][*i] && to_tokenize[0][*i] != '|')
+				*i += 1;
+			return (ERROR);
+		}
+	}
+	if (l->ref_char != (int)tok(l->context, (unsigned char)to_tokenize[0][*i]))
+		return (BREAK);
+	return (0);
+}
+
+void	fill_token_buff(t_lex *l, char **to_tokenize, int *i, t_env *env)
+{
+	while (to_tokenize[0][*i]
+		&& l->ref_char == (int)tok(l->context, (unsigned char)to_tokenize[0][*i]))
+	{
+		handle_quoted_context(&(l->context), i, *to_tokenize);
+		if (handle_expand(to_tokenize, i, l, env) == -1)
+			break ;
+		l->token[l->buf_i++] = to_tokenize[0][*i];
+		if (to_tokenize[0][*i])
+			*i += 1;
+	}
+	l->token[l->buf_i] = '\0';
 }
 
 /*
@@ -60,48 +74,21 @@ void	tokenize(char *line, t_token *toks, t_env *env)
 	int		i;
 	char	*to_tokenize;
 
+	i = 0;
 	to_tokenize = ft_strdup(line);
 	init_lexer_struct(&l, to_tokenize);
-	i = 0;
-	while ((to_tokenize[i])
-		&& l.ref_char == (int)tok(l.context, (unsigned char)to_tokenize[i]))
-	{
-		handle_quoted_context(&(l.context), &i, to_tokenize);
-		if (l.ref_char != (int)tok(l.context, (unsigned char)to_tokenize[i]))
-			break ;
-		while (to_tokenize[i] == '$' && l.context != SQUOTE
-			&& l.exp_res != 2) //2 voudra dire juste un seul $
-		{
-			l.exp_res = expand(&to_tokenize, &i, &l.context, env);
-			if (l.exp_res == -1) //echec expand
-			{
-				l.ref_char = TOK_ERR;
-				ft_bzero(l.token, 2048);
-				while (to_tokenize[i] && to_tokenize[i] != '|')
-					i++;
-				break ;
-			}
-		}
-		//if (l.ref_char != (int)tok(l.context, (unsigned char)to_tokenize[i]))
-		//		break ;
-		l.token[l.buf_i++] = to_tokenize[i];
-		if (to_tokenize[i])
-			i++;
-	}
-	l.token[l.buf_i] = '\0';
+	fill_token_buff(&l, &to_tokenize, &i, env);
 	if (l.ref_char != TOK_EAT && ft_strlen(l.token) != 0)
 		create_token(&toks, &l);
 	to_tokenize = ft_auto_substr(to_tokenize, i, ft_strlen(to_tokenize));
 	if (to_tokenize && ft_strlen(to_tokenize) != 0)
-		tokenize(to_tokenize, toks, env); //recursivite
+		tokenize(to_tokenize, toks, env);
 	else if (toks && toks->prev)
 	{
 		toks = toks->prev;
 		free(toks->next);
 		toks->next = NULL;
 	}
-	else
-		toks = NULL;
 	free(to_tokenize);
 	to_tokenize = NULL;
 }
