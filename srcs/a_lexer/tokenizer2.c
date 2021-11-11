@@ -48,7 +48,8 @@ int	handle_expand(char **to_tokenize, int *i, t_lex *l, t_env *env)
 void	fill_token_buff(t_lex *l, char **to_tokenize, int *i, t_env *env)
 {
 	while (to_tokenize[0][*i]
-		&& l->ref_char == (int)tok(l->context, (unsigned char)to_tokenize[0][*i]))
+		&& l->ref_char == (int)tok(l->context,
+			(unsigned char)to_tokenize[0][*i]))
 	{
 		handle_quoted_context(&(l->context), i, *to_tokenize);
 		if (handle_expand(to_tokenize, i, l, env) == -1)

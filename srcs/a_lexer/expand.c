@@ -70,8 +70,6 @@ char	*ft_str_replace(char *str, int start, int len, t_env *env)
 	return (new_str);
 }
 
-
-
 /*
 ** is_valid_expand_char test each of character to know if
 **	1 - We are still in the expand context (no space) or
@@ -105,7 +103,7 @@ static int	is_valid_expand_char(int *exception, int c, int j)
 		};
 
 	if (j == 1 || c == '}' || (j > 1 && *exception == DOL_OR_QUEST))
-		*exception = set_exception[*exception][c]; //detection si { ou ? ou $
+		*exception = set_exception[*exception][c];
 	return (valid_tab[*exception][c]);
 }
 
@@ -130,7 +128,6 @@ int	expand(char **to_tokenize, int *i, int *context, t_env *env)
 		return (2);
 	if (j > 1)
 		*to_tokenize = ft_str_replace(*to_tokenize, *i, j - 1, env);
-	//printf("TO TOK = %s \n", *to_tokenize);
 	handle_quoted_context(context, i, *to_tokenize);
 	return (expand_substitution_error_detector(var_name, exception));
 }
