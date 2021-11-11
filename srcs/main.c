@@ -15,6 +15,8 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
+t_utils g_utils;
+
 int check_quote(char *line)
 {
 	int i;
@@ -55,7 +57,7 @@ char *choose_prompt()
 {
 	char *line;
 
-	if (utils.return_value != 0)
+	if (g_utils.return_value != 0)
 		line = readline(BWHT "Minishell " BRED "> " RESET);
 	else
 		line = readline(BWHT "Minishell " BGRN "> " RESET);

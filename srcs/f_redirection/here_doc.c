@@ -13,11 +13,6 @@
 #include "minishell.h"
 
 
-void handle_here()
-{
-	utils.g_sig = 1;
-}
-
 int	fill_thefd(t_cmd cmd)
 {
 	int fd;
@@ -25,31 +20,42 @@ int	fill_thefd(t_cmd cmd)
 	char	*line;
 
 	i = 0;
-	utils.g_sig = 0;
-	while (cmd.here_words)
+	g_utils.g_sig = 0;
+				handle_signal(HEREDOC);
+
+	while (cmd.here_words && g_utils.g_sig == 0)
 	{
+		//handle_signal(HEREDOC);
+		if(g_utils.g_sig == 0)
 		fd = open(".here_doc", O_CREAT | O_TRUNC | O_RDWR , 0777);
 		if ( fd == -1)
 		{
 			perror(">");
 			return (-1);
 		}
-		while (utils.g_sig == 0)
+		while (g_utils.g_sig == 0)
 		{
-			line = readline(">");
-			handle_signal(HEREDOC);
-			if (line)
+			printf ("D%d \n\n", g_utils.g_sig);
+			if(!g_utils.g_sig)
+			line = readline("> ");
+			printf ("line = %s \n", line);
+			
+			if (line && g_utils.g_sig == 0)
 			{
+				printf ("inside \n");
 			if (ft_strncmp(cmd.io_here[i], line, ft_strlen(cmd.io_here[i])) == 0)
 			{
 				free(line);
 				break;
 			}
 			}
+			printf ("outside\n");
+
 			write(fd, line, ft_strlen(line));
 			write(fd, "\n", 1);
 			free(line);
 		}
+		printf ("ici\n");
 		i++;
 		cmd.here_words--;
 		close(fd);
@@ -62,7 +68,7 @@ void	no_cmd_here(int in , int out)
 		close(in);
 	if (out > 0)
 		close(out);
-		unlink(".here_doc");
+	unlink(".here_doc");
 	return ;
 }
 

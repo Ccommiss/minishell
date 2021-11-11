@@ -22,7 +22,7 @@ void	extract_pure_var_name(char **var_name, int len, int start, char *str)
 char	*assign_value(t_env *env, char *var_name)
 {
 	if (ft_strncmp(var_name, "?", 1) == 0)
-		return (ft_itoa(utils.return_value));
+		return (ft_itoa(g_utils.return_value));
 	else if (ft_strncmp(var_name, "$", 1) == 0)
 		return (ft_itoa(getpid()));
 	while (env && ft_strncmp(var_name, env->key, ft_strlen(env->key) + 1) != 0)

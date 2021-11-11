@@ -22,7 +22,7 @@
 
 void	do_redir_f(t_cmd cmd, int *pipefd, int nbr_p, int redir)
 {
-	if (cmd.cmd_args[0] == NULL | cmd.error == 1)
+	if ((cmd.cmd_args[0] == NULL) | (cmd.error == 1))
 		exit(0);
 	if (redir == 0)
 	{
