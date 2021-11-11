@@ -3,14 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpochard <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/20 11:11:36 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/05 17:40:59 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/11/11 11:11:55 by ccommiss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+
+void handle_here()
+{
+	utils.g_sig = 1;
+}
 
 int	fill_thefd(t_cmd cmd)
 {
@@ -19,6 +25,7 @@ int	fill_thefd(t_cmd cmd)
 	char	*line;
 
 	i = 0;
+	utils.g_sig = 0;
 	while (cmd.here_words)
 	{
 		fd = open(".here_doc", O_CREAT | O_TRUNC | O_RDWR , 0777);
@@ -27,10 +34,11 @@ int	fill_thefd(t_cmd cmd)
 			perror(">");
 			return (-1);
 		}
-		while (1)
+		while (utils.g_sig == 0)
 		{
 			line = readline(">");
-			if ( line )
+			handle_signal(HEREDOC);
+			if (line)
 			{
 			if (ft_strncmp(cmd.io_here[i], line, ft_strlen(cmd.io_here[i])) == 0)
 			{
@@ -71,7 +79,7 @@ void	here_doc(t_env *env, t_cmd cmd, int fd)
 		return (no_cmd_here(cmd.io_in, cmd.io_out));
 	builtin = is_a_builtin(cmd.cmd_args[0]);
 	if ((builtin >= 1 && builtin <= 7))
-		
+
 	if (builtin == 2)
 	{
 		cd(env, cmd.cmd_args[1]);

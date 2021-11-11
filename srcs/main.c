@@ -6,7 +6,7 @@
 /*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/15 16:46:53 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/09 14:07:27 by ccommiss         ###   ########.fr       */
+/*   Updated: 2021/11/11 10:58:06 by ccommiss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ char *choose_prompt()
 {
 	char *line;
 
-	if (return_value != 0)
+	if (utils.return_value != 0)
 		line = readline(BWHT "Minishell " BRED "> " RESET);
 	else
 		line = readline(BWHT "Minishell " BGRN "> " RESET);

@@ -10,7 +10,7 @@ void intHandler()
 
 void intHandlerMain()
 {
-	return_value = 130;
+	utils.return_value = 130;
     printf("\n");
    rl_replace_line("", 0);
 	printf ("%s", BWHT"Minishell "BRED"> "RESET);
@@ -40,7 +40,12 @@ void 	quithandler()
 
 void	handle_signal(int state)
 {
-    if (state == MAIN_PROCESS)
+	if (state == HEREDOC)
+	{
+		utils.g_sig = 1;
+		signal(SIGINT, intHandlerMain);
+	}
+	if (state == MAIN_PROCESS)
     {
 	    signal(SIGINT, intHandlerMain);
 	    signal(SIGQUIT, SIG_IGN);

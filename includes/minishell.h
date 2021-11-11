@@ -20,7 +20,13 @@
 #include "../libft/libft.h"
 
 
-int return_value; //globale
+struct s_utils {
+
+	int return_value; //globale
+	int g_sig;
+} utils;
+extern struct s_utils utils;
+
 
 typedef struct s_arg
 {
@@ -46,7 +52,8 @@ enum signal_location
 {
 	MAIN_PROCESS,
 	CHILD,
-	CHILD_HANDLING
+	CHILD_HANDLING,
+	HEREDOC
 };
 
 enum expand
