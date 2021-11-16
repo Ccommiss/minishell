@@ -6,7 +6,7 @@
 /*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/13 10:05:27 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/09 10:18:40 by ccommiss         ###   ########.fr       */
+/*   Updated: 2021/11/16 15:19:30 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ void	cmd_to_exec(t_cmd *cmd, t_env *env)
 		{
 			if (do_the_pipe(cmd, env) == 0)
 				return ;
-			printf ("AYA YA UN PIPE\n");
 		}
 		else if ( there_is_redir(env, *cmd) == 0)
 		{
@@ -52,10 +51,10 @@ void	cmd_to_exec(t_cmd *cmd, t_env *env)
 		{
 
 			if (strcmp(cmd->cmd_args[0], "echo") == 0)
-				do_echo(cmd->cmd_args);
+				return_value =do_echo(cmd->cmd_args);
 			else if (strcmp(cmd->cmd_args[0], "cd") == 0)
 			{
-				cd(env, cmd->cmd_args[1]);
+				return_value =cd(env, cmd->cmd_args[1]);
 				set_thepwd(env);
 			}
 			else if (strcmp(cmd->cmd_args[0], "pwd") == 0)
@@ -63,17 +62,18 @@ void	cmd_to_exec(t_cmd *cmd, t_env *env)
 				buf = get_pwd();
 				ft_putendl_fd(buf, 1);
 				free(buf);
+				return_value = 0;
 			}
 			else if(strcmp(cmd->cmd_args[0], "env") == 0)
-				printf_the_env(env);
+				return_value =printf_the_env(env);
 			else if(strcmp(cmd->cmd_args[0], "export") == 0)
 			{
-				export_the(env, &cmd->cmd_args[1]);
-		//		if (remplace_the_var(env, cmd->cmd_args[1]) == 0)
-		//			export_the_var(env, cmd->cmd_args[1]);
+				return_value =export_the(env, &cmd->cmd_args[1]);
 			}
+			else if(ft_strncmp(cmd->cmd_args[0], "exit", 5) == 0)
+					exito(cmd->cmd_args[1]);
 			else if (strcmp(cmd->cmd_args[0], "unset") == 0)
-				do_the_unset(env, cmd->cmd_args);
+				return_value = do_the_unset(env, cmd->cmd_args);
 			else
 			{
 				pid_t pid;

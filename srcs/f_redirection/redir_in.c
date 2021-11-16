@@ -6,7 +6,7 @@
 /*   By: mpochard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/05 17:41:12 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/08 15:32:38 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/11/10 11:34:31 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	redir_in_built(t_env *env, char **cmd, int fd, int builtin)
 	else if (builtin == 3)
 		ft_putendl_fd(get_pwd(), 1);
 	else if (builtin == 4)
-		printf("mel tu dois faire le builin exit\n");
+		exito(cmd[1]);
 	else if (builtin == 5)
 		export_the(env, &cmd[1]);
 	else if (builtin == 6)

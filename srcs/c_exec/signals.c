@@ -5,7 +5,7 @@ void intHandler()
 {
     rl_reset_line_state();
     printf("\n");
-    rl_replace_line("", 0);
+   rl_replace_line("", 0);
 }
 
 void intHandlerMain()

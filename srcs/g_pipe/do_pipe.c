@@ -6,7 +6,7 @@
 /*   By: mpochard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/05 17:40:25 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/08 15:00:17 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/11/16 13:35:19 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,7 @@ int	do_the_pipe(t_cmd *cmd, t_env *env)
 			}
 			else if (i == nbr_cmd - 1)
 			{
-				if (last_pid(*cmd, env, pipefd, ((nbr_cmd - 1) * 2)) == -1)
-					return (-1);
+				last_pid(*cmd, env, pipefd, ((nbr_cmd - 1) * 2));
 			}
 			else
 			{

@@ -6,7 +6,7 @@
 /*   By: mpochard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/05 17:28:44 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/05 17:32:45 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/11/10 11:40:29 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ int	other_pid(t_cmd cmd, t_env *env, int *pipefd, int i, int nbr_p)
 	if (builtin >= 1 && builtin <= 7)
 	{
 		exec_builtin(env, cmd.cmd_args, builtin);
-		exit(0);
 	}
 	else if (builtin == 0)
 		ft_execve(cmd.cmdp, cmd.cmd_args, tenvp);

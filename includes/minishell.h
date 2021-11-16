@@ -153,7 +153,7 @@ typedef struct s_pipe
 /* d_env
  * the file for put env in a list chaine or for display this list chainee
  */
-void	printf_the_env(t_env *envp);
+int		printf_the_env(t_env *envp);
 void	get_the_env(t_env **envp, char **env);
 int		export_the_var(t_env *env, char *cmd_suffix);
 int		remplace_the_var(t_env *env, char *cmd_suffix);
@@ -165,8 +165,8 @@ t_env	*ft_lstenv_inv(char *content);
 int	need_to_unset(t_env *env, char *cmd_suffix);
 void	delete_the_node(t_env **env, t_env *del);
 int	unset_the_var(t_env *env, char *cmd_suffix);
-void	check_the_cmd(char *cmd_suffix);
-void	do_the_unset(t_env *env, char **cmd_suffix);
+int		check_the_cmd(char *cmd_suffix);
+int		do_the_unset(t_env *env, char **cmd_suffix);
 char	**list_to_cmd(t_env *env);
 int		export_the(t_env *env, char **cmd_suffix);
 /*
@@ -178,11 +178,13 @@ int		export_the(t_env *env, char **cmd_suffix);
 char	*get_pwd(void);
 char	*strjoin_char(char *str, char *str1, char c);
 int		is_home_unset(t_env *tmp, char *home);
-void	cd(t_env *env, char *pwd);
+int		cd(t_env *env, char *pwd);
+
 void	set_thepwd(t_env *env);
 int		check_echo(char *cmd_suffix);
 int		count_double_tab(char **tab);
-void	do_echo(char **cmd_suffix);
+int		do_echo(char **cmd_suffix);
+void	exito(char *str);
 /*
  * f_redirection
  * */
@@ -209,7 +211,7 @@ void	redir_double_built(t_env *env, t_cmd cmd, int builtin);
  */
 int	do_the_pipe(t_cmd *cmd, t_env *env);
 int		first_pid(t_cmd, t_env *env, int *pipefd, int nbr_p);
-int		last_pid(t_cmd, t_env *env, int *pipefd, int nbr_p);
+void		last_pid(t_cmd, t_env *env, int *pipefd, int nbr_p);
 int		other_pid(t_cmd, t_env *env, int *pipefd, int i, int nbr_p);
 int		nb_of_pipe(t_cmd *cmd);
 int		malloc_of_pipe(t_cmd *cmd, int **pipefd, pid_t **pid, int *nbr_cmd);

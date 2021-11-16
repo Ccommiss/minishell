@@ -6,7 +6,7 @@
 /*   By: mpochard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/05 17:41:40 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/05 17:41:46 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/11/10 11:33:16 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	redir_out_built(t_env *env, char **cmd, int fd, int builtin)
 	else if (builtin == 3)
 		ft_putendl_fd(get_pwd(), 1);
 	else if (builtin == 4)
-		printf("mel tu dois faire le builin exit\n");
+		exito(cmd[1]);
 	else if (builtin == 5)
 		export_the(env, &cmd[1]);
 	else if (builtin == 6)
@@ -91,7 +91,7 @@ void	redir_double_built(t_env *env, t_cmd cmd, int builtin)
 	else if (builtin == 3)
 		ft_putendl_fd(get_pwd(), 1);
 	else if (builtin == 4)
-		printf("mel tu dois faire le builin exit\n");
+		exito(cmd.cmd_args[1]);
 	else if (builtin == 5)
 		export_the(env, &cmd.cmd_args[1]);
 	else if (builtin == 6)
