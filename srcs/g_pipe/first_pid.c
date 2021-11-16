@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   first_pid.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpochard <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/05 16:05:45 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/08 15:25:38 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/11/16 15:18:35 by ccommiss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/* 
+/*
  * redir = 0 no redir
  * redir = 1 redir >
  * redir = 2 redir <
@@ -22,7 +22,7 @@
 
 void	do_redir_f(t_cmd cmd, int *pipefd, int nbr_p, int redir)
 {
-	if (cmd.cmd_args[0] == NULL || cmd.error == 1)
+	if ((cmd.cmd_args[0] == NULL) || (cmd.error == 1))
 		exit(0);
 	if (redir == 0)
 	{

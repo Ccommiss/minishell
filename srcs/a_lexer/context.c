@@ -52,7 +52,6 @@ enum	tokens	quote_toks(int c)
 	return (tok[c]);
 }
 
-
 /*
 **	Memo ASCII
 **
@@ -72,7 +71,7 @@ enum	tokens	quote_toks(int c)
 **	128 a 254 : Ascii extended
 */
 
-enum tokens corresp(int c)
+enum tokens	corresp(int c)
 {
 	static enum tokens	corresp[256] = {
 		['|'] = OP,
@@ -94,6 +93,7 @@ enum tokens corresp(int c)
 		['\''] = SQUOTE, //39
 		['\"'] = DQUOTE, //34
 	};
+
 	return (corresp[c]);
 }
 
@@ -105,6 +105,5 @@ enum tokens	tok(int x, int y)
 		return (word_toks(y));
 	if (x == SQUOTE || x == DQUOTE)
 		return (quote_toks(y));
-
 	return (WORD);
 }

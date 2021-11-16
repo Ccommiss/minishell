@@ -20,7 +20,12 @@
 #include "../libft/libft.h"
 
 
-int return_value; //globale
+typedef struct s_utils {
+
+	int return_value; //globale
+	int g_sig;
+}				t_utils;
+extern t_utils g_utils;
 
 typedef struct s_arg
 {
@@ -33,6 +38,7 @@ typedef struct s_arg
 enum bool
 {
 	ERROR = -1,
+	BREAK = -1,
 	FALSE,
 	TRUE
 };
@@ -45,7 +51,16 @@ enum signal_location
 {
 	MAIN_PROCESS,
 	CHILD,
-	CHILD_HANDLING
+	CHILD_HANDLING,
+	HEREDOC
+};
+
+enum expand
+{
+	NO_BRACE,
+	OPEN_BRACE = 1,
+	CLOSE_BRACE = 2,
+	DOL_OR_QUEST = 3
 };
 
 enum tokens
@@ -223,11 +238,14 @@ void	exec_builtin(t_env *env, char **cmd, int builtin);
 */
 
 /*
-** tokenizer.c
+** tokenizer.c, lex_error_detector.c
 */
 
 void		init_tok_and_cmd(t_token *toks, t_cmd *cmd);
 void		tokenize(char *to_tokenize, t_token *toks, t_env *env);
+void 		syntax_error_detector(t_token *toks);
+int			expand_substitution_error_detector(char *var_name, int exception);
+
 void		debug_tokens(t_token *toks);
 
 /*
@@ -246,6 +264,11 @@ enum tokens quote_toks(int c);
 char		*ft_str_replace(char *str, int start, int len, t_env *env);
 int			expand(char **to_tokenize, int *i, int *context, t_env *env);
 void		handle_quoted_context(int *context, int *i, char *to_tokenize);
+
+/*
+** quotes.c
+*/
+void handle_quoted_context(int *context, int *i, char *to_tokenize);
 
 
 /*
