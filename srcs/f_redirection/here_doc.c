@@ -6,78 +6,74 @@
 /*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/20 11:11:36 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/11 11:11:55 by ccommiss         ###   ########.fr       */
+/*   Updated: 2021/11/16 15:00:24 by ccommiss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-
-int	fill_thefd(t_cmd cmd)
+int fill_thefd(t_cmd cmd)
 {
 	int fd;
-	int	i;
-	char	*line;
+	int i;
+	char *line;
 
 	i = 0;
 	g_utils.g_sig = 0;
-				handle_signal(HEREDOC);
-
+	handle_signal(HEREDOC);
 	while (cmd.here_words && g_utils.g_sig == 0)
 	{
-		//handle_signal(HEREDOC);
-		if(g_utils.g_sig == 0)
-		fd = open(".here_doc", O_CREAT | O_TRUNC | O_RDWR , 0777);
-		if ( fd == -1)
+		fd = open(".here_doc", O_CREAT | O_TRUNC | O_RDWR, 0777);
+		if (fd == -1)
 		{
 			perror(">");
 			return (-1);
 		}
 		while (g_utils.g_sig == 0)
 		{
-			printf ("D%d \n\n", g_utils.g_sig);
-			if(!g_utils.g_sig)
+			printf("sig = %d \n\n", g_utils.g_sig);
 			line = readline("> ");
-			printf ("line = %s \n", line);
-			
+			printf ("[line] : %s \n", line);
 			if (line && g_utils.g_sig == 0)
 			{
-				printf ("inside \n");
-			if (ft_strncmp(cmd.io_here[i], line, ft_strlen(cmd.io_here[i])) == 0)
-			{
-				free(line);
-				break;
-			}
-			}
-			printf ("outside\n");
+				if (ft_strncmp(cmd.io_here[i], line, ft_strlen(cmd.io_here[i])) == 0)
+				{
+					free(line);
+					break;
+				}
 
+			}
+				else if (line == NULL)
+				{
+					free (line);
+					break;
+				}
 			write(fd, line, ft_strlen(line));
 			write(fd, "\n", 1);
 			free(line);
 		}
-		printf ("ici\n");
 		i++;
 		cmd.here_words--;
 		close(fd);
 	}
 	return (fd);
 }
-void	no_cmd_here(int in , int out)
+void no_cmd_here(int in, int out)
 {
 	if (in > 0)
 		close(in);
 	if (out > 0)
 		close(out);
 	unlink(".here_doc");
-	return ;
+	return;
 }
 
-void	here_doc(t_env *env, t_cmd cmd, int fd)
+void here_doc(t_env *env, t_cmd cmd, int fd)
 {
 	(void)env;
 	(void)cmd;
 	(void)fd;
-/*	int		builtin;
+	/*	int		builtin;
 	pid_t	pid;
 	char	**tenvp;
 
@@ -110,7 +106,7 @@ void	here_doc(t_env *env, t_cmd cmd, int fd)
 		}
 		return ;
 	}*/
-/*	else if (builtin == 0)
+	/*	else if (builtin == 0)
 	{
 		tenvp = list_to_cmd(env);
 		pid = fork();

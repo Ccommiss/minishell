@@ -1,5 +1,22 @@
 #include "minishell.h"
 
+enum tokens	error_tab(int type)
+{
+	static enum tokens	op_table[256] = {
+		[TOK_GREAT] = OP,
+		[TOK_LESS] = OP,
+		[TOK_PIPE] = OP
+	};
+
+	return (op_table[type]);
+}
+
+/*
+**	syntax_error_detector handles :
+**	- if more than expected operators are found (ex. <<<, ||, etc)
+**	- if operators are doubled (ex echo lol > >> file), e.g.
+**		not preceded by a TOK_WORD token
+*/
 void	syntax_error_detector(t_token *toks)
 {
 	char	tok_op;
@@ -11,7 +28,9 @@ void	syntax_error_detector(t_token *toks)
 	if (toks->type == TOK_PIPE)
 		tok_op = '|';
 	if (((toks->type == TOK_GREAT || toks->type == TOK_LESS) && toks->len > 2)
-		|| (toks->type == TOK_PIPE && toks->len > 1))
+		|| (toks->type == TOK_PIPE && toks->len > 1)
+		|| (toks->index != 0 && error_tab(toks->type) == OP
+			&& toks->prev->type != TOK_WORD))
 	{
 		toks->type = SYNT_ERR;
 		if (g_utils.return_value != 2)
