@@ -5,7 +5,7 @@ void intHandler()
 {
     rl_reset_line_state();
     printf("\n");
-   rl_replace_line("", 0);
+ rl_replace_line("", 0);
 }
 
 void intHandlerMain()
@@ -43,8 +43,8 @@ void intHandler_heredoc()
 
     return ;
 
-    //rl_replace_line("", 0);
-	printf ("%s", BWHT"WOW Minishell "BRED"> "RESET);
+ //   rl_replace_line("", 0);
+//	printf ("%s", BWHT"WOW Minishell "BRED"> "RESET);
 }
 
 void 	quithandler()
