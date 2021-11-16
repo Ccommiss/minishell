@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   is_redir.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpochard <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/14 16:08:37 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/08 15:49:26 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/11/11 10:40:07 by ccommiss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	there_is_redir(t_env *env, t_cmd cmd)
 {
 //	printf("cmd.error%d\n", cmd.error);
-	if ( cmd.error == 1)
+	if (cmd.error == 1)
 		return (0);
 	if (cmd.dless == 1)
 	{

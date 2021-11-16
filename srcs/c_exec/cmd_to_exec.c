@@ -6,7 +6,11 @@
 /*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/13 10:05:27 by mpochard          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2021/11/16 15:19:30 by mpochard         ###   ########.fr       */
+=======
+/*   Updated: 2021/11/09 16:56:59 by ccommiss         ###   ########.fr       */
+>>>>>>> 4dffb99045da2bfe030f1c837d4db9818d85b7c6
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,16 +32,15 @@
 void	cmd_to_exec(t_cmd *cmd, t_env *env)
 {
 
-	int status = 0;
+	int		status = 0;
 	(void)env;
-	char *buf;
+	char	*buf;
 	char	**tenvp;
 
-	//return_value = 0;
 	while (cmd)
 	{
-		if (cmd->error == FALSE)
-			return_value = 0;
+		//if (cmd->error == FALSE)
+		//	return_value = 0;
 		if (cmd->next)
 		{
 			if (do_the_pipe(cmd, env) == 0)

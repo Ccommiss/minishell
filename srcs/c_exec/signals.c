@@ -10,10 +10,41 @@ void intHandler()
 
 void intHandlerMain()
 {
-	return_value = 130;
+	g_utils.return_value = 130;
     printf("\n");
-   rl_replace_line("", 0);
-	printf ("%s", BWHT"Minishell "BRED"> "RESET);
+    rl_replace_line("", 0);
+	rl_redisplay();
+	printf(BWHT"Minishell "BRED"> "RESET);
+}
+
+// on va faire commencer les signaux a
+// 100 ; 100 equivaudra a 0 dans les [heree doc word] etc,
+// 101 a 1, etc.
+
+
+void intHandler_heredoc()
+{
+    g_utils.g_sig = 1;
+	g_utils.return_value = 130;
+     //rl_reset_line_state();
+
+     // rl_insert_text("wow  je suis la");
+      rl_done = 1;
+     // rl_line_buffer = NULL;
+     // printf("\n");
+
+      //close(".here_doc");
+      //rl_on_new_line ();
+
+      //rl_pending_input = 'i';
+
+     // rl_on_new_line ();
+    // rl_redisplay();
+
+    return ;
+
+    //rl_replace_line("", 0);
+	printf ("%s", BWHT"WOW Minishell "BRED"> "RESET);
 }
 
 void 	quithandler()
@@ -40,7 +71,12 @@ void 	quithandler()
 
 void	handle_signal(int state)
 {
-    if (state == MAIN_PROCESS)
+	if (state == HEREDOC)
+	{
+		signal(SIGINT, intHandler_heredoc);
+		signal(SIGQUIT, SIG_IGN);
+	}
+	if (state == MAIN_PROCESS)
     {
 	    signal(SIGINT, intHandlerMain);
 	    signal(SIGQUIT, SIG_IGN);
