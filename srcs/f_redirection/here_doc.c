@@ -6,7 +6,7 @@
 /*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/20 11:11:36 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/16 15:17:23 by ccommiss         ###   ########.fr       */
+/*   Updated: 2021/11/16 17:40:16 by ccommiss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ int fill_thefd(t_cmd cmd)
 	i = 0;
 	g_utils.g_sig = 0;
 	handle_signal(HEREDOC);
+	//signal(SIGINT, SIG_IGN);
 	while (cmd.here_words && g_utils.g_sig == 0)
 	{
 		fd = open(".here_doc", O_CREAT | O_TRUNC | O_RDWR, 0777);
@@ -34,6 +35,13 @@ int fill_thefd(t_cmd cmd)
 			printf("sig = %d \n\n", g_utils.g_sig);
 			line = readline("> ");
 			printf ("[line] : %s \n", line);
+			if (line)
+			printf("%d \n", line[0]);
+			if (line && line[0] == 3)
+			{
+				printf ("yo !!\n");
+				break;
+			}
 			if (line && g_utils.g_sig == 0)
 			{
 				if (ft_strncmp(cmd.io_here[i], line, ft_strlen(cmd.io_here[i])) == 0)
@@ -41,7 +49,6 @@ int fill_thefd(t_cmd cmd)
 					free(line);
 					break;
 				}
-
 			}
 				else if (line == NULL)
 				{

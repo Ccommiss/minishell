@@ -89,6 +89,7 @@ void	tokenize(char *line, t_token *toks, t_env *env)
 		toks = toks->prev;
 		free(toks->next);
 		toks->next = NULL;
+		syntax_error_detector(toks);
 	}
 	free(to_tokenize);
 	to_tokenize = NULL;

@@ -76,7 +76,7 @@ int  syn_err_or_no_tok(t_cmd *cmd, t_token *toks)
 		free_command_items(cmd);
 		return (ERROR);
 	}
-	if (toks->type == -1) //pas de tok
+	if (toks->index == -1) //pas de tok
 	{
 		cmd->error = 1;
 		return (ERROR);
