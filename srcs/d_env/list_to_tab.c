@@ -6,7 +6,7 @@
 /*   By: mpochard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/05 17:42:23 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/05 17:42:24 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/11/08 19:20:41 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int		nbr_of_arg(t_env *temp)
 	i = 0;
 	while ( temp)
 	{
-		if (temp->visible == 0)
+		if (temp->visible == 0 || temp->visible == -1)
 		{
 			i++;
 		}
@@ -42,7 +42,7 @@ char	**list_to_cmd(t_env *env)
 	nbr = 0;
 	while (env)
 	{
-		if ( env->visible == 0)
+		if ( env->visible == 0 || env->visible == -1)
 		{
 			tab[nbr] = ft_strdup(env->env);
 			nbr++;

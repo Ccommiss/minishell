@@ -6,7 +6,7 @@
 /*   By: mpochard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/05 17:41:18 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/08 15:49:23 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/11/17 17:03:33 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	simple_redir_o(t_env *env, int fd, t_cmd cmd, char *path)
 	int		builtin;
 	char	**tenvp;
 
+	printf("cmd %d\n", cmd.error);
 	if (cmd.cmd_args[0] == NULL || cmd.error == 1)
 		return (no_cmd(fd));
 	builtin = is_a_builtin(cmd.cmd_args[0]);

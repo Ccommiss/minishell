@@ -6,7 +6,7 @@
 /*   By: mpochard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/05 17:41:59 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/05 17:42:02 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/11/12 17:42:59 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int		count_double_tab(char **tab)
  *  -the program begin at i = 1 because i = 0 is echo 
  *  - need to tchek the nbr of arg of echo, security of segfault
  */
-void	do_echo(char **cmd_suffix)
+int		do_echo(char **cmd_suffix)
 {
 	int	i;
 	int	count;
@@ -91,4 +91,5 @@ void	do_echo(char **cmd_suffix)
 		}
 		write(1, "\n", 1);
 	}
+	return (0);
 }

@@ -17,7 +17,10 @@ void	redirect_out(t_cmd *cmd, t_token **toks, int len)
 		cmd->error = TRUE;
 	}
 	if (cmd->io_out == -1)
+	{
+		cmd->error == TRUE;
 		printf("%s : %s \n", cmd->cmd_args[0], strerror(errno));
+	}
 }
 
 void	redirect_in(t_cmd *cmd, t_token **toks, int len)
@@ -38,7 +41,10 @@ void	redirect_in(t_cmd *cmd, t_token **toks, int len)
 		cmd->dless = TRUE;
 	}
 	if (cmd->io_in == -1 && cmd->dless == FALSE)
+	{
+		cmd->error == TRUE;
 		printf("%s : %s \n", cmd->cmd_args[0], strerror(errno));
+	}
 }
 
 void	redirect(t_cmd *cmd, t_token **toks, int type, int len)

@@ -6,7 +6,7 @@
 /*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/15 16:46:53 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/11 10:58:06 by ccommiss         ###   ########.fr       */
+/*   Updated: 2021/11/17 17:16:53 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,9 +79,10 @@ int main(int ac, char **av, char **envp)
 	get_the_env(&env, envp);
 	while (1)
 	{
-
 		handle_signal(MAIN_PROCESS);
 		line = choose_prompt();
+		if (line && ft_strlen(line) == 0)
+			g_utils.return_value = 0;
 		if (line && ft_strlen(line) > 0)
 		{
 			add_history(line);

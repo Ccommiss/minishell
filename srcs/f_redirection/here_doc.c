@@ -3,72 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mpochard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/20 11:11:36 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/16 17:40:16 by ccommiss         ###   ########.fr       */
+/*   Updated: 2021/11/16 14:03:18 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-
-
-void signal_handler(int signo) { 
-  printf("Received: signal %d\n", signo);
-
-} 
-
-int fill_thefd(t_cmd cmd)
-{
-	int fd;
-	int i;
-	char *line;
-
-	//struct sigaction s; 
-	//s.sa_handler = (void (*)(int))sighandler); 
-	//s.sa_flags = 0;
-
-//	sigaction(SIGINT, &s, NULL); 
-	i = 0;
-	g_utils.g_sig = 0;
-	handle_signal(HEREDOC);
-	//signal(SIGINT, SIG_IGN);
-	while (cmd.here_words && g_utils.g_sig == 0)
-	{
-		fd = open(".here_doc", O_CREAT | O_TRUNC | O_RDWR, 0777);
-		if (fd == -1)
-		{
-			perror(">");
-			return (-1);
-		}
-		while (g_utils.return_value != 130)
-		{
-			line = readline("> ");
-			if (line && g_utils.return_value != 130)
-			{
-				if (ft_strncmp(cmd.io_here[i], line, ft_strlen(cmd.io_here[i])) == 0)
-				{
-					free(line);
-					break;
-				}
-			}
-				else if (line == NULL)
-				{
-					free (line);
-					break;
-				}
-			write(fd, line, ft_strlen(line));
-			write(fd, "\n", 1);
-			free(line);
-		}
-		i++;
-		cmd.here_words--;
-		close(fd);
-	}
-	return (fd);
-}
-void no_cmd_here(int in, int out)
+void	no_cmd_here(int in, int out)
 {
 	if (in > 0)
 		close(in);
@@ -78,62 +22,79 @@ void no_cmd_here(int in, int out)
 	return ;
 }
 
-void here_doc(t_env *env, t_cmd cmd, int fd)
+void	the_rest_built(t_env *env, t_cmd cmd, int builtin)
 {
-	(void)env;
-	(void)cmd;
-	(void)fd;
-	/*	int		builtin;
-	pid_t	pid;
-	char	**tenvp;
+	if (builtin == 3)
+		ft_putendl_fd(get_pwd(), 1);
+	else if (builtin == 4)
+		exito(cmd.cmd_args[1]);
+	else if (builtin == 5)
+		export_the(env, &cmd.cmd_args[1]);
+	else if (builtin == 6)
+		do_the_unset(env, cmd.cmd_args);
+	else if (builtin == 7)
+		printf_the_env(env);
+}
 
-	if ( cmd.cmd_args[0] == NULL)
-		return (no_cmd_here(cmd.io_in, cmd.io_out));
-	builtin = is_a_builtin(cmd.cmd_args[0]);
-	if ((builtin >= 1 && builtin <= 7))
+void	redir_here_built(t_env *env, t_cmd cmd, int builtin)
+{
+	int	fd1;
 
-	if (builtin == 2)
+	if (cmd.io_out > 0)
+	{
+		fd1 = dup(1);
+		close(1);
+		dup(cmd.io_out);
+	}
+	if (builtin == 1)
+		do_echo(cmd.cmd_args);
+	else if (builtin == 2)
 	{
 		cd(env, cmd.cmd_args[1]);
 		set_thepwd(env);
 	}
-	else if ( builtin == 1 ||  builtin > 2)
+	else if (builtin >= 3 && builtin <= 7)
+		the_rest_built(env, cmd, builtin);
+	if (cmd.io_out > 0)
 	{
-		pid1 = fork();
-		if ( pid1 == 0)
-		{
-			if ( cmd.io_out > 1)
-				dup2(cmd.io_out, 1);
-			if (builtin == 1)
-				do_echo(cmd.cmd_args);
-			else if (builtin == 3)
-			{
-				write(1, get_pwd(), ft_strlen(get_pwd()));
-				write(1, "\n",1);
-			}
-			unlink(".here_doc");
-			exit(1);
-		}
-		return ;
-	}*/
-	/*	else if (builtin == 0)
+		close(cmd.io_out);
+		dup2(fd1, 1);
+	}
+	if (cmd.io_in > 0)
+		close(cmd.io_in);
+}
+
+void	do_the_dup(int out, int fd)
+{
+	if (out > 0)
+		dup2(out, 1);
+	dup2(fd, 0);
+}
+
+void	here_doc(t_env *env, t_cmd cmd, int fd)
+{
+	int		builtin;
+	pid_t	pid;
+	char	**tenvp;
+
+	if (cmd.cmd_args[0] == NULL) // mettre en place si ya un pb t rentre pas dedans)
+		return (no_cmd_here(cmd.io_in, cmd.io_out));
+	builtin = is_a_builtin(cmd.cmd_args[0]);
+	if ((builtin >= 1 && builtin <= 7))
+		redir_here_built(env, cmd, builtin);
+	else if (builtin == 0)
 	{
 		tenvp = list_to_cmd(env);
 		pid = fork();
 		if (pid == -1)
-		{
-			perror("fork");
-			return ;
-		}
+			fork_fail_d("fork failed", cmd.io_out, cmd.io_in, tenvp);
 		else if (pid == 0)
 		{
 			fd = open(".here_doc", O_RDWR, 0666);
-			if ( cmd.io_out > 1)
-				dup2(cmd.io_out, 1);
-			dup2(fd, 0);
+			do_the_dup(cmd.io_out, fd);
 			ft_execve(cmd.cmdp, cmd.cmd_args, tenvp);
 		}
 		waitpid(pid, NULL, 0);
-		}
-unlink (".here_doc");*/
+	}
+	unlink(".here_doc");
 }

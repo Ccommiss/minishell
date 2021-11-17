@@ -6,7 +6,7 @@
 /*   By: mpochard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 17:06:05 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/08 13:52:14 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/11/12 17:38:51 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,7 +136,7 @@ void	get_the_env(t_env **envp, char **env)
 	shlvl(*envp);
 }
 
-void	printf_the_env(t_env *envp)
+int		printf_the_env(t_env *envp)
 {
 	t_env	*temp;
 
@@ -153,4 +153,5 @@ void	printf_the_env(t_env *envp)
 			printf("%s\n", temp->env);
 		temp = temp->next;
 	}
+	return (0);
 }

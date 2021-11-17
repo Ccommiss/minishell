@@ -3,7 +3,7 @@
 
 void intHandler()
 {
-    rl_reset_line_state();
+   rl_reset_line_state();
     printf("\n");
     rl_replace_line("", 0);
 }
@@ -12,7 +12,7 @@ void intHandlerMain()
 {
 	g_utils.return_value = 130;
     printf("\n");
-    rl_replace_line("", 0);
+   rl_replace_line("", 0);
 	rl_redisplay();
 	printf(BWHT"Minishell "BRED"> "RESET);
 }
@@ -28,9 +28,9 @@ void intHandler_heredoc()
 void 	quithandler()
 {
 	printf ("Quit (core dumped)");
-	rl_reset_line_state ();
+//	rl_reset_line_state ();
 	printf("\n");
-	rl_replace_line("", 0);
+//	rl_replace_line("", 0);
 }
 
 

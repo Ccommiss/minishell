@@ -6,7 +6,7 @@
 /*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/13 10:05:27 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/09 16:56:59 by ccommiss         ###   ########.fr       */
+/*   Updated: 2021/11/17 17:11:15 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ void	cmd_to_exec(t_cmd *cmd, t_env *env)
 	char	*buf;
 	char	**tenvp;
 
+		if (cmd == NULL)
+			g_utils.return_value = 0;
 	while (cmd)
 	{
 		//if (cmd->error == FALSE)
@@ -41,7 +43,6 @@ void	cmd_to_exec(t_cmd *cmd, t_env *env)
 		{
 			if (do_the_pipe(cmd, env) == 0)
 				return ;
-			printf ("AYA YA UN PIPE\n");
 		}
 		else if ( there_is_redir(env, *cmd) == 0)
 		{
@@ -49,12 +50,12 @@ void	cmd_to_exec(t_cmd *cmd, t_env *env)
 		}
 		else
 		{
-
+			
 			if (strcmp(cmd->cmd_args[0], "echo") == 0)
-				do_echo(cmd->cmd_args);
+				g_utils.return_value =do_echo(cmd->cmd_args);
 			else if (strcmp(cmd->cmd_args[0], "cd") == 0)
 			{
-				cd(env, cmd->cmd_args[1]);
+				g_utils.return_value =cd(env, cmd->cmd_args[1]);
 				set_thepwd(env);
 			}
 			else if (strcmp(cmd->cmd_args[0], "pwd") == 0)
@@ -62,17 +63,18 @@ void	cmd_to_exec(t_cmd *cmd, t_env *env)
 				buf = get_pwd();
 				ft_putendl_fd(buf, 1);
 				free(buf);
+				g_utils.return_value = 0;
 			}
 			else if(strcmp(cmd->cmd_args[0], "env") == 0)
-				printf_the_env(env);
+				g_utils.return_value =printf_the_env(env);
 			else if(strcmp(cmd->cmd_args[0], "export") == 0)
 			{
-				export_the(env, &cmd->cmd_args[1]);
-		//		if (remplace_the_var(env, cmd->cmd_args[1]) == 0)
-		//			export_the_var(env, cmd->cmd_args[1]);
+				g_utils.return_value =export_the(env, &cmd->cmd_args[1]);
 			}
+			else if(ft_strncmp(cmd->cmd_args[0], "exit", 5) == 0)
+					exito(cmd->cmd_args[1]);
 			else if (strcmp(cmd->cmd_args[0], "unset") == 0)
-				do_the_unset(env, cmd->cmd_args);
+				g_utils.return_value = do_the_unset(env, cmd->cmd_args);
 			else
 			{
 				pid_t pid;

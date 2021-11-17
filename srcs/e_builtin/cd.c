@@ -6,7 +6,7 @@
 /*   By: mpochard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/05 17:41:53 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/05 17:41:54 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/11/12 18:12:32 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ char	*get_pwd(void)
 	char	buf[PATH_MAX + 1];
 	
 	getcwd(buf, PATH_MAX);
-	//printf("tmp %s\n", tmp);
 	tmp = ft_strdup(buf);
 	return (tmp);
 }
@@ -87,7 +86,7 @@ int	is_home_unset(t_env *tmp, char *home)
 	return (0);
 }
 
-void	cd(t_env *env, char *pwd)
+int	cd(t_env *env, char *pwd)
 {
 	t_env	*tmp;
 	char	*home;
@@ -111,7 +110,7 @@ void	cd(t_env *env, char *pwd)
 	{
 		
 		if (is_home_unset(tmp,home) == -1)
-			return ;
+			return (-1);
 	}
 	else 
 	{
@@ -130,25 +129,36 @@ void	cd(t_env *env, char *pwd)
 			if (ft_strncmp(pwd,"~", 2) == 0)
 			{
 				if (chdir((getenv("HOME"))) == -1)
+				{
 					perror("cd:");
+					free(temp);
+					return (-1);
+				}
 			}
 			else if (ft_strncmp(pwd,"-", 2) == 0)
 			{
 				if (env != NULL)
 				{
 					if (chdir(temp) == -1)
+					{
 						perror("cd:");
+						free(temp);
+						return (-1);
+					}
 				}
 				else if ( env == NULL)
 					write(2,">: cd: « OLDPWD » non defini\n",2);
 			}
-
 			else
 				if (chdir(pwd) == -1)
-				perror("cd:");
+				{
+					perror("cd:");
+					free(temp);
+					return (-1);
+				}
 		free(temp);
-		return ;
 	}
+		return (0);
 }
 
 void	set_thepwd(t_env *env)

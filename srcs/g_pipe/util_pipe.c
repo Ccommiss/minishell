@@ -6,7 +6,7 @@
 /*   By: mpochard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/05 17:36:27 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/08 14:57:26 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/11/16 13:35:57 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,14 +81,16 @@ int	deploy_pipe(int *pipefd, pid_t *pid, int nbr_cmd, int nbr_p)
 void	we_wait(pid_t *pid, int nbr_cmd, int *pipefd, int pipee)
 {
 	int	i;
+	int	status;
 
 	i = 0;
 	close_all_p(pipefd, pipee);
 	while (i < nbr_cmd)
 	{
-		waitpid(pid[i], NULL, 0);
+		waitpid(pid[i], &status, 0);
 		i++;
 	}
+	set_status(status);
 	free(pid);
 	free(pipefd);
 }

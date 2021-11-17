@@ -6,7 +6,7 @@
 /*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/05 16:05:45 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/16 15:18:35 by ccommiss         ###   ########.fr       */
+/*   Updated: 2021/11/16 15:29:28 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,13 +60,17 @@ void	exec_builtin(t_env *env, char **cmd, int builtin)
 	else if (builtin == 3)
 		ft_putendl_fd(get_pwd(), 1);
 	else if (builtin == 4)
-		printf("mel tu dois faire le builin exit\n");
+	{
+		exito(cmd[1]);
+		return ;
+	}
 	else if (builtin == 5)
 		export_the(env, &cmd[1]);
 	else if (builtin == 6)
 		do_the_unset(env, cmd);
 	else if (builtin == 7)
 		printf_the_env(env);
+	exit(0);
 }
 
 int	first_pid(t_cmd cmd, t_env *env, int *pipefd, int nbr_p )
@@ -82,7 +86,6 @@ int	first_pid(t_cmd cmd, t_env *env, int *pipefd, int nbr_p )
 	if (builtin >= 1 && builtin <= 7)
 	{
 		exec_builtin(env, cmd.cmd_args, builtin);
-		exit(0);
 	}
 	else if (builtin == 0)
 		ft_execve(cmd.cmdp, cmd.cmd_args, tenvp);

@@ -26,11 +26,13 @@ SOURCES =	main.c\
 			$(ENV_PATH)/list_to_tab.c \
 			${BUILT_PATH}/cd.c\
 			${BUILT_PATH}/echo.c\
+			${BUILT_PATH}/exit.c\
 			${REDIR_PATH}/is_redir.c\
 			${REDIR_PATH}/redir_out.c\
 			${REDIR_PATH}/redir_in.c\
 			${REDIR_PATH}/here_doc.c\
 			${REDIR_PATH}/util_redir.c\
+			${REDIR_PATH}/fill_thefd.c\
 			${EXEC_PATH}/cmd_to_exec.c\
 			${PIPE_PATH}/do_pipe.c\
 			${PIPE_PATH}/first_pid.c\
