@@ -21,24 +21,8 @@ void intHandler_heredoc()
 {
     g_utils.g_sig = 1;
 	g_utils.return_value = 130;
-	//rl_reset_line_state();
-
-	// rl_insert_text("wow  je suis la");
-	rl_done = 1;
-	rl_line_buffer[0] = '\n';
-	rl_line_buffer[1] = '\n';
-	fprintf(STDIN_FILENO, "\n");
-	//rl_on_new_line ();
-
-	//rl_pending_input = 'i';
-
-	// rl_on_new_line ();
-    // rl_redisplay();
-
+    printf("\n");
     return ;
-
-    //rl_replace_line("", 0);
-
 }
 
 void 	quithandler()
@@ -63,10 +47,26 @@ void 	quithandler()
 **      was killed
 */
 
+static int my_getc(FILE *stream)
+{
+ (void)stream;
+   int r;
+   char c;
+
+    r = read(0, &c, 1); // read from stdin, will return -1 when interrupted by a signal
+    if (r == -1)// && errno == EINTR)
+        return EOF;
+    else 
+        return c;
+}
+
+
 void	handle_signal(int state)
 {
+    rl_getc_function = rl_getc;
 	if (state == HEREDOC)
 	{
+        rl_getc_function = my_getc;
 		signal(SIGINT, intHandler_heredoc);
 		signal(SIGQUIT, SIG_IGN);
 	}

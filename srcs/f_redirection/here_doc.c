@@ -12,12 +12,24 @@
 
 #include "minishell.h"
 
+
+
+void signal_handler(int signo) { 
+  printf("Received: signal %d\n", signo);
+
+} 
+
 int fill_thefd(t_cmd cmd)
 {
 	int fd;
 	int i;
 	char *line;
 
+	//struct sigaction s; 
+	//s.sa_handler = (void (*)(int))sighandler); 
+	//s.sa_flags = 0;
+
+//	sigaction(SIGINT, &s, NULL); 
 	i = 0;
 	g_utils.g_sig = 0;
 	handle_signal(HEREDOC);
@@ -30,19 +42,10 @@ int fill_thefd(t_cmd cmd)
 			perror(">");
 			return (-1);
 		}
-		while (g_utils.g_sig == 0)
+		while (g_utils.return_value != 130)
 		{
-			printf("sig = %d \n\n", g_utils.g_sig);
 			line = readline("> ");
-			printf ("[line] : %s \n", line);
-			if (line)
-			printf("%d \n", line[0]);
-			if (line && line[0] == 3)
-			{
-				printf ("yo !!\n");
-				break;
-			}
-			if (line && g_utils.g_sig == 0)
+			if (line && g_utils.return_value != 130)
 			{
 				if (ft_strncmp(cmd.io_here[i], line, ft_strlen(cmd.io_here[i])) == 0)
 				{
