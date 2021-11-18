@@ -49,12 +49,15 @@ SOURCES =	main.c\
 
 
 SPATH = srcs/
+OPATH = objs/
 INCLUDES = /includes/
 
 SRCS  += $(addprefix $(SPATH), $(SOURCES))
 
+#OBJS1 = ${SRCS:.c=.o}
+#OBJS  := $(addprefix $(OPATH),$(OBJS1))
 OBJS	= 	${SRCS:.c=.o}
-
+#:= $(patsubst %,$(OBJ_PATH)%,$(OBJ1))
 CC = gcc
 
 #CFLAGS = -g -I.$(INCLUDES) -Wall -Werror -Wextra# -fsanitize=address

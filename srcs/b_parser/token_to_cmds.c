@@ -23,6 +23,7 @@ void	init_cmd(t_cmd *cmd)
 	cmd->here_words = 0;
 	cmd->dgreat = FALSE;
 	cmd->dless = FALSE;
+	cmd->error = FALSE; 
 }
 
 void	free_command_items(t_cmd *cmd)
