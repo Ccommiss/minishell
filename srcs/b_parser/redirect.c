@@ -49,6 +49,7 @@ void	redirect_in(t_cmd *cmd, t_token **toks, int len)
 	if (cmd->io_in == -1 && cmd->dless == FALSE)
 	{
 		cmd->error = TRUE;
+		return_value = 1;
 		printf("minishell: %s: %s \n", (*toks)->content, strerror(errno));
 	}
 }
