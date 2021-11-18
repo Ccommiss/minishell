@@ -10,7 +10,7 @@ void intHandler()
 
 void intHandlerMain()
 {
-	g_utils.return_value = 130;
+	return_value = 130;
     printf("\n");
    rl_replace_line("", 0);
 	rl_redisplay();
@@ -19,8 +19,7 @@ void intHandlerMain()
 
 void intHandler_heredoc()
 {
-    g_utils.g_sig = 1;
-	g_utils.return_value = 130;
+	return_value = 130;
     printf("\n");
     return ;
 }

@@ -80,8 +80,12 @@ void	redir_in(t_env *env, t_cmd cmd, int fd, char *path)
 	int		builtin;
 	char	**tenvp;
 
+	printf ("ICI %d \n", cmd.error);
 	if (cmd.cmd_args[0] == NULL || cmd.error == 1)
+	{
+		printf("ERROR_CMD \n");
 		return (no_cmd(fd));
+	}
 	builtin = is_a_builtin(cmd.cmd_args[0]);
 	if (builtin >= 1 && builtin <= 7)
 		redir_in_built(env, cmd.cmd_args, fd, builtin);

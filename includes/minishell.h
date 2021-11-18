@@ -20,12 +20,13 @@
 #include "../libft/libft.h"
 
 
-typedef struct s_utils {
+// typedef struct s_utils {
 
-	int return_value; //globale
-	int g_sig;
-}				t_utils;
-extern t_utils g_utils;
+// 	int return_value; //globale
+// 	int g_sig;
+// }				t_utils;
+// extern t_utils g_utils;
+extern int return_value;
 
 typedef struct s_arg
 {

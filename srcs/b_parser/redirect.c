@@ -4,6 +4,8 @@ void	redirect_out(t_cmd *cmd, t_token **toks, int len)
 {
 	if (len == 1)
 	{
+		if (cmd->io_out > 0)
+			close(cmd->io_out);
 		cmd->io_out = open((*toks)->content, O_RDWR | O_TRUNC | O_CREAT, 0666);
 	}
 	if (len == 2)
@@ -18,7 +20,7 @@ void	redirect_out(t_cmd *cmd, t_token **toks, int len)
 	}
 	if (cmd->io_out == -1)
 	{
-		cmd->error == TRUE;
+		cmd->error = TRUE;
 		printf("%s : %s \n", cmd->cmd_args[0], strerror(errno));
 	}
 }
@@ -26,7 +28,11 @@ void	redirect_out(t_cmd *cmd, t_token **toks, int len)
 void	redirect_in(t_cmd *cmd, t_token **toks, int len)
 {
 	if (len == 1)
+	{
+		if (cmd->io_in > 0)
+			close(cmd->io_in);
 		cmd->io_in = open((*toks)->content, O_RDWR, 0666);
+	}
 	if (len == 2)
 	{
 		if (!cmd->io_here)
@@ -42,8 +48,8 @@ void	redirect_in(t_cmd *cmd, t_token **toks, int len)
 	}
 	if (cmd->io_in == -1 && cmd->dless == FALSE)
 	{
-		cmd->error == TRUE;
-		printf("%s : %s \n", cmd->cmd_args[0], strerror(errno));
+		cmd->error = TRUE;
+		printf("minishell: %s: %s \n", (*toks)->content, strerror(errno));
 	}
 }
 
@@ -52,8 +58,8 @@ void	redirect(t_cmd *cmd, t_token **toks, int type, int len)
 	if (!(*toks)->next)
 		return ((void)0);
 	*toks = (*toks)->next;
-	if (type == TOK_LESS)
+	if (type == TOK_LESS && cmd->error == FALSE)
 		redirect_in(cmd, toks, len);
-	else if (type == TOK_GREAT)
+	else if (type == TOK_GREAT && cmd->error == FALSE)
 		redirect_out(cmd, toks, len);
 }

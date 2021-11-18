@@ -41,9 +41,9 @@ int fill_thefd(t_cmd cmd)
 	char *line;
 
 	i = 0;
-	g_utils.g_sig = 0;
+	//g_utils.g_sig = 0;
 	handle_signal(HEREDOC);
-	while (cmd.here_words && g_utils.g_sig == 0)
+	while (cmd.here_words && return_value != 130)
 	{
 		fd = open(".here_doc", O_CREAT | O_TRUNC | O_RDWR, 0777);
 		if (fd == -1)
@@ -51,23 +51,21 @@ int fill_thefd(t_cmd cmd)
 			perror(">");
 			return (-1);
 		}
-		while (g_utils.g_sig == 0)
+		while (return_value != 130)
 		{
-			printf("sig = %d \n\n", g_utils.g_sig);
 			line = readline("> ");
-			printf ("[line] : %s \n", line);
-			if (line && g_utils.g_sig == 0)
+			if (line && return_value != 130)
 			{
 				if (ft_strncmp(cmd.io_here[i], line, ft_strlen(cmd.io_here[i])) == 0)
 				{
 					free(line);
 					break;
 				}
-
 			}
 				else if (line == NULL)
 				{
-					free (line);
+					if (return_value != 130)
+						printf ("minishell: warning: here-document delimited by end-of-file (wanted `%s')\n", cmd.io_here[i]);
 					break;
 				}
 			write(fd, line, ft_strlen(line));

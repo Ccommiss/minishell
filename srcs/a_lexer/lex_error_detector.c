@@ -35,9 +35,9 @@ void	syntax_error_detector(t_token *toks)
 		|| (toks->type == TOK_PIPE && !toks->next))
 	{
 		toks->type = SYNT_ERR;
-		if (g_utils.return_value != 2)
+		if (return_value != 2)
 			printf("minishell : syntax error near \"%c\"\n", tok_op);
-		g_utils.return_value = 2;
+		return_value = 2;
 	}
 }
 
@@ -65,7 +65,7 @@ int	expand_substitution_error_detector(char *var_name, int exception)
 		&& ft_strncmp(trimmed_var, "$", 2) != 0)
 	{
 		printf("%s : bad substitution\n", var_name);
-		g_utils.return_value = 1;
+		return_value = 1;
 		free(var_name);
 		return (ERROR);
 	}

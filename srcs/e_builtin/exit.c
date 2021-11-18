@@ -19,7 +19,7 @@ void	exito(char	*str)
 	if (isatty(1) && isatty(0))
 		write(1, "exit\n", 5);
 	if (str == NULL)
-		exit(g_utils.return_value);
+		exit(return_value);
 	n = (char)ft_atoi(str);
 	exit(n);
 }

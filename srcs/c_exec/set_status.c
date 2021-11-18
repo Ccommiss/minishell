@@ -9,8 +9,8 @@ void set_status(int status)
 	{
 		if (status < 128)
 			status = 128 + status; //sur Mac en tt cas
-		g_utils.return_value = status;
+		return_value = status;
 	}
 	else if (WIFEXITED(status) == 1) // fils interrompu normalement par un exit
-		g_utils.return_value = WEXITSTATUS(status);
+		return_value = WEXITSTATUS(status);
 }

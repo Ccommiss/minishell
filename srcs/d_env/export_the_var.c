@@ -273,8 +273,8 @@ int	export_the(t_env *env, char	**cmd_suffix)
 		{
 			error = -1;
 			k++;
-			if (cmd_suffix[k]== '\0')
-				return (error);
+			//if (cmd_suffix[k]== '\0')
+			//	return (error);
 			continue;
 		}
 		if (ft_export_concate(cmd_suffix[k]) == 1)
