@@ -16,6 +16,8 @@ enum tokens	error_tab(int type)
 **	- if more than expected operators are found (ex. <<<, ||, etc)
 **	- if operators are doubled (ex echo lol > >> file), e.g.
 **		not preceded by a TOK_WORD token
+** 	- reste a gerer -> si TOK en fin de ligne 
+**   - NEXT TOK IS ALWAYS NULL as this function is called in each tok
 */
 void	syntax_error_detector(t_token *toks)
 {
@@ -27,15 +29,13 @@ void	syntax_error_detector(t_token *toks)
 		tok_op = '<';
 	if (toks->type == TOK_PIPE)
 		tok_op = '|';
-	if (((toks->type == TOK_GREAT || toks->type == TOK_LESS) && toks->len > 2)
-		|| (toks->type == TOK_PIPE && toks->len > 1)
-		|| (toks->index != 0 && error_tab(toks->type) == OP
-			&& toks->prev->type != TOK_WORD && toks->prev->type != TOK_ERR)
-		|| (toks->type == TOK_PIPE && !toks->prev)
-		|| (error_tab(toks->type) == OP && !toks->next))
+	if (((toks->type == TOK_GREAT || toks->type == TOK_LESS) && toks->len > 2) // si <<< ou >>> 
+		|| (toks->type == TOK_PIPE && toks->len > 1) // si || 
+		|| ((toks->type == TOK_PIPE && !toks->prev)// || toks->prev->type != TOK_ERR || toks->prev->type != TOK_WORD)) //
+		|| (toks->prev && error_tab(toks->type) == OP && error_tab(toks->prev->type) == OP)))
 	{
 		toks->type = SYNT_ERR;
-		if (return_value != 2)
+		//if (return_value != 2)
 			printf("minishell : syntax error near \"%c\"\n", tok_op);
 		return_value = 2;
 	}

@@ -19,7 +19,6 @@ void	simple_redir_o(t_env *env, int fd, t_cmd cmd, char *path)
 	int		builtin;
 	char	**tenvp;
 
-	printf("cmd %d\n", cmd.error);
 	if (cmd.cmd_args[0] == NULL || cmd.error == 1)
 		return (no_cmd(fd));
 	builtin = is_a_builtin(cmd.cmd_args[0]);
