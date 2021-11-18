@@ -93,18 +93,10 @@ t_cmd	*token_to_cmds(t_cmd *cmd, t_token *toks)
 	j = 0;
 	head = toks;
 	if (syn_err_or_no_tok(cmd, toks) == ERROR)
+	{
+		cmd = NULL;
 		return (NULL);
-	// if (toks->index == 0 && check_syn_err(toks) == ERROR)
-	// {
-	// 	cmd->error = 1;
-	// 	free_command_items(cmd);
-	// 	return (NULL);
-	// }
-	// if (toks->type == -1) //pas de tok
-	// {
-	// 	cmd->error = 1;
-	// 	return (NULL);
-	// }
+	}
 	init_cmd(cmd);
 	if (toks->type == TOK_PIPE)
 		toks = toks->next;

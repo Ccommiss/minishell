@@ -33,7 +33,7 @@ void	syntax_error_detector(t_token *toks)
 			&& toks->prev->type != TOK_WORD))
 	{
 		toks->type = SYNT_ERR;
-		if (return_value != 2)
+		//if (return_value != 2)
 			printf("minishell : syntax error near \"%c\"\n", tok_op);
 		return_value = 2;
 	}

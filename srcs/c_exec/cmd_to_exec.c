@@ -35,7 +35,7 @@ void	cmd_to_exec(t_cmd *cmd, t_env *env)
 
 		if (cmd == NULL)
 			return_value = 0;
-	while (cmd)
+	while (cmd && cmd->index >= 0)
 	{
 		//if (cmd->error == FALSE)
 		//	return_value = 0;

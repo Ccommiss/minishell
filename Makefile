@@ -54,10 +54,8 @@ INCLUDES = /includes/
 
 SRCS  += $(addprefix $(SPATH), $(SOURCES))
 
-#OBJS1 = ${SRCS:.c=.o}
-#OBJS  := $(addprefix $(OPATH),$(OBJS1))
+
 OBJS	= 	${SRCS:.c=.o}
-#:= $(patsubst %,$(OBJ_PATH)%,$(OBJ1))
 CC = gcc
 
 #CFLAGS = -g -I.$(INCLUDES) -Wall -Werror -Wextra# -fsanitize=address
@@ -67,7 +65,7 @@ RM = rm -f
 
 NAME = minishell
 
-%.o: %.c
+$(OPATH)%.o: %.c
 	${CC} ${CFLAGS} -c $< -o ${<:.c=.o}
 
 ${NAME}: ${OBJS}

@@ -31,7 +31,7 @@ void free_cmds(t_cmd *cmd)
 {
 	int i;
 
-	while (cmd)
+	while (cmd && cmd->index >= 0)
 	{
 		i = 0;
 		if (cmd->cmd_args)
