@@ -30,7 +30,7 @@ void	syntax_error_detector(t_token *toks)
 	if (((toks->type == TOK_GREAT || toks->type == TOK_LESS) && toks->len > 2)
 		|| (toks->type == TOK_PIPE && toks->len > 1)
 		|| (toks->index != 0 && error_tab(toks->type) == OP
-			&& toks->prev->type != TOK_WORD)
+			&& toks->prev->type != TOK_WORD && toks->prev->type != TOK_ERR)
 		|| (toks->type == TOK_PIPE && !toks->prev)
 		|| (error_tab(toks->type) == OP && !toks->next))
 	{

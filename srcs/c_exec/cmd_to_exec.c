@@ -37,8 +37,8 @@ void	cmd_to_exec(t_cmd *cmd, t_env *env)
 			return_value = 0;
 	while (cmd && cmd->index >= 0)
 	{
-		//if (cmd->error == FALSE)
-		//	return_value = 0;
+		if (cmd->error == TRUE)
+			cmd = cmd->next;
 		if (cmd->next)
 		{
 			if (do_the_pipe(cmd, env) == 0)
@@ -52,7 +52,7 @@ void	cmd_to_exec(t_cmd *cmd, t_env *env)
 		{
 			
 			if (strcmp(cmd->cmd_args[0], "echo") == 0)
-				return_value =do_echo(cmd->cmd_args);
+				return_value = do_echo(cmd->cmd_args);
 			else if (strcmp(cmd->cmd_args[0], "cd") == 0)
 			{
 				return_value =cd(env, cmd->cmd_args[1]);

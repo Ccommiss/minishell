@@ -7,7 +7,8 @@ static char *tokentype[1000] = {
 	[TOK_LESS] = "LESS",
 	[TOK_GREAT] = "GREAT",
 	[TOK_EQUAL] = "EQUAL",
-	[SYNT_ERR] = "SYNTAX ERR"
+	[SYNT_ERR] = "SYNTAX ERR",
+	[TOK_ERR] = "EXPAND ERR"
 };
 
 void	debug_tokens(t_token *toks)

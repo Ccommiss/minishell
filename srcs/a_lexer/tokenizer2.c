@@ -79,7 +79,7 @@ void	tokenize(char *line, t_token *toks, t_env *env)
 	to_tokenize = ft_strdup(line);
 	init_lexer_struct(&l, to_tokenize);
 	fill_token_buff(&l, &to_tokenize, &i, env);
-	if (l.ref_char != TOK_EAT && ft_strlen(l.token) != 0)
+	if (l.ref_char != TOK_EAT)// && ft_strlen(l.token) != 0)
 		create_token(&toks, &l);
 	to_tokenize = ft_auto_substr(to_tokenize, i, ft_strlen(to_tokenize));
 	if (to_tokenize && ft_strlen(to_tokenize) != 0)

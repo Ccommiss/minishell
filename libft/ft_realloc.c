@@ -8,7 +8,6 @@ void	*ft_realloc(void *ptr, size_t cursize, size_t newsize)
 	newptr = malloc(newsize);
 	newptr = ft_bzero(newptr, newsize);
 	newptr = ft_memcpy(newptr, ptr, cursize);
-	printf("ici %s \n", (char *)newptr);
 	free(ptr);
 	return (newptr);
 }
