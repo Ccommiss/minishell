@@ -38,7 +38,10 @@ void	cmd_to_exec(t_cmd *cmd, t_env *env)
 	while (cmd && cmd->index >= 0)
 	{
 		if (cmd->error == TRUE)
+		{
 			cmd = cmd->next;
+			break ;
+		}
 		if (cmd->next)
 		{
 			if (do_the_pipe(cmd, env) == 0)

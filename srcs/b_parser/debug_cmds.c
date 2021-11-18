@@ -20,6 +20,7 @@ void	debug_cmds(t_cmd *cmds)
 	{
 		printf(MAG"[%2d]\n"RESET, cmds->index);
 		printf(BWHT"├─ Command\n"RESET);
+		printf(BWHT"├─ Error ? %d\n"RESET, cmds->error);
 		if (cmds->cmd_args)
 		printf("│  ├─ %-6s\n", cmds->cmd_args[0]);
 		printf("│  ├─ [path] %6s\n", cmds->cmdp);
