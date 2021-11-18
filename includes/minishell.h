@@ -169,7 +169,7 @@ typedef struct s_pipe
 /* d_env
  * the file for put env in a list chaine or for display this list chainee
  */
-int		printf_the_env(t_env *envp);
+int		printf_the_env(t_env *envp, char **cmd);
 void	get_the_env(t_env **envp, char **env);
 int		export_the_var(t_env *env, char *cmd_suffix);
 int		remplace_the_var(t_env *env, char *cmd_suffix);
@@ -185,6 +185,15 @@ int		check_the_cmd(char *cmd_suffix);
 int		do_the_unset(t_env *env, char **cmd_suffix);
 char	**list_to_cmd(t_env *env);
 int		export_the(t_env *env, char **cmd_suffix);
+void	ft_charswap(char **a, char **b);
+char	*ft_strdup_cote(char *str);
+int		nb_export(t_env *env);
+char	**fill_thexport(t_env *env);
+int		parse_cmd_suf(char *str);
+int		ft_parse_concate(char *cmd_suffix);
+int		print_the_export(t_env *env);
+char	**free_tab_index(char **tab, int i);
+
 /*
  * END OF D_ENV
  * */

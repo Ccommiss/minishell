@@ -1,0 +1,11 @@
+Dockerfile
+Makefile
+a
+b
+c
+d
+includes
+libft
+lol
+minishell
+srcs

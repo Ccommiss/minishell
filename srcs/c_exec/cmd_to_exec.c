@@ -6,7 +6,7 @@
 /*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/13 10:05:27 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/17 17:11:15 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/11/18 19:16:37 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,30 +53,29 @@ void	cmd_to_exec(t_cmd *cmd, t_env *env)
 		}
 		else
 		{
-			
-			if (strcmp(cmd->cmd_args[0], "echo") == 0)
+			if (cmd->cmd_args[0] != NULL && strcmp(cmd->cmd_args[0], "echo") == 0)
 				return_value = do_echo(cmd->cmd_args);
-			else if (strcmp(cmd->cmd_args[0], "cd") == 0)
+			else if (cmd->cmd_args[0] != NULL &&strcmp(cmd->cmd_args[0], "cd") == 0)
 			{
 				return_value =cd(env, cmd->cmd_args[1]);
 				set_thepwd(env);
 			}
-			else if (strcmp(cmd->cmd_args[0], "pwd") == 0)
+			else if (cmd->cmd_args[0] != NULL && strcmp(cmd->cmd_args[0], "pwd") == 0)
 			{
 				buf = get_pwd();
 				ft_putendl_fd(buf, 1);
 				free(buf);
 				return_value = 0;
 			}
-			else if(strcmp(cmd->cmd_args[0], "env") == 0)
-				return_value =printf_the_env(env);
-			else if(strcmp(cmd->cmd_args[0], "export") == 0)
+			else if(cmd->cmd_args[0] && strcmp(cmd->cmd_args[0], "env") == 0)
+				return_value =printf_the_env(env, cmd->cmd_args);
+			else if(cmd->cmd_args[0] && strcmp(cmd->cmd_args[0], "export") == 0)
 			{
 				return_value =export_the(env, &cmd->cmd_args[1]);
 			}
-			else if(ft_strncmp(cmd->cmd_args[0], "exit", 5) == 0)
+			else if(cmd->cmd_args[0] != NULL && ft_strncmp(cmd->cmd_args[0], "exit", 5) == 0)
 					exito(cmd->cmd_args[1]);
-			else if (strcmp(cmd->cmd_args[0], "unset") == 0)
+			else if (cmd->cmd_args[0] && strcmp(cmd->cmd_args[0], "unset") == 0)
 				return_value = do_the_unset(env, cmd->cmd_args);
 			else
 			{

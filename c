@@ -89,3 +89,11 @@ fclean : clean
 re:	 fclean all
 
 .PHONY: all clean fclean re
+Dockerfile
+Makefile
+a
+includes
+libft
+lol
+minishell
+srcs

@@ -6,7 +6,7 @@
 /*   By: mpochard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/30 15:41:11 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/08 14:45:21 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/11/17 11:37:36 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ t_env	*ft_lstenv(char *content)
 	res->next = 0;
 	return (res);
 }
+
 t_env	*ft_lstenv_inv(char *content)
 {
 	t_env	*res;
@@ -77,3 +78,16 @@ t_env	*ft_lstenv_inv(char *content)
 	return (res);
 }
 
+void	delete_the_node(t_env **env, t_env *del)
+{
+	if (*env == NULL || del == NULL)
+		return ;
+	if (*env == del)
+		*env = del->next;
+	if (del->next != NULL)
+		del->next->prev = del->prev;
+	if (del->prev != NULL)
+		del->prev->next = del->next;
+	free(del);
+	return ;
+}

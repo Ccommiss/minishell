@@ -6,113 +6,51 @@
 /*   By: mpochard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 17:06:05 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/12 17:38:51 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/11/18 19:27:35 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	**ft_split_one_egal(char *str)
-{
-	int		i;
-	int		j;
-	char	**tab;
-
-	i = 0;
-	j = 0;
-	tab = malloc(sizeof(char *) *(2 + 1));
-	if (tab == NULL)
-		return (NULL);
-	while ((ft_isalnum(str[i]) == 1 || str[i] == '_') && str[i] != '=')
-		i++;
-	tab[j] = strndup(str, i);
-	j++;
-	if ( str[i] == '+')
-		i++;
-	if (str[i] == '=')
-		i++;
-	tab[j] = ft_strdup(&str[i]);
-	j++;
-	tab[j] = 0;
-	return (tab);
-}
-
-static	void	init(int *i, int *k)
-{
-	*i = 0;
-	*k = 0;
-}
-
-char	*ft_strjoin_char(char *str, char *str1, char c)
-{
-	int		i;
-	int		j;
-	int		k;
-	char	*fi;
-
-	init(&i, &k);
-	j = ft_strlen(str) + ft_strlen(str1) + 1;
-	fi = malloc(sizeof(char *) * (j + 1));
-	if (!(fi))
-		return (NULL);
-	while (str[i])
-	{
-		fi[i] = str[i];
-		i++;
-	}
-	fi[i] = c;
-	i++;
-	while (str1[k])
-	{
-		fi[i] = str1[k];
-		k++;
-		i++;
-	}
-	fi[i] = '\0';
-	return (fi);
-}
-
 void	set_the_pwd_inv(t_env *env)
 {
-	while(env)
+	while (env)
 	{
 		if (strcmp(env->key, "OLDPWD") == 0)
 		{
 			env->visible = -1;
 			break ;
 		}
-	env = env->next;
+		env = env->next;
 	}
 }
 
 int	shlvl(t_env *env)
 {
-	t_env *tmp;
-	int	temp;
+	t_env	*tmp;
+	int		temp;
 
 	tmp = env;
 	while (tmp)
 	{
 		if (ft_strncmp(tmp->key, "SHLVL", 6) == 0)
+		{
+			free(tmp->env);
+			temp = ft_atoi(tmp->value);
+			free(tmp->value);
+			tmp->value = ft_itoa((temp + 1));
+			if (tmp->value == NULL)
 			{
-				free(tmp->env);
-				temp = ft_atoi(tmp->value);
-				free(tmp->value);
-				tmp->value = ft_itoa((temp +1));
-				if (tmp->value == NULL)
-				{
-					perror("malloc failed");
-					return (-1);
-				}
-				tmp->env = ft_strjoin_char(tmp->key, tmp->value, '=');
-			break;
+				perror("malloc failed");
+				return (-1);
 			}
+			tmp->env = strjoin_char(tmp->key, tmp->value, '=');
+			break ;
+		}
 		tmp = tmp->next;
 	}
-return (0);
+	return (0);
 }
-
-
 
 void	get_the_env(t_env **envp, char **env)
 {
@@ -136,14 +74,22 @@ void	get_the_env(t_env **envp, char **env)
 	shlvl(*envp);
 }
 
-int		printf_the_env(t_env *envp)
+int	printf_the_env(t_env *envp, char **cmd)
 {
 	t_env	*temp;
 
 	temp = envp;
+	if (count_double_tab(cmd) >= 1)
+	{
+		write(2, "env: ",5);
+		write(2, cmd[1], ft_strlen(cmd[1]));
+		write(2, ": No such file or directory\n",28);
+		return (127);
+	}
 	while (envp)
 	{
-		if (envp->visible == 0 && strcmp (envp->key, "_") != 0 && envp->visible == 0)
+		if (envp->visible == 0 && strcmp (envp->key, "_") != 0
+			&& envp->visible == 0)
 			printf("%s\n", envp->env);
 		envp = envp->next;
 	}

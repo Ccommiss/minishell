@@ -6,18 +6,18 @@
 /*   By: mpochard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/05 17:42:23 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/08 19:20:41 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/11/17 12:19:00 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int		nbr_of_arg(t_env *temp)
+int	nbr_of_arg(t_env *temp)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	while ( temp)
+	while (temp)
 	{
 		if (temp->visible == 0 || temp->visible == -1)
 		{
@@ -25,7 +25,7 @@ int		nbr_of_arg(t_env *temp)
 		}
 		temp = temp->next;
 	}
-	return(i);
+	return (i);
 }
 
 char	**list_to_cmd(t_env *env)
@@ -37,12 +37,12 @@ char	**list_to_cmd(t_env *env)
 	temp = env;
 	nbr = nbr_of_arg(temp);
 	tab = malloc(sizeof(char *) * (nbr + 1));
-	if (tab ==  NULL)
+	if (tab == NULL)
 		return (NULL);
 	nbr = 0;
 	while (env)
 	{
-		if ( env->visible == 0 || env->visible == -1)
+		if (env->visible == 0 || env->visible == -1)
 		{
 			tab[nbr] = ft_strdup(env->env);
 			nbr++;

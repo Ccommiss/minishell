@@ -3,16 +3,16 @@
 
 void intHandler()
 {
-   rl_reset_line_state();
+  // rl_reset_line_state();
     printf("\n");
-    rl_replace_line("", 0);
+   // rl_replace_line("", 0);
 }
 
 void intHandlerMain()
 {
 	return_value = 130;
     printf("\n");
-   rl_replace_line("", 0);
+  // rl_replace_line("", 0);
 	rl_redisplay();
 	printf(BWHT"Minishell "BRED"> "RESET);
 }
@@ -62,7 +62,7 @@ static int my_getc(FILE *stream)
 
 void	handle_signal(int state)
 {
-    rl_getc_function = rl_getc;
+   // rl_getc_function = rl_getc;
 	if (state == HEREDOC)
 	{
         rl_getc_function = my_getc;
