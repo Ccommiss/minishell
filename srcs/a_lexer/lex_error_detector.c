@@ -16,10 +16,10 @@ enum tokens	error_tab(int type)
 **	- if more than expected operators are found (ex. <<<, ||, etc)
 **	- if operators are doubled (ex echo lol > >> file), e.g.
 **		not preceded by a TOK_WORD token
-** 	- reste a gerer -> si TOK en fin de ligne 
+** 	- reste a gerer -> si TOK en fin de ligne
 **   - NEXT TOK IS ALWAYS NULL as this function is called in each tok
 */
-void	syntax_error_detector(t_token *toks)
+void	syntax_error_detector(t_token *toks, int last_tok_is_op)
 {
 	char	tok_op;
 
@@ -29,10 +29,11 @@ void	syntax_error_detector(t_token *toks)
 		tok_op = '<';
 	if (toks->type == TOK_PIPE)
 		tok_op = '|';
-	if (((toks->type == TOK_GREAT || toks->type == TOK_LESS) && toks->len > 2) // si <<< ou >>> 
-		|| (toks->type == TOK_PIPE && toks->len > 1) // si || 
+	if (((toks->type == TOK_GREAT || toks->type == TOK_LESS) && toks->len > 2) // si <<< ou >>>
+		|| (toks->type == TOK_PIPE && toks->len > 1) // si ||
 		|| ((toks->type == TOK_PIPE && !toks->prev)// || toks->prev->type != TOK_ERR || toks->prev->type != TOK_WORD)) //
-		|| (toks->prev && error_tab(toks->type) == OP && error_tab(toks->prev->type) == OP)))
+		|| (toks->prev && error_tab(toks->type) == OP && error_tab(toks->prev->type) == OP))
+		|| last_tok_is_op == TRUE)
 	{
 		toks->type = SYNT_ERR;
 		//if (return_value != 2)

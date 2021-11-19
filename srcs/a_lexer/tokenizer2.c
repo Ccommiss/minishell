@@ -18,7 +18,7 @@ void	create_token(t_token **toks, t_lex *l)
 		(*toks)->content = ft_strdup(l->token);
 	(*toks)->type = l->ref_char;
 	(*toks)->len = strlen((*toks)->content);
-	syntax_error_detector(*toks);
+	syntax_error_detector(*toks, FALSE);
 	(*toks)->next = malloc(sizeof(t_token));
 	(*toks)->next->content = NULL;
 	(*toks)->next->prev = (*toks);
@@ -89,7 +89,8 @@ void	tokenize(char *line, t_token *toks, t_env *env)
 		toks = toks->prev;
 		free(toks->next);
 		toks->next = NULL;
-		syntax_error_detector(toks);
+		if (error_tab(toks->type) == OP)
+			syntax_error_detector(toks, TRUE);
 	}
 	free(to_tokenize);
 	to_tokenize = NULL;

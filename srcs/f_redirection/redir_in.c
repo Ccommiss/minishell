@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir_in.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpochard <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/05 17:41:12 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/10 11:34:31 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/11/19 13:15:03 by ccommiss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	redir_in_built(t_env *env, char **cmd, int fd, int builtin)
 	else if (builtin == 6)
 		do_the_unset(env, cmd);
 	else if (builtin == 7)
-		printf_the_env(env);
+		printf_the_env(env, NULL);
 	close(fd);
 	dup2(fd1, 1);
 }

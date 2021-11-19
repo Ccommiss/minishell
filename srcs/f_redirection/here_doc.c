@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpochard <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/20 11:11:36 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/16 14:03:18 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/11/19 13:14:58 by ccommiss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	the_rest_built(t_env *env, t_cmd cmd, int builtin)
 	else if (builtin == 6)
 		do_the_unset(env, cmd.cmd_args);
 	else if (builtin == 7)
-		printf_the_env(env);
+		printf_the_env(env, NULL);
 }
 
 void	redir_here_built(t_env *env, t_cmd cmd, int builtin)

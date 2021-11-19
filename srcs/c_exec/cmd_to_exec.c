@@ -6,7 +6,7 @@
 /*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/13 10:05:27 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/18 19:16:37 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/11/19 14:05:30 by ccommiss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ void	cmd_to_exec(t_cmd *cmd, t_env *env)
 	char	*buf;
 	char	**tenvp;
 
-		if (cmd == NULL)
-			return_value = 0;
+	if (cmd == NULL)
+		return;
 	while (cmd && cmd->index >= 0)
 	{
 		if (cmd->error == TRUE)
@@ -42,12 +42,14 @@ void	cmd_to_exec(t_cmd *cmd, t_env *env)
 			cmd = cmd->next;
 			break ;
 		}
+		else
+			return_value = 0;
 		if (cmd->next)
 		{
 			if (do_the_pipe(cmd, env) == 0)
 				return ;
 		}
-		else if ( there_is_redir(env, *cmd) == 0)
+		else if ( there_is_redir (env, *cmd) == 0)
 		{
 
 		}

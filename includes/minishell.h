@@ -255,10 +255,10 @@ void	exec_builtin(t_env *env, char **cmd, int builtin);
 
 void		init_tok_and_cmd(t_token *toks, t_cmd *cmd);
 void		tokenize(char *to_tokenize, t_token *toks, t_env *env);
-void 		syntax_error_detector(t_token *toks);
+void 		syntax_error_detector(t_token *toks, int last_tok_is_op);
 int			expand_substitution_error_detector(char *var_name, int exception);
-
-void		debug_tokens(t_token *toks);
+enum tokens error_tab(int type);
+void debug_tokens(t_token *toks);
 
 /*
 ** context.c
