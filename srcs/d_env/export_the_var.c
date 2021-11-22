@@ -6,7 +6,7 @@
 /*   By: mpochard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 17:23:21 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/17 20:13:17 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/11/22 14:47:45 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,20 @@ int	export_visible(char *cmd_suffix, t_env *env)
 	ft_lstadd_backenv(&env, ft_lstenv_inv(cmd));
 	return (1);
 }*/
+
+
+int	count_tab(char **tab)
+{
+	int i;
+
+	i = 0;
+	printf("yoloooooo %zu\n",ft_strlen(tab[i]));
+	while (tab[i])
+	{
+		i++;
+	}
+		return (i);
+}
 
 void	ft_concatene_exp(t_env *env, char **tab)
 {
@@ -102,6 +116,7 @@ int	export_the(t_env *env, char	**cmd_suffix)
 	tmp = env;
 	k = 0;
 	error = 0;
+	
 	if (count_double_tab(cmd_suffix) == 0)
 		return (print_the_export(env));
 	while (cmd_suffix[k])

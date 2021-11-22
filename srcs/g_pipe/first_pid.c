@@ -6,7 +6,7 @@
 /*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/05 16:05:45 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/16 15:29:28 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/11/22 11:32:07 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void	exec_builtin(t_env *env, char **cmd, int builtin)
 	else if (builtin == 6)
 		do_the_unset(env, cmd);
 	else if (builtin == 7)
-		printf_the_env(env);
+		printf_the_env(env, cmd);
 	exit(0);
 }
 

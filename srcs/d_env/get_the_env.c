@@ -6,7 +6,7 @@
 /*   By: mpochard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 17:06:05 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/18 19:27:35 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/11/22 11:37:22 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int	printf_the_env(t_env *envp, char **cmd)
 	t_env	*temp;
 
 	temp = envp;
-	if (count_double_tab(cmd) >= 1)
+	if (count_double_tab(cmd) > 1)
 	{
 		write(2, "env: ",5);
 		write(2, cmd[1], ft_strlen(cmd[1]));

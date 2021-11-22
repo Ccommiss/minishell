@@ -6,7 +6,7 @@
 /*   By: mpochard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/05 17:41:40 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/10 11:33:16 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/11/22 11:30:49 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	redir_out_built(t_env *env, char **cmd, int fd, int builtin)
 	else if (builtin == 6)
 		do_the_unset(env, cmd);
 	else if (builtin == 7)
-		printf_the_env(env);
+		printf_the_env(env, cmd);
 	close(fd);
 }
 
@@ -97,7 +97,7 @@ void	redir_double_built(t_env *env, t_cmd cmd, int builtin)
 	else if (builtin == 6)
 		do_the_unset(env, cmd.cmd_args);
 	else if (builtin == 7)
-		printf_the_env(env);
+		printf_the_env(env, cmd.cmd_args);
 	close(cmd.io_out);
 	close(cmd.io_in);
 	dup2(fd1, 1);

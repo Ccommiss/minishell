@@ -6,7 +6,7 @@
 /*   By: mpochard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/05 17:41:12 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/10 11:34:31 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/11/22 11:29:07 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	redir_in_built(t_env *env, char **cmd, int fd, int builtin)
 	else if (builtin == 6)
 		do_the_unset(env, cmd);
 	else if (builtin == 7)
-		printf_the_env(env);
+		printf_the_env(env, cmd);
 	close(fd);
 	dup2(fd1, 1);
 }
@@ -73,12 +73,12 @@ void	fork_fail(char *str, int fd, char **tenvp)
 	ft_free_double_tab(tenvp);
 	return ;
 }
-
 void	redir_in(t_env *env, t_cmd cmd, int fd, char *path)
 {
 	pid_t	pid;
 	int		builtin;
 	char	**tenvp;
+	int		status;
 
 	if (cmd.cmd_args[0] == NULL || cmd.error == 1)
 		return (no_cmd(fd));
@@ -96,7 +96,8 @@ void	redir_in(t_env *env, t_cmd cmd, int fd, char *path)
 			dup2(fd, 1);
 			ft_execve(path, cmd.cmd_args, tenvp);
 		}
-		waitpid(pid, NULL, 0);
+		waitpid(pid, &status, 0);
+		set_status(status);
 		ft_free_double_tab(tenvp);
 	}
 	close(fd);

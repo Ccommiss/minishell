@@ -6,7 +6,7 @@
 /*   By: mpochard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/05 17:41:18 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/17 17:03:33 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/11/22 11:15:17 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	simple_redir_o(t_env *env, int fd, t_cmd cmd, char *path)
 	pid_t	pid;
 	int		builtin;
 	char	**tenvp;
+	int		status;
 
 	if (cmd.cmd_args[0] == NULL || cmd.error == 1)
 		return (no_cmd(fd));
@@ -35,7 +36,8 @@ void	simple_redir_o(t_env *env, int fd, t_cmd cmd, char *path)
 			dup2(fd, 0);
 			ft_execve(path, cmd.cmd_args, tenvp);
 		}
-		waitpid(pid, NULL, 0);
+		waitpid(pid, &status, 0);
+		set_status(status);
 		ft_free_double_tab(tenvp);
 	}
 	close(fd);
@@ -46,6 +48,7 @@ void	both_redir(t_env *env, t_cmd cmd, int in, int out)
 	int		builtin;
 	pid_t	pid;
 	char	**tenvp;
+	int		status;
 
 	if (cmd.cmd_args[0] == NULL || cmd.error == 1)
 		return (no_cmd_d(in, out));
@@ -64,7 +67,8 @@ void	both_redir(t_env *env, t_cmd cmd, int in, int out)
 			dup2(in, 0);
 			ft_execve(cmd.cmdp, cmd.cmd_args, tenvp);
 		}
-		waitpid(pid, NULL, 0);
+		waitpid(pid, &status, 0);
+		set_status(status);
 	}
 	close(out);
 	close(in);

@@ -6,7 +6,7 @@
 /*   By: mpochard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/20 11:11:36 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/16 14:03:18 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/11/22 11:30:10 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	the_rest_built(t_env *env, t_cmd cmd, int builtin)
 	else if (builtin == 6)
 		do_the_unset(env, cmd.cmd_args);
 	else if (builtin == 7)
-		printf_the_env(env);
+		printf_the_env(env, cmd.cmd_args);
 }
 
 void	redir_here_built(t_env *env, t_cmd cmd, int builtin)
@@ -70,10 +70,10 @@ void	do_the_dup(int out, int fd)
 		dup2(out, 1);
 	dup2(fd, 0);
 }
-
 void	here_doc(t_env *env, t_cmd cmd, int fd)
 {
 	int		builtin;
+	int		status;
 	pid_t	pid;
 	char	**tenvp;
 
@@ -94,7 +94,8 @@ void	here_doc(t_env *env, t_cmd cmd, int fd)
 			do_the_dup(cmd.io_out, fd);
 			ft_execve(cmd.cmdp, cmd.cmd_args, tenvp);
 		}
-		waitpid(pid, NULL, 0);
+		waitpid(pid, &status, 0);
+		set_status(status);
 	}
 	unlink(".here_doc");
 }
