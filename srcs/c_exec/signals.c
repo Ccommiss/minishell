@@ -55,14 +55,14 @@ static int my_getc(FILE *stream)
     r = read(0, &c, 1); // read from stdin, will return -1 when interrupted by a signal
     if (r == -1)// && errno == EINTR)
         return EOF;
-    else 
+    else
         return c;
 }
 
 
 void	handle_signal(int state)
 {
-   // rl_getc_function = rl_getc;
+    rl_getc_function = rl_getc;
 	if (state == HEREDOC)
 	{
         rl_getc_function = my_getc;

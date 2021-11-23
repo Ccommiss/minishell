@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   util_redir.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpochard <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/05 17:41:40 by mpochard          #+#    #+#             */
 /*   Updated: 2021/11/22 11:30:49 by mpochard         ###   ########.fr       */
@@ -52,7 +52,7 @@ void	redir_out_built(t_env *env, char **cmd, int fd, int builtin)
 	else if (builtin == 5)
 		export_the(env, &cmd[1]);
 	else if (builtin == 6)
-		do_the_unset(env, cmd);
+		do_the_unset(env, NULL);
 	else if (builtin == 7)
 		printf_the_env(env, cmd);
 	close(fd);

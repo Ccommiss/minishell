@@ -41,7 +41,6 @@ int fill_thefd(t_cmd cmd)
 	char *line;
 
 	i = 0;
-	//g_utils.g_sig = 0;
 	handle_signal(HEREDOC);
 	while (cmd.here_words && return_value != 130)
 	{

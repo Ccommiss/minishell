@@ -2,6 +2,8 @@
 
 void	redirect_out(t_cmd *cmd, t_token **toks, int len)
 {
+	if ((*toks)->content == NULL)
+		printf ("YO \n");
 	if (len == 1)
 	{
 		if (cmd->io_out > 0)
@@ -54,6 +56,14 @@ void	redirect_in(t_cmd *cmd, t_token **toks, int len)
 	}
 }
 
+
+/*
+**	redirect choose whether
+** 	- returning an lexical error if token < or > is not followed by
+**		a file name
+**	- redirect in
+**	- redirect out
+*/
 void	redirect(t_cmd *cmd, t_token **toks, int type, int len)
 {
 	if (!(*toks)->next)

@@ -106,7 +106,7 @@ t_cmd	*token_to_cmds(t_cmd *cmd, t_token *toks)
 				toks = toks->next;
 			break;
 		}
-		if (toks->type == TOK_WORD && ft_strlen(toks->content) > 0)
+		if (toks->type == TOK_WORD) // && ft_strlen(toks->content) > 0)
 			command_and_suffix(cmd, toks, &j);
 		if (toks->type == TOK_LESS || toks->type == TOK_GREAT)
 			redirect(cmd, &toks, toks->type, ft_strlen(toks->content));
