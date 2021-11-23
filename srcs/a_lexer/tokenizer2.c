@@ -30,9 +30,12 @@ int	handle_expand(char **to_tokenize, int *i, t_lex *l, t_env *env)
 {
 	int old_context;
 	int old_exp;
+	int old_i;
 
 	old_context = l->context;
 	old_exp = l->exp_res;
+	old_i = *i;
+	
 	while (to_tokenize[0][*i] == '$' && l->context != SQUOTE && l->exp_res != 2)
 	{
 		l->exp_res = expand(to_tokenize, i, &l->context, env);
@@ -44,7 +47,8 @@ int	handle_expand(char **to_tokenize, int *i, t_lex *l, t_env *env)
 				*i += 1;
 			return (ERROR);
 		}
-		if (old_context == WORD && (int)tok(l->context, (unsigned char)to_tokenize[0][*i]) == TOK_EAT && old_exp != 0)
+		if (old_context == WORD && (int)tok(l->context, (unsigned char)to_tokenize[0][*i]) == TOK_EAT 
+		&& old_exp != 0 && old_i == 0) // je crois que du coup pas besoin du old_expcar old_i prime ? pas sur 
 		{
 			l->exp_res = 404; 
 		}
