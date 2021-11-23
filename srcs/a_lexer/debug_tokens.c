@@ -19,7 +19,7 @@ void	debug_tokens(t_token *toks)
 	printf("-------------------------------------------------------------------\n");
 	printf("| INDEX | TYPE       | LEN | CONTENT                               |\n");
 	printf("|-------|------------|-----|---------------------------------------|\n");
-	while (toks != NULL && toks->content != NULL)
+	while (toks != NULL)
 	{
 		printf("| %2d    ", toks->index);
 

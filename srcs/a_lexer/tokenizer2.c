@@ -14,10 +14,13 @@ void	init_lexer_struct(t_lex *lex, char *to_tokenize)
 
 void	create_token(t_token **toks, t_lex *l)
 {
-	if ((*toks)->content == NULL)
+	if ((*toks)->content == NULL && l->ref_char != TOK_ERR) //test
 		(*toks)->content = ft_strdup(l->token);
+	else
+		(*toks)->content = NULL;
 	(*toks)->type = l->ref_char;
-	(*toks)->len = strlen((*toks)->content);
+	if ((*toks)->content)
+		(*toks)->len = strlen((*toks)->content);
 	syntax_error_detector(*toks, FALSE);
 	(*toks)->next = malloc(sizeof(t_token));
 	(*toks)->next->content = NULL;
@@ -50,7 +53,8 @@ int	handle_expand(char **to_tokenize, int *i, t_lex *l, t_env *env)
 		if (old_context == WORD && (int)tok(l->context, (unsigned char)to_tokenize[0][*i]) == TOK_EAT 
 		&& old_exp != 0 && old_i == 0) // je crois que du coup pas besoin du old_expcar old_i prime ? pas sur 
 		{
-			l->exp_res = 404; 
+			l->exp_res = 404;
+			l->ref_char = TOK_ERR;
 		}
 	}
 	if (l->ref_char != (int)tok(l->context, (unsigned char)to_tokenize[0][*i]))
@@ -92,7 +96,7 @@ void	tokenize(char *line, t_token *toks, t_env *env)
 	to_tokenize = ft_strdup(line);
 	init_lexer_struct(&l, to_tokenize);
 	fill_token_buff(&l, &to_tokenize, &i, env);
-	if (l.ref_char != TOK_EAT && l.exp_res != 404)// && ft_strlen(l.token) != 0)
+	if (l.ref_char != TOK_EAT)// && l.exp_res != 404)// && ft_strlen(l.token) != 0)
 		create_token(&toks, &l);
 	l.exp_res = -2;
 	to_tokenize = ft_auto_substr(to_tokenize, i, ft_strlen(to_tokenize));
