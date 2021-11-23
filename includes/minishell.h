@@ -76,7 +76,8 @@ enum tokens
 	TOK_GREAT,
 	TOK_LESS,
 	TOK_EQUAL,
-	TOK_ERR, // expand erreur
+	TOK_ERR, // bad substitu erreur
+	TOK_NO_VAR, //expand but var doesnt exist $fkjahf
 	SYNT_ERR, //erreur builtin syntax
 	SQUOTE = '\'',
 	DQUOTE = '\"'
