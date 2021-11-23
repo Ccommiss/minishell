@@ -9,7 +9,7 @@ void	init_lexer_struct(t_lex *lex, char *to_tokenize)
 	lex->context = corresp((unsigned char)to_tokenize[0]);
 	if (lex->context == SQUOTE || lex->context == DQUOTE)
 		lex->context = WORD;
-	lex->exp_res = 0;
+	lex->exp_res = -2;
 }
 
 void	create_token(t_token **toks, t_lex *l)
@@ -29,8 +29,10 @@ void	create_token(t_token **toks, t_lex *l)
 int	handle_expand(char **to_tokenize, int *i, t_lex *l, t_env *env)
 {
 	int old_context;
+	int old_exp;
 
 	old_context = l->context;
+	old_exp = l->exp_res;
 	while (to_tokenize[0][*i] == '$' && l->context != SQUOTE && l->exp_res != 2)
 	{
 		l->exp_res = expand(to_tokenize, i, &l->context, env);
@@ -42,8 +44,10 @@ int	handle_expand(char **to_tokenize, int *i, t_lex *l, t_env *env)
 				*i += 1;
 			return (ERROR);
 		}
-		if (old_context == WORD && (int)tok(l->context, (unsigned char)to_tokenize[0][*i]) == TOK_EAT)
+		if (old_context == WORD && (int)tok(l->context, (unsigned char)to_tokenize[0][*i]) == TOK_EAT && old_exp != 0)
+		{
 			l->exp_res = 404; 
+		}
 	}
 	if (l->ref_char != (int)tok(l->context, (unsigned char)to_tokenize[0][*i]))
 		return (BREAK);
@@ -86,6 +90,7 @@ void	tokenize(char *line, t_token *toks, t_env *env)
 	fill_token_buff(&l, &to_tokenize, &i, env);
 	if (l.ref_char != TOK_EAT && l.exp_res != 404)// && ft_strlen(l.token) != 0)
 		create_token(&toks, &l);
+	l.exp_res = -2;
 	to_tokenize = ft_auto_substr(to_tokenize, i, ft_strlen(to_tokenize));
 	if (to_tokenize && ft_strlen(to_tokenize) != 0)
 		tokenize(to_tokenize, toks, env);
