@@ -14,13 +14,15 @@ void	init_lexer_struct(t_lex *lex, char *to_tokenize)
 
 void	create_token(t_token **toks, t_lex *l)
 {
-	if ((*toks)->content == NULL && l->ref_char != TOK_ERR) //test
+	if ((*toks)->content == NULL && l->ref_char != TOK_NO_VAR) //test
 		(*toks)->content = ft_strdup(l->token);
 	else
 		(*toks)->content = NULL;
 	(*toks)->type = l->ref_char;
 	if ((*toks)->content)
 		(*toks)->len = strlen((*toks)->content);
+	else 
+		(*toks)->len =-1;
 	syntax_error_detector(*toks, FALSE);
 	(*toks)->next = malloc(sizeof(t_token));
 	(*toks)->next->content = NULL;
@@ -54,7 +56,7 @@ int	handle_expand(char **to_tokenize, int *i, t_lex *l, t_env *env)
 		&& old_exp != 0 && old_i == 0) // je crois que du coup pas besoin du old_expcar old_i prime ? pas sur 
 		{
 			l->exp_res = 404;
-			l->ref_char = TOK_ERR;
+			l->ref_char = TOK_NO_VAR;
 		}
 	}
 	if (l->ref_char != (int)tok(l->context, (unsigned char)to_tokenize[0][*i]))
