@@ -110,7 +110,7 @@ int	export_the(t_env *env, char	**cmd_suffix)
 		{
 			error = -1;
 			k++;
-			if (cmd_suffix[k] == '\0')
+			if (cmd_suffix[0][k] == '\0') /// CLAIRE POUR COMPIL LINUX
 				return (error);
 			continue ;
 		}
