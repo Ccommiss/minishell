@@ -62,7 +62,7 @@ static int my_getc(FILE *stream)
 
 void	handle_signal(int state)
 {
-    rl_getc_function = rl_getc;
+   // rl_getc_function = rl_getc;
 	if (state == HEREDOC)
 	{
         rl_getc_function = my_getc;

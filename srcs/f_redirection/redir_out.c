@@ -6,14 +6,14 @@
 /*   By: mpochard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/05 17:41:18 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/22 11:15:17 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/11/23 11:21:37 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <fcntl.h>
 
-void	simple_redir_o(t_env *env, int fd, t_cmd cmd, char *path)
+int	simple_redir_o(t_env *env, int fd, t_cmd cmd, char *path)
 {
 	pid_t	pid;
 	int		builtin;
@@ -21,10 +21,10 @@ void	simple_redir_o(t_env *env, int fd, t_cmd cmd, char *path)
 	int		status;
 
 	if (cmd.cmd_args[0] == NULL || cmd.error == 1)
-		return (no_cmd(fd));
+		return (no_cmd(fd, cmd.error));
 	builtin = is_a_builtin(cmd.cmd_args[0]);
 	if ((builtin >= 1 && builtin <= 7) && fd > -1)
-		redir_out_built(env, cmd.cmd_args, fd, builtin);
+		return_value = redir_out_built(env, cmd.cmd_args, fd, builtin);
 	else if (builtin == 0 && fd > -1)
 	{
 		tenvp = list_to_cmd(env);
@@ -41,9 +41,10 @@ void	simple_redir_o(t_env *env, int fd, t_cmd cmd, char *path)
 		ft_free_double_tab(tenvp);
 	}
 	close(fd);
+	return (return_value);
 }
 
-void	both_redir(t_env *env, t_cmd cmd, int in, int out)
+int		both_redir(t_env *env, t_cmd cmd, int in, int out)
 {
 	int		builtin;
 	pid_t	pid;
@@ -51,10 +52,10 @@ void	both_redir(t_env *env, t_cmd cmd, int in, int out)
 	int		status;
 
 	if (cmd.cmd_args[0] == NULL || cmd.error == 1)
-		return (no_cmd_d(in, out));
+		return (no_cmd_d(in, out, cmd.error));
 	builtin = is_a_builtin(cmd.cmd_args[0]);
 	if ((builtin >= 1 && builtin <= 7) && in >= -1 && out >= -1)
-		redir_double_built(env, cmd, builtin);
+		return_value = redir_double_built(env, cmd, builtin);
 	else if (builtin == 0 && (in >= -1 && out >= -1))
 	{
 		tenvp = list_to_cmd(env);
@@ -72,4 +73,5 @@ void	both_redir(t_env *env, t_cmd cmd, int in, int out)
 	}
 	close(out);
 	close(in);
+	return (return_value);
 }

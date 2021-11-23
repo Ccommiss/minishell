@@ -6,7 +6,7 @@
 /*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/05 17:41:40 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/22 11:30:49 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/11/23 11:18:32 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,16 @@ void	ft_execve(char *path, char **cmd, char **tenvp)
 	}
 }
 
-void	redir_out_built(t_env *env, char **cmd, int fd, int builtin)
+int	redir_out_built(t_env *env, char **cmd, int fd, int builtin)
 {
+	int	value;
+
+	value = 0;
 	if (builtin == 1)
-		do_echo(cmd);
+		value =do_echo(cmd);
 	else if (builtin == 2)
 	{
-		cd(env, cmd[1]);
+		value =cd(env, cmd[1]);
 		set_thepwd(env);
 	}
 	else if (builtin == 3)
@@ -50,42 +53,47 @@ void	redir_out_built(t_env *env, char **cmd, int fd, int builtin)
 	else if (builtin == 4)
 		exito(cmd[1]);
 	else if (builtin == 5)
-		export_the(env, &cmd[1]);
+		value = export_the(env, &cmd[1]);
 	else if (builtin == 6)
-		do_the_unset(env, NULL);
+		value = do_the_unset(env, NULL);
 	else if (builtin == 7)
-		printf_the_env(env, cmd);
+		value =printf_the_env(env, cmd);
 	close(fd);
+	return (value);
 }
 
-void	fork_fail_d(char *str, int fd, int fd1, char **tenvp)
+int	fork_fail_d(char *str, int fd, int fd1, char **tenvp)
 {
 	perror(str);
 	close(fd);
 	close(fd1);
 	ft_free_double_tab(tenvp);
-	return ;
+	return (-1);
 }
 
-void	no_cmd_d(int fd, int fd1)
+int	no_cmd_d(int fd, int fd1, int error)
 {
 	close(fd);
 	close(fd1);
-	return ;
+	if (error == 1)
+		return (-1);
+	return(0);
 }
 
-void	redir_double_built(t_env *env, t_cmd cmd, int builtin)
+int	redir_double_built(t_env *env, t_cmd cmd, int builtin)
 {
 	int	fd1;
+	int	value;
 
+	value = 0;
 	fd1 = dup(1);
 	close(1);
 	dup(cmd.io_out);
 	if (builtin == 1)
-		do_echo(cmd.cmd_args);
+		value = do_echo(cmd.cmd_args);
 	else if (builtin == 2)
 	{
-		cd(env, cmd.cmd_args[1]);
+		value=cd(env, cmd.cmd_args[1]);
 		set_thepwd(env);
 	}
 	else if (builtin == 3)
@@ -93,12 +101,13 @@ void	redir_double_built(t_env *env, t_cmd cmd, int builtin)
 	else if (builtin == 4)
 		exito(cmd.cmd_args[1]);
 	else if (builtin == 5)
-		export_the(env, &cmd.cmd_args[1]);
+		value = export_the(env, &cmd.cmd_args[1]);
 	else if (builtin == 6)
-		do_the_unset(env, cmd.cmd_args);
+		value = do_the_unset(env, cmd.cmd_args);
 	else if (builtin == 7)
-		printf_the_env(env, cmd.cmd_args);
+		value = printf_the_env(env, cmd.cmd_args);
 	close(cmd.io_out);
 	close(cmd.io_in);
 	dup2(fd1, 1);
+	return (value);
 }

@@ -6,7 +6,7 @@
 /*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/05 17:41:12 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/22 11:29:07 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/11/23 10:36:36 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,18 +32,20 @@ int	is_a_builtin(char *cmd)
 	return (0);
 }
 
-void	redir_in_built(t_env *env, char **cmd, int fd, int builtin)
+int	redir_in_built(t_env *env, char **cmd, int fd, int builtin)
 {
 	int	fd1;
+	int	value;
 
 	fd1 = dup(1);
 	close(1);
 	dup(fd);
+	value = 0;
 	if (builtin == 1)
-		do_echo(cmd);
+		value = do_echo(cmd);
 	else if (builtin == 2)
 	{
-		cd(env, cmd[1]);
+		value =cd(env, cmd[1]);
 		set_thepwd(env);
 	}
 	else if (builtin == 3)
@@ -51,29 +53,33 @@ void	redir_in_built(t_env *env, char **cmd, int fd, int builtin)
 	else if (builtin == 4)
 		exito(cmd[1]);
 	else if (builtin == 5)
-		export_the(env, &cmd[1]);
+		value =export_the(env, &cmd[1]);
 	else if (builtin == 6)
-		do_the_unset(env, cmd);
+		value = do_the_unset(env, cmd);
 	else if (builtin == 7)
-		printf_the_env(env, cmd);
+		value =printf_the_env(env, cmd);
 	close(fd);
 	dup2(fd1, 1);
+	return (value);
 }
 
-void	no_cmd(int fd)
+int	no_cmd(int fd, int error)
 {
 	close(fd);
-	return ;
+	printf("ici");
+	if (error == 1)
+		return (-1);
+	return (0);
 }
 
-void	fork_fail(char *str, int fd, char **tenvp)
+int	fork_fail(char *str, int fd, char **tenvp)
 {
 	perror(str);
 	close(fd);
 	ft_free_double_tab(tenvp);
-	return ;
+	return (-1);
 }
-void	redir_in(t_env *env, t_cmd cmd, int fd, char *path)
+int	redir_in(t_env *env, t_cmd cmd, int fd, char *path)
 {
 	pid_t	pid;
 	int		builtin;
@@ -81,10 +87,10 @@ void	redir_in(t_env *env, t_cmd cmd, int fd, char *path)
 	int		status;
 
 	if (cmd.cmd_args[0] == NULL || cmd.error == 1)
-		return (no_cmd(fd));
+		return (no_cmd(fd, cmd.error));
 	builtin = is_a_builtin(cmd.cmd_args[0]);
 	if (builtin >= 1 && builtin <= 7)
-		redir_in_built(env, cmd.cmd_args, fd, builtin);
+		return_value = redir_in_built(env, cmd.cmd_args, fd, builtin);
 	else if (builtin == 0)
 	{
 		tenvp = list_to_cmd(env);
@@ -101,4 +107,5 @@ void	redir_in(t_env *env, t_cmd cmd, int fd, char *path)
 		ft_free_double_tab(tenvp);
 	}
 	close(fd);
+	return (return_value);
 }

@@ -215,20 +215,20 @@ void	exito(char *str);
  * */
 void	cmd_to_exec(t_cmd *cmd, t_env *env);
 int		is_a_builtin(char *cmd);
-void	redir_in(t_env *env, t_cmd cmd, int fd, char *path);
-void	simple_redir_o(t_env *env, int fd, t_cmd cmd, char *ath);
+int		redir_in(t_env *env, t_cmd cmd, int fd, char *path);
+int		simple_redir_o(t_env *env, int fd, t_cmd cmd, char *ath);
 int		there_is_redir(t_env *env, t_cmd cmd);
-void	both_redir(t_env *env, t_cmd cmd, int in, int out);
+int		both_redir(t_env *env, t_cmd cmd, int in, int out);
 int		fill_thefd(t_cmd cmd);
 void	here_doc(t_env *env, t_cmd cmd , int fd);
-void	no_cmd(int fd);
-void	no_cmd_d(int fd, int fd1);
-void	fork_fail(char *str, int fd, char **tenvp);
-void	fork_fail_d(char *str, int in, int out,  char **tenvp);
+int		no_cmd(int fd, int error);
+int		no_cmd_d(int fd, int fd1, int error);
+int		fork_fail(char *str, int fd, char **tenvp);
+int		fork_fail_d(char *str, int in, int out,  char **tenvp);
 void	ft_execve(char *path, char **cmd, char **tenvp);
-void	redir_in_built(t_env *env, char **cmd, int fd , int builtin);
-void	redir_out_built(t_env *env, char **cmd, int fd , int builtin);
-void	redir_double_built(t_env *env, t_cmd cmd, int builtin);
+int		redir_in_built(t_env *env, char **cmd, int fd , int builtin);
+int		redir_out_built(t_env *env, char **cmd, int fd , int builtin);
+int		redir_double_built(t_env *env, t_cmd cmd, int builtin);
 /* end of f_redir*/
 
 /*
