@@ -9,7 +9,7 @@ void	init_lexer_struct(t_lex *lex, char *to_tokenize)
 	lex->context = corresp((unsigned char)to_tokenize[0]);
 	if (lex->context == SQUOTE || lex->context == DQUOTE)
 		lex->context = WORD;
-	lex->exp_res = 0;
+	lex->exp_res = -1;
 }
 
 void	create_token(t_token **toks, t_lex *l)
@@ -42,7 +42,8 @@ int	handle_expand(char **to_tokenize, int *i, t_lex *l, t_env *env)
 				*i += 1;
 			return (ERROR);
 		}
-		if (old_context == WORD && (int)tok(l->context, (unsigned char)to_tokenize[0][*i]) == TOK_EAT)
+		if (old_context == WORD && (int)tok(l->context, (unsigned char)to_tokenize[0][*i]) == TOK_EAT
+		&& l->exp_res != 0)
 			l->exp_res = 404; 
 	}
 	if (l->ref_char != (int)tok(l->context, (unsigned char)to_tokenize[0][*i]))

@@ -15,7 +15,6 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
-//t_utils g_utils;
 int return_value;
 
 int check_quote(char *line)
