@@ -16,6 +16,7 @@
 #include <readline/history.h>
 
 int return_value;
+int process;
 
 int check_quote(char *line)
 {
@@ -79,6 +80,7 @@ int main(int ac, char **av, char **envp)
 	get_the_env(&env, envp);
 	while (1)
 	{
+		process = MAIN_PROCESS;
 		handle_signal(MAIN_PROCESS);
 		line = choose_prompt();
 		if (line && ft_strlen(line) == 0)

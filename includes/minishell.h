@@ -27,6 +27,7 @@
 // }				t_utils;
 // extern t_utils g_utils;
 extern int return_value;
+extern int process;
 
 typedef struct s_arg
 {

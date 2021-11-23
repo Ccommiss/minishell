@@ -84,19 +84,19 @@ void	cmd_to_exec(t_cmd *cmd, t_env *env)
 				pid_t pid;
 				tenvp = list_to_cmd(env);
 				pid = fork();
+
 				if (pid == 0)
 				{
 					handle_signal(CHILD);
-					if (execve(cmd->cmdp, cmd->cmd_args,tenvp) == -1)
+					if (execve(cmd->cmdp, cmd->cmd_args, tenvp) == -1)
 					{
 						printf ("minishell: command not found: %s\n", cmd->cmd_args[0]);
 						exit (127);
 					}
 				}
-				else
-					handle_signal(CHILD_HANDLING);
 				waitpid(pid, &status, 0);
 				set_status(status);
+		
 			}
 		}
 		cmd = cmd->next;

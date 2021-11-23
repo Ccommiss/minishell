@@ -9,11 +9,7 @@ void	init_lexer_struct(t_lex *lex, char *to_tokenize)
 	lex->context = corresp((unsigned char)to_tokenize[0]);
 	if (lex->context == SQUOTE || lex->context == DQUOTE)
 		lex->context = WORD;
-<<<<<<< HEAD
-	lex->exp_res = -1;
-=======
 	lex->exp_res = -2;
->>>>>>> main
 }
 
 void	create_token(t_token **toks, t_lex *l)
