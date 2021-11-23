@@ -28,6 +28,9 @@ void	create_token(t_token **toks, t_lex *l)
 
 int	handle_expand(char **to_tokenize, int *i, t_lex *l, t_env *env)
 {
+	int old_context;
+
+	old_context = l->context;
 	while (to_tokenize[0][*i] == '$' && l->context != SQUOTE && l->exp_res != 2)
 	{
 		l->exp_res = expand(to_tokenize, i, &l->context, env);
@@ -39,6 +42,8 @@ int	handle_expand(char **to_tokenize, int *i, t_lex *l, t_env *env)
 				*i += 1;
 			return (ERROR);
 		}
+		if (old_context == WORD && (int)tok(l->context, (unsigned char)to_tokenize[0][*i]) == TOK_EAT)
+			l->exp_res = 404; 
 	}
 	if (l->ref_char != (int)tok(l->context, (unsigned char)to_tokenize[0][*i]))
 		return (BREAK);
@@ -79,7 +84,7 @@ void	tokenize(char *line, t_token *toks, t_env *env)
 	to_tokenize = ft_strdup(line);
 	init_lexer_struct(&l, to_tokenize);
 	fill_token_buff(&l, &to_tokenize, &i, env);
-	if (l.ref_char != TOK_EAT)// && ft_strlen(l.token) != 0)
+	if (l.ref_char != TOK_EAT && l.exp_res != 404)// && ft_strlen(l.token) != 0)
 		create_token(&toks, &l);
 	to_tokenize = ft_auto_substr(to_tokenize, i, ft_strlen(to_tokenize));
 	if (to_tokenize && ft_strlen(to_tokenize) != 0)

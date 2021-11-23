@@ -28,7 +28,9 @@ char	*assign_value(t_env *env, char *var_name)
 	while (env && ft_strncmp(var_name, env->key, ft_strlen(env->key) + 1) != 0)
 		env = env->next;
 	if (env == NULL)
-		return (ft_strdup(""));
+	{
+		return (NULL);//(ft_strdup(""));
+	}
 	else
 		return (ft_strdup(env->value));
 }
