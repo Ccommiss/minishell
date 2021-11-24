@@ -23,6 +23,8 @@ void	ft_execve(char *path, char **cmd, char **tenvp)
 			write(2, " : commande introuvable\n", 24);
 			exit(127);
 		}
+		else
+			handle_signal(CHILD_HANDLING);
 	}
 	else
 	{
@@ -33,6 +35,9 @@ void	ft_execve(char *path, char **cmd, char **tenvp)
 			write(2, " : commande introuvable\n", 24);
 			exit(127);
 		}
+		else
+			handle_signal(CHILD_HANDLING);
+
 	}
 }
 

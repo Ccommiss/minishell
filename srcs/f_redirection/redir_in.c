@@ -68,7 +68,6 @@ int	redir_in_built(t_env *env, char **cmd, int fd, int builtin)
 int	no_cmd(int fd, int error)
 {
 	close(fd);
-	printf("ici");
 	if (error == 1)
 		return (-1);
 	return (0);

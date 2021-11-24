@@ -88,9 +88,9 @@ void	we_wait(pid_t *pid, int nbr_cmd, int *pipefd, int pipee)
 	while (i < nbr_cmd)
 	{
 		waitpid(pid[i], &status, 0);
+		set_status(status);
 		i++;
 	}
-	set_status(status);
 	free(pid);
 	free(pipefd);
 }
