@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   do_pipe.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mpochard <mpochard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/05 17:40:25 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/24 12:23:37 by ccommiss         ###   ########.fr       */
+/*   Updated: 2021/11/24 16:28:42 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	do_the_pipe(t_cmd *cmd, t_env *env)
 		pid[i] = fork();
 		if (pid[i] == 0)
 		{
-			handle_signal(CHILD);
+		//	handle_signal(CHILD);
 			if (cmd->dless == 1)
 			{
 				if (cmd->io_out < 0 && i == 0)

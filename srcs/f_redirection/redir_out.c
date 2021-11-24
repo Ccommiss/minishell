@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir_out.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpochard <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mpochard <mpochard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/05 17:41:18 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/23 11:21:37 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/11/24 16:29:55 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ int	simple_redir_o(t_env *env, int fd, t_cmd cmd, char *path)
 			dup2(fd, 0);
 			ft_execve(path, cmd.cmd_args, tenvp);
 		}
+		else
+			handle_signal(CHILD_HANDLING);
 		waitpid(pid, &status, 0);
 		set_status(status);
 		ft_free_double_tab(tenvp);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mpochard <mpochard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/20 11:11:36 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/22 11:30:10 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/11/24 16:30:25 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,8 @@ void	here_doc(t_env *env, t_cmd cmd, int fd)
 			do_the_dup(cmd.io_out, fd);
 			ft_execve(cmd.cmdp, cmd.cmd_args, tenvp);
 		}
+		else
+			handle_signal(CHILD_HANDLING);
 		waitpid(pid, &status, 0);
 		set_status(status);
 	}
