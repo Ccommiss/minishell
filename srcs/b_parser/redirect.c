@@ -24,7 +24,8 @@ void	redirect_out(t_cmd *cmd, t_token **toks, int len)
 	{
 		cmd->error = TRUE;
 		return_value = 1;
-		printf("%s : %s \n", cmd->cmd_args[0], strerror(errno));
+		ft_print_error(cmd->cmd_args[0], errno);
+		//printf("%s : %s \n", cmd->cmd_args[0], strerror(errno));
 	}
 }
 

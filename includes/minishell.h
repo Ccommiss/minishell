@@ -279,6 +279,8 @@ char		*ft_str_replace(char *str, int start, int len, t_env *env);
 int			expand(char **to_tokenize, int *i, int *context, t_env *env);
 void		handle_quoted_context(int *context, int *i, char *to_tokenize);
 
+void ft_print_error(char *arg, int err_number);
+
 /*
 ** quotes.c
 */
