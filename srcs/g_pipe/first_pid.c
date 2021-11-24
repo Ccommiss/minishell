@@ -83,6 +83,8 @@ int	first_pid(t_cmd cmd, t_env *env, int *pipefd, int nbr_p )
 	tenvp = list_to_cmd(env);
 	builtin = is_a_builtin(cmd.cmd_args[0]);
 	do_redir_f(cmd, pipefd, nbr_p, redir);
+	if (!isatty(STDIN_FILENO))
+		return 0;
 	if (builtin >= 1 && builtin <= 7)
 	{
 		exec_builtin(env, cmd.cmd_args, builtin);

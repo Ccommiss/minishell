@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-void	exito(char	*str)
+void	exito(char	*str, t_cmd *cmd, t_env *env)
 {
 	char n;
 	

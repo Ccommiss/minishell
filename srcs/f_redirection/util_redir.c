@@ -14,6 +14,7 @@
 
 void	ft_execve(char *path, char **cmd, char **tenvp)
 {
+
 	if (path == NULL)
 	{
 		if (execve(cmd[0], cmd, tenvp) == -1)

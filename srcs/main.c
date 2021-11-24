@@ -57,6 +57,14 @@ char *choose_prompt()
 {
 	char *line;
 
+	if ((!isatty(STDIN_FILENO)))
+	{
+		rl_outstream = stdin;
+		rl_clear_message();
+		line = readline("");
+		rl_clear_message();
+		return (line);
+	}
 	if (return_value != 0)
 		line = readline(BWHT "Minishell " BRED "> " RESET);
 	else
@@ -79,6 +87,7 @@ int main(int ac, char **av, char **envp)
 	get_the_env(&env, envp);
 	while (1)
 	{
+	
 		handle_signal(MAIN_PROCESS);
 		line = choose_prompt();
 		if (line && ft_strlen(line) == 0)
@@ -96,7 +105,14 @@ int main(int ac, char **av, char **envp)
 			cleanup(&cmd, &toks, line);
 		}
 		else if (!line)
-			exit (1);
+		{
+			printf("\n");
+			if (isatty(STDIN_FILENO))
+				exito ("1", cmd, env);
+			if (!isatty(STDIN_FILENO))
+				exito (NULL, cmd, env);
+		}
+		
 	}
 	return (0);
 }
