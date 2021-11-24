@@ -7,6 +7,7 @@ void set_status(int status)
 
 	if (WIFSIGNALED(status) == 1) // interrompu par signal
 	{
+		printf("YOYOOYOY INTERRUPTION \n");
 		if (status < 128)
 			status = 128 + status; //sur Mac en tt cas
 		return_value = status;

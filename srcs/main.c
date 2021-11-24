@@ -6,7 +6,7 @@
 /*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/15 16:46:53 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/24 10:49:39 by ccommiss         ###   ########.fr       */
+/*   Updated: 2021/11/24 12:13:42 by ccommiss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 #include <readline/history.h>
 
 int return_value;
-int process;
 
 int check_quote(char *line)
 {
@@ -78,9 +77,10 @@ int main(int ac, char **av, char **envp)
 	if (envp[0] == NULL)
 		return (printf(" need environment\n"));
 	get_the_env(&env, envp);
+			handle_signal(MAIN_PROCESS);
+
 	while (1)
 	{
-		process = MAIN_PROCESS;
 		handle_signal(MAIN_PROCESS);
 		line = choose_prompt();
 		if (line && ft_strlen(line) == 0)
