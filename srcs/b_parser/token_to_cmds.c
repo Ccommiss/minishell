@@ -23,7 +23,7 @@ void	init_cmd(t_cmd *cmd)
 	cmd->here_words = 0;
 	cmd->dgreat = FALSE;
 	cmd->dless = FALSE;
-	cmd->error = FALSE; 
+	cmd->error = FALSE;
 }
 
 void	free_command_items(t_cmd *cmd)
@@ -77,7 +77,7 @@ int  syn_err_or_no_tok(t_cmd *cmd, t_token *toks)
 		free_command_items(cmd);
 		return (ERROR);
 	}
-	if (toks->index == -1) //pas de tok
+	if (toks->len == -1) //pas de tok
 	{
 		cmd->error = 1;
 		return (ERROR);

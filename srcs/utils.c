@@ -48,12 +48,12 @@ void free_cmds(t_cmd *cmd)
 }
 
 
-void	ft_print_error(char *arg, int err_number)
+void	ft_print_error(char *arg)
 {
 	if (arg != NULL)
 		printf("minishell: %s: %s\n", arg, strerror(errno));
 	else
-		printf("minishell: %s\n", strerror(err_number));
+		printf("minishell: %s\n", strerror(errno));
 
 }
 

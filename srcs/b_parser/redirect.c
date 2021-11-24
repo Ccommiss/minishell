@@ -15,17 +15,11 @@ void	redirect_out(t_cmd *cmd, t_token **toks, int len)
 		cmd->io_out = open((*toks)->content, O_RDWR | O_APPEND | O_CREAT, 0666);
 		cmd->dgreat = TRUE;
 	}
-	else if (len > 2)
-	{
-		printf ("minishell : syntax error near unexpected token\n");
-		cmd->error = TRUE;
-	}
 	if (cmd->io_out == -1)
 	{
 		cmd->error = TRUE;
 		return_value = 1;
-		ft_print_error(cmd->cmd_args[0], errno);
-		//printf("%s : %s \n", cmd->cmd_args[0], strerror(errno));
+		ft_print_error(cmd->cmd_args[0]);
 	}
 }
 
@@ -54,7 +48,7 @@ void	redirect_in(t_cmd *cmd, t_token **toks, int len)
 	{
 		cmd->error = TRUE;
 		return_value = 1;
-		printf("minishell: %s: %s \n", (*toks)->content, strerror(errno));
+		ft_print_error((*toks)->content);
 	}
 }
 

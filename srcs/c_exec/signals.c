@@ -17,16 +17,7 @@ void intHandler_heredoc()
 }
 
 /*
-**  Handles signal according to the current situation
-**
-**  1) MAIN PROCESS : while prompt in interactive mode,
-**          ignores ctrl \, and displays ^C + a newline
-**  2) CHILD : when child process is created, just before
-**      executing, restores default signal handling (SIG_DFL)
-**      so that command is effectively killed
-**  3) CHILD_HANDLING : after forking, when in the parent,
-**      prompts "core dump" as in Linux after the command
-**      was killed
+**	
 */
 
 static int my_getc(FILE *stream)
@@ -41,6 +32,22 @@ static int my_getc(FILE *stream)
     else
         return c;
 }
+
+
+
+/*
+**  Handles signal according to the current situation
+**
+**  1) MAIN PROCESS : while prompt in interactive mode,
+**          ignores ctrl \, and displays ^C + a newline
+**  2) CHILD : when child process is created, just before
+**      executing, restores default signal handling (SIG_DFL)
+**      so that command is effectively killed
+**  3) CHILD_HANDLING : after forking, when in the parent,
+**      prompts "core dump" as in Linux after the command
+**      was killed
+*/
+
 
 void	handle_signal(int state)
 {
