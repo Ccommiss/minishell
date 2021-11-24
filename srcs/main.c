@@ -6,7 +6,7 @@
 /*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/15 16:46:53 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/24 10:49:39 by ccommiss         ###   ########.fr       */
+/*   Updated: 2021/11/24 12:13:42 by ccommiss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 #include <readline/history.h>
 
 int return_value;
-int process;
 
 int check_quote(char *line)
 {
@@ -80,7 +79,6 @@ int main(int ac, char **av, char **envp)
 	get_the_env(&env, envp);
 	while (1)
 	{
-		process = MAIN_PROCESS;
 		handle_signal(MAIN_PROCESS);
 		line = choose_prompt();
 		if (line && ft_strlen(line) == 0)
@@ -90,15 +88,18 @@ int main(int ac, char **av, char **envp)
 			add_history(line);
 			init_tok_and_cmd(&toks, &cmd);
 			tokenize(line, &toks, env);
-			//debug_tokens(&toks);
+			debug_tokens(&toks);
 			token_to_cmds(&cmd, &toks);
 			find_path(&cmd, env);
-			//debug_cmds(&cmd);
+			debug_cmds(&cmd);
 			cmd_to_exec(&cmd, env);
 			cleanup(&cmd, &toks, line);
 		}
 		else if (!line)
+		{
+			printf ("\n");
 			exit (1);
+		}
 	}
 	return (0);
 }

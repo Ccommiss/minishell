@@ -2,11 +2,11 @@
 
 void intHandlerMain()
 {
-	return_value = 130;
-    printf("\n");
-  	rl_replace_line("", 0);
-	rl_redisplay();
-	printf(BWHT"Minishell "BRED"> "RESET);
+    	printf("\n");
+   		rl_replace_line("", 0);
+		rl_redisplay();
+		printf(BWHT"Minishell "BRED"> "RESET);
+    	return_value = 130;
 }
 
 void intHandler_heredoc()
@@ -17,7 +17,7 @@ void intHandler_heredoc()
 }
 
 /*
-**	
+**
 */
 
 static int my_getc(FILE *stream)
