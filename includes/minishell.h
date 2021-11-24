@@ -212,6 +212,7 @@ int		check_echo(char *cmd_suffix);
 int		count_double_tab(char **tab);
 int		do_echo(char **cmd_suffix);
 void	exito(char *str);
+void	exit_p(char *str);
 /*
  * f_redirection
  * */

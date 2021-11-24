@@ -6,7 +6,7 @@
 /*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/13 10:05:27 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/24 10:14:53 by ccommiss         ###   ########.fr       */
+/*   Updated: 2021/11/24 11:58:54 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,13 +37,13 @@ void	cmd_to_exec(t_cmd *cmd, t_env *env)
 		return;
 	while (cmd && cmd->index >= 0)
 	{
-		if (cmd->error == TRUE)
-		{
-			cmd = cmd->next;
-			break ;
-		}
-		else
-			return_value = 0;
+//		if (cmd->error == TRUE)
+//		{
+//			cmd = cmd->next;
+//			break ;
+//		}
+//		else
+//			return_value = 0;
 		if (cmd->next)
 		{
 			if (do_the_pipe(cmd, env) == 0)

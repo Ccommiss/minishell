@@ -6,7 +6,7 @@
 /*   By: mpochard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 17:23:21 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/22 14:47:45 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/11/24 12:00:34 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,8 +125,6 @@ int	export_the(t_env *env, char	**cmd_suffix)
 		{
 			error = -1;
 			k++;
-			if (cmd_suffix[0][k] == '\0') /// CLAIRE POUR COMPIL LINUX
-				return (error);
 			continue ;
 		}
 		if (ft_parse_concate(cmd_suffix[k]) == 1)

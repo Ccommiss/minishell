@@ -32,6 +32,7 @@ SOURCES =	main.c\
 			${BUILT_PATH}/cd.c\
 			${BUILT_PATH}/echo.c\
 			${BUILT_PATH}/exit.c\
+			${BUILT_PATH}/exit_pipe.c\
 			${REDIR_PATH}/is_redir.c\
 			${REDIR_PATH}/redir_out.c\
 			${REDIR_PATH}/redir_in.c\

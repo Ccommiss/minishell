@@ -6,7 +6,7 @@
 /*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/05 16:05:45 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/22 11:32:07 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/11/24 11:56:19 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	exec_builtin(t_env *env, char **cmd, int builtin)
 		ft_putendl_fd(get_pwd(), 1);
 	else if (builtin == 4)
 	{
-		exito(cmd[1]);
+		exit_p(cmd[1]);
 		return ;
 	}
 	else if (builtin == 5)
