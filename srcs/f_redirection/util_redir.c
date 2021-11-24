@@ -6,7 +6,7 @@
 /*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/05 17:41:40 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/23 11:18:32 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/11/24 16:26:16 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void	ft_execve(char *path, char **cmd, char **tenvp)
 {
+	handle_signal(CHILD);
 	if (path == NULL)
 	{
 		if (execve(cmd[0], cmd, tenvp) == -1)
@@ -23,8 +24,6 @@ void	ft_execve(char *path, char **cmd, char **tenvp)
 			write(2, " : commande introuvable\n", 24);
 			exit(127);
 		}
-		else
-			handle_signal(CHILD_HANDLING);
 	}
 	else
 	{
@@ -35,8 +34,6 @@ void	ft_execve(char *path, char **cmd, char **tenvp)
 			write(2, " : commande introuvable\n", 24);
 			exit(127);
 		}
-		else
-			handle_signal(CHILD_HANDLING);
 
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/15 16:46:53 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/24 12:13:42 by ccommiss         ###   ########.fr       */
+/*   Updated: 2021/11/24 16:10:00 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ int main(int ac, char **av, char **envp)
 		else if (!line)
 		{
 			printf ("\n");
-			exit (1);
+			exit (122);
 		}
 	}
 	return (0);

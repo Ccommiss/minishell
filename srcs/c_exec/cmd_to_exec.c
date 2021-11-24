@@ -6,7 +6,7 @@
 /*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/13 10:05:27 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/24 12:22:05 by ccommiss         ###   ########.fr       */
+/*   Updated: 2021/11/24 16:25:23 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,12 +87,13 @@ void	cmd_to_exec(t_cmd *cmd, t_env *env)
 
 				if (pid == 0)
 				{
-					handle_signal(CHILD);
+				/*	handle_signal(CHILD);
 					if (execve(cmd->cmdp, cmd->cmd_args, tenvp) == -1)	
 					{
 						printf ("minishell: command not found: %s\n", cmd->cmd_args[0]);
 						exit (127);
-					}
+					}*/
+					ft_execve(cmd->cmdp, cmd->cmd_args,tenvp);
 				}
 				else
 					handle_signal(CHILD_HANDLING);
