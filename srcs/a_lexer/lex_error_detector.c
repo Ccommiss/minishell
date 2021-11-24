@@ -11,6 +11,18 @@ enum tokens	error_tab(int type)
 	return (op_table[type]);
 }
 
+
+int		is_op(int type)
+{
+	int	op_table[256] = {
+		[TOK_GREAT] = 1,
+		[TOK_LESS] = 1,
+		[TOK_PIPE] = 0
+	};
+
+	return (op_table[type]);
+}
+
 /*
 **	syntax_error_detector handles :
 **	- if more than expected operators are found (ex. <<<, ||, etc)
@@ -32,7 +44,8 @@ void	syntax_error_detector(t_token *toks, int last_tok_is_op)
 	if (((toks->type == TOK_GREAT || toks->type == TOK_LESS) && toks->len > 2) // si <<< ou >>>
 		|| (toks->type == TOK_PIPE && toks->len > 1) // si ||
 		|| ((toks->type == TOK_PIPE && !toks->prev)// || toks->prev->type != TOK_ERR || toks->prev->type != TOK_WORD)) //
-		|| (toks->prev && error_tab(toks->type) == OP && error_tab(toks->prev->type) == OP))
+		|| (toks->prev && error_tab(toks->type) == OP && toks->prev->type == toks->type))
+		|| (toks->type == TOK_PIPE && is_op(toks->prev->type) == TRUE)
 		|| last_tok_is_op == TRUE)
 	{
 		toks->type = SYNT_ERR;

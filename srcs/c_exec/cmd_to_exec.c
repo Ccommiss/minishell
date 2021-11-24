@@ -6,7 +6,7 @@
 /*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/13 10:05:27 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/22 16:01:17 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/11/24 10:14:53 by ccommiss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,10 +84,11 @@ void	cmd_to_exec(t_cmd *cmd, t_env *env)
 				pid_t pid;
 				tenvp = list_to_cmd(env);
 				pid = fork();
+
 				if (pid == 0)
 				{
 					handle_signal(CHILD);
-					if (execve(cmd->cmdp, cmd->cmd_args,tenvp) == -1)
+					if (execve(cmd->cmdp, cmd->cmd_args, tenvp) == -1)
 					{
 						printf ("minishell: command not found: %s\n", cmd->cmd_args[0]);
 						exit (127);
