@@ -2,8 +2,6 @@
 
 void	redirect_out(t_cmd *cmd, t_token **toks, int len)
 {
-	if ((*toks)->content == NULL)
-		printf ("YO \n");
 	if (len == 1)
 	{
 		if (cmd->io_out > 0)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   util_pipe.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpochard <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/05 17:36:27 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/16 13:35:57 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/11/26 11:09:41 by ccommiss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ void	we_wait(pid_t *pid, int nbr_cmd, int *pipefd, int pipee)
 	while (i < nbr_cmd)
 	{
 		waitpid(pid[i], &status, 0);
-		set_status(status);
+		set_status(status, i);
 		i++;
 	}
 	free(pid);

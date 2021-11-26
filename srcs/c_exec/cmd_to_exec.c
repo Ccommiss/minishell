@@ -6,7 +6,7 @@
 /*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/13 10:05:27 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/24 12:22:05 by ccommiss         ###   ########.fr       */
+/*   Updated: 2021/11/26 11:07:01 by ccommiss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ void	cmd_to_exec(t_cmd *cmd, t_env *env)
 				else
 					handle_signal(CHILD_HANDLING);
 				waitpid(pid, &status, 0);
-				set_status(status);
+				set_status(status, 1);
 			}
 		}
 		cmd = cmd->next;

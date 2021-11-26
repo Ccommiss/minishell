@@ -6,7 +6,7 @@
 /*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/20 11:11:36 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/22 11:30:10 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/11/26 11:07:16 by ccommiss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ void	here_doc(t_env *env, t_cmd cmd, int fd)
 			ft_execve(cmd.cmdp, cmd.cmd_args, tenvp);
 		}
 		waitpid(pid, &status, 0);
-		set_status(status);
+		set_status(status, 0);
 	}
 	unlink(".here_doc");
 }

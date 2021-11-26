@@ -6,7 +6,7 @@
 /*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/15 16:46:53 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/24 12:13:42 by ccommiss         ###   ########.fr       */
+/*   Updated: 2021/11/26 10:59:47 by ccommiss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ int main(int ac, char **av, char **envp)
 	get_the_env(&env, envp);
 	while (1)
 	{
-	
+
 		handle_signal(MAIN_PROCESS);
 		line = choose_prompt();
 		if (line && ft_strlen(line) == 0)
@@ -108,11 +108,16 @@ int main(int ac, char **av, char **envp)
 		{
 			printf("\n");
 			if (isatty(STDIN_FILENO))
-				exito ("1", cmd, env);
+			{
+				//cleanup(&cmd, &toks, line);
+				exit(1);
+			}
 			if (!isatty(STDIN_FILENO))
-				exito (NULL, cmd, env);
+			{
+				//cleanup(&cmd, &toks, line);
+				exit(0);
+			}
 		}
-		
 	}
 	return (0);
 }

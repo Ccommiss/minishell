@@ -46,16 +46,19 @@ int	check_syn_err(t_token *toks)
 {
 	t_token	*head;
 	int		error;
+	int		max_len;
 
 	head = toks;
 	error = 0;
+	max_len = -1;
 	while (toks)
 	{
+		max_len = toks->len;
 		if (toks->type == SYNT_ERR)
 			error = TRUE;
 		toks = toks->next;
 	}
-	if (error)
+	if (error || max_len == -1)
 		return (ERROR);
 	toks = head;
 	return (TRUE);
@@ -75,11 +78,7 @@ int  syn_err_or_no_tok(t_cmd *cmd, t_token *toks)
 	{
 		cmd->error = 1;
 		free_command_items(cmd);
-		return (ERROR);
-	}
-	if (toks->len == -1) //pas de tok
-	{
-		cmd->error = 1;
+		free_toks(toks);
 		return (ERROR);
 	}
 	return (1);
@@ -94,7 +93,7 @@ t_cmd	*token_to_cmds(t_cmd *cmd, t_token *toks)
 	head = toks;
 	if (syn_err_or_no_tok(cmd, toks) == ERROR)
 		return (NULL);
-	init_cmd(cmd);
+	init_cmd (cmd);
 	if (toks->type == TOK_PIPE)
 		toks = toks->next;
 	while (toks && toks->type != TOK_PIPE) //ajout oks content si le premier et seul tok est espace
