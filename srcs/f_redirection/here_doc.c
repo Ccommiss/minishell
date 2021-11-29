@@ -6,7 +6,7 @@
 /*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/20 11:11:36 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/29 15:02:41 by ccommiss         ###   ########.fr       */
+/*   Updated: 2021/11/29 16:03:34 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void	here_doc(t_env *env, t_cmd cmd, int fd)
 	pid_t	pid;
 	char	**tenvp;
 
-	if (cmd.cmd_args[0] == NULL) // mettre en place si ya un pb t rentre pas dedans)
+	if (cmd.cmd_args[0] == NULL || cmd.error == 1) // mettre en place si ya un pb t rentre pas dedans)
 		return (no_cmd_here(cmd.io_in, cmd.io_out));
 	builtin = is_a_builtin(cmd.cmd_args[0]);
 	if ((builtin >= 1 && builtin <= 7))
