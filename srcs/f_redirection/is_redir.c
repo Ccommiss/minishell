@@ -6,7 +6,7 @@
 /*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/14 16:08:37 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/23 11:18:05 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/11/29 16:02:13 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,11 @@
 
 int	there_is_redir(t_env *env, t_cmd cmd)
 {
-	if (cmd.error == 1)
-	{
-		return_value = -1;
-		return (-1);
-	}
-		if (cmd.dless == 1)
+	if (cmd.dless == 1)
 	{
 		fill_thefd(cmd);
+		if (return_value == 130)
+			return (0);
 		here_doc(env, cmd, 0);
 		return (0);
 	}
