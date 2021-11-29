@@ -21,15 +21,13 @@ void free_toks(t_token *toks)
 			free(tmp);
 			tmp = NULL;
 		}
-		// if (!toks)
-		// 	printf("nulle add\n");
-		// printf(" %p %p toks\n", toks, tmp);
 	}
 }
 
 void free_cmds(t_cmd *cmd)
 {
 	int i;
+	t_cmd *tmp;
 
 	while (cmd && cmd->index >= 0)
 	{
@@ -43,7 +41,10 @@ void free_cmds(t_cmd *cmd)
 		}
 		if (cmd->cmdp)
 			free(cmd->cmdp);
+		tmp = cmd;
 		cmd = cmd->next;
+		if (tmp->index > 0)
+		free((void*)tmp);
 	}
 }
 

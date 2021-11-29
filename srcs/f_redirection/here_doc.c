@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpochard <mpochard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/20 11:11:36 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/24 16:30:25 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/11/29 15:02:41 by ccommiss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ void	here_doc(t_env *env, t_cmd cmd, int fd)
 		else
 			handle_signal(CHILD_HANDLING);
 		waitpid(pid, &status, 0);
-		set_status(status);
+		set_status(status, 0);
 	}
 	unlink(".here_doc");
 }

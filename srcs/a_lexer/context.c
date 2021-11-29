@@ -10,10 +10,10 @@
 enum	tokens	op_toks(int c)
 {
 	static enum tokens	tok[256] = {
-			['|'] = TOK_PIPE,
-			['<'] = TOK_LESS,
-			['>'] = TOK_GREAT,
-			['='] = TOK_EQUAL
+	['|'] = TOK_PIPE,
+	['<'] = TOK_LESS,
+	['>'] = TOK_GREAT,
+	['='] = TOK_EQUAL
 	};
 
 	return (tok[c]);
@@ -22,23 +22,23 @@ enum	tokens	op_toks(int c)
 enum	tokens	word_toks(int c)
 {
 	static enum tokens	tok[256] = {
-			['\0'...' '] = TOK_EAT, // CARACTERES D'ARRET
-			['#'...'&'] = TOK_WORD, // 35 a 38
-			['('...'/'] = TOK_WORD, //40 a 47
-			['0'...'9'] = TOK_WORD, //48 a 57
-			[':'...';'] = TOK_WORD,
-			['='] = TOK_WORD,
-			['?'...'@'] = TOK_WORD, // 58 a 59 et 61, 63, 64
-			['A'...'z'] = TOK_WORD, //97 a 122
-			['{'] = TOK_WORD,
-			['}'] = TOK_WORD, //123,125
-			['~'...u'ÿ'] = TOK_WORD, // 126 a la fin
-			['|'] = TOK_PIPE,
-			['<'] = TOK_LESS,
-			['>'] = TOK_GREAT,
-			['\''] = TOK_WORD, //39
-			['\"'] = TOK_WORD, //34
-		};
+	['\0'...' '] = TOK_EAT, // CARACTERES D'ARRET
+	['#'...'&'] = TOK_WORD, // 35 a 38
+	['('...'/'] = TOK_WORD, //40 a 47
+	['0'...'9'] = TOK_WORD, //48 a 57
+	[':'...';'] = TOK_WORD,
+	['='] = TOK_WORD,
+	['?'...'@'] = TOK_WORD, // 58 a 59 et 61, 63, 64
+	['A'...'z'] = TOK_WORD, //97 a 122
+	['{'] = TOK_WORD,
+	['}'] = TOK_WORD, //123,125
+	['~'...u'ÿ'] = TOK_WORD, // 126 a la fin
+	['|'] = TOK_PIPE,
+	['<'] = TOK_LESS,
+	['>'] = TOK_GREAT,
+	['\''] = TOK_WORD, //39
+	['\"'] = TOK_WORD, //34
+	};
 
 	return (tok[c]);
 }
@@ -46,7 +46,7 @@ enum	tokens	word_toks(int c)
 enum	tokens	quote_toks(int c)
 {
 	static enum tokens	tok[256] = {
-		['\0'...u'ÿ'] = TOK_WORD
+	['\0'...u'ÿ'] = TOK_WORD
 	};
 
 	return (tok[c]);
@@ -74,24 +74,24 @@ enum	tokens	quote_toks(int c)
 enum tokens	corresp(int c)
 {
 	static enum tokens	corresp[256] = {
-		['|'] = OP,
-		['<'] = OP,
-		['>'] = OP,
-		['\0'...'!'] = WORD, // 0 a 33
-		['#'...'&'] = WORD, // 35 a 38
-		['('...'/'] = WORD, //40 a 47
-		['0'...'9'] = WORD, //48 a 57
-		[':'...';'] = WORD,
-		['='] = WORD,
-		['?'...'@'] = WORD, // 58 a 59 et 61, 63, 64
-		['A'...'Z'] = WORD, //65 a 90
-		['['...'`'] = WORD, // 91 a 96
-		['a'...'z'] = WORD, //97 a 122
-		['{'] = WORD,
-		['}'] = WORD,
-		['~'...u'ÿ'] = WORD, // 126 a la fin
-		['\''] = SQUOTE, //39
-		['\"'] = DQUOTE, //34
+	['|'] = OP,
+	['<'] = OP,
+	['>'] = OP,
+	['\0'...'!'] = WORD, // 0 a 33
+	['#'...'&'] = WORD, // 35 a 38
+	['('...'/'] = WORD, //40 a 47
+	['0'...'9'] = WORD, //48 a 57
+	[':'...';'] = WORD,
+	['='] = WORD,
+	['?'...'@'] = WORD, // 58 a 59 et 61, 63, 64
+	['A'...'Z'] = WORD, //65 a 90
+	['['...'`'] = WORD, // 91 a 96
+	['a'...'z'] = WORD, //97 a 122
+	['{'] = WORD,
+	['}'] = WORD,
+	['~'...u'ÿ'] = WORD, // 126 a la fin
+	['\''] = SQUOTE, //39
+	['\"'] = DQUOTE, //34
 	};
 
 	return (corresp[c]);

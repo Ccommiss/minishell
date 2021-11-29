@@ -45,7 +45,7 @@ enum bool
 	TRUE
 };
 
-enum io{
+enum io {
 	NOT_SPECIFIED = -100
 };
 
@@ -65,6 +65,17 @@ enum expand
 	DOL_OR_QUEST = 3
 };
 
+
+/*
+**	Enum mainly used in lexing for context purposes
+**
+**	Nb. we need to differentiate :
+**		- TOK_ERR : meaning a bad substitution error, that prevents
+**			the current cmd to be executed
+**		- TOK_NO_VAR : meaning a $ that did not match any key in env,
+**			resulting in NULL
+**		- SYNT_ERR : syntax error preventing the whole cmd line to be executed
+*/
 enum tokens
 {
 	OP = 4,
@@ -298,7 +309,7 @@ void		debug_cmds(t_cmd *cmds);
 void		find_path(t_cmd *cmds, t_env *env);
 
 void	handle_signal(int state);
-void 	set_status(int status);
+void 	set_status(int status, int process);
 
 
 void 	quithandler();

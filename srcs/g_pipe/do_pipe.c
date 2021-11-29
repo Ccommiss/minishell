@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   do_pipe.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpochard <mpochard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/05 17:40:25 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/24 16:28:42 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/11/29 15:01:46 by ccommiss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int	do_the_pipe(t_cmd *cmd, t_env *env)
 		if (cmd->dless == 1)
 		{
 			waitpid(pid[i],&temp , 0);
-			set_status(temp);
+			set_status(temp, 0);
 			temp = return_value;
 			if ( i ==  nbr_cmd - 1)
 				status = 1;

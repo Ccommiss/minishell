@@ -3,21 +3,20 @@
 enum tokens	error_tab(int type)
 {
 	static enum tokens	op_table[256] = {
-		[TOK_GREAT] = OP,
-		[TOK_LESS] = OP,
-		[TOK_PIPE] = OP
+	[TOK_GREAT] = OP,
+	[TOK_LESS] = OP,
+	[TOK_PIPE] = OP
 	};
 
 	return (op_table[type]);
 }
 
-
-int		is_op(int type)
+int	is_op(int type)
 {
-	int	op_table[256] = {
-		[TOK_GREAT] = 1,
-		[TOK_LESS] = 1,
-		[TOK_PIPE] = 0
+	static int	op_table[256] = {
+	[TOK_GREAT] = TRUE,
+	[TOK_LESS] = TRUE,
+	[TOK_PIPE] = FALSE
 	};
 
 	return (op_table[type]);
@@ -41,10 +40,11 @@ void	syntax_error_detector(t_token *toks, int last_tok_is_op)
 		tok_op = '<';
 	if (toks->type == TOK_PIPE)
 		tok_op = '|';
-	if (((toks->type == TOK_GREAT || toks->type == TOK_LESS) && toks->len > 2) // si <<< ou >>>
-		|| (toks->type == TOK_PIPE && toks->len > 1) // si ||
-		|| ((toks->type == TOK_PIPE && !toks->prev)// || toks->prev->type != TOK_ERR || toks->prev->type != TOK_WORD)) //
-		|| (toks->prev && error_tab(toks->type) == OP && toks->prev->type == toks->type))
+	if (((toks->type == TOK_GREAT || toks->type == TOK_LESS) && toks->len > 2)
+		|| (toks->type == TOK_PIPE && toks->len > 1)
+		|| ((toks->type == TOK_PIPE && !toks->prev)
+			|| (toks->prev && error_tab(toks->type) == OP
+				&& toks->prev->type == toks->type))
 		|| (toks->type == TOK_PIPE && is_op(toks->prev->type) == TRUE)
 		|| last_tok_is_op == TRUE)
 	{
@@ -81,6 +81,7 @@ int	expand_substitution_error_detector(char *var_name, int exception)
 		printf("%s : bad substitution\n", var_name);
 		return_value = 1;
 		free(var_name);
+		free(trimmed_var);
 		return (ERROR);
 	}
 	free(trimmed_var);

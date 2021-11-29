@@ -34,7 +34,14 @@ static int my_getc(FILE *stream)
 }
 
 
-
+void catch_all(int sig)
+{
+	if (sig == 18)
+		printf("catched %d \n", sig);
+	printf("%d %d\n", getppid(), getpid());
+	//	rl_replace_line("", 0);
+	// signal(sig, SIG_IGN);
+}
 /*
 **  Handles signal according to the current situation
 **
@@ -53,10 +60,18 @@ void	handle_signal(int state)
 {
 	rl_getc_function = rl_getc;
 
-    if (state == MAIN_PROCESS)
-    {
-	    signal(SIGINT, intHandlerMain);
-	    signal(SIGQUIT, SIG_IGN);
+	int i = 0;
+
+	while (++i <= 31)
+	{
+		if (i != SIGINT && i != SIGQUIT
+		&& i != SIGCHLD)
+			signal(i, SIG_IGN);
+	}
+	if (state == MAIN_PROCESS)
+	{
+		signal(SIGINT, intHandlerMain);
+		signal(SIGQUIT, SIG_IGN);
     }
 	if (state == HEREDOC)
 	{
@@ -66,10 +81,10 @@ void	handle_signal(int state)
 	}
     if (state == CHILD)
     {
-        signal(SIGINT, SIG_DFL);
+		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
-    }
-    if (state == CHILD_HANDLING)
+	}
+	if (state == CHILD_HANDLING)
     {
        signal(SIGQUIT, SIG_IGN);
        signal(SIGINT, SIG_IGN);

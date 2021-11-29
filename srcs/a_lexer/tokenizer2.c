@@ -21,8 +21,8 @@ void	create_token(t_token **toks, t_lex *l)
 	(*toks)->type = l->ref_char;
 	if ((*toks)->content)
 		(*toks)->len = strlen((*toks)->content);
-	else 
-		(*toks)->len =-1;
+	else
+		(*toks)->len = -1;
 	syntax_error_detector(*toks, FALSE);
 	(*toks)->next = malloc(sizeof(t_token));
 	(*toks)->next->content = NULL;
@@ -33,14 +33,11 @@ void	create_token(t_token **toks, t_lex *l)
 
 int	handle_expand(char **to_tokenize, int *i, t_lex *l, t_env *env)
 {
-	int old_context;
-	int old_exp;
-	int old_i;
+	int	old_context;
+	int	old_i;
 
 	old_context = l->context;
-	old_exp = l->exp_res;
 	old_i = *i;
-	
 	while (to_tokenize[0][*i] == '$' && l->context != SQUOTE && l->exp_res != 2)
 	{
 		l->exp_res = expand(to_tokenize, i, &l->context, env);
@@ -52,12 +49,10 @@ int	handle_expand(char **to_tokenize, int *i, t_lex *l, t_env *env)
 				*i += 1;
 			return (ERROR);
 		}
-		if (old_context == WORD && (int)tok(l->context, (unsigned char)to_tokenize[0][*i]) == TOK_EAT 
-		&& old_exp != 0 && old_i == 0) // je crois que du coup pas besoin du old_expcar old_i prime ? pas sur 
-		{
-			l->exp_res = 404;
+		if (old_context == WORD
+			&& tok(l->context, (unsigned char)to_tokenize[0][*i]) == TOK_EAT
+			&& old_i == 0)
 			l->ref_char = TOK_NO_VAR;
-		}
 	}
 	if (l->ref_char != (int)tok(l->context, (unsigned char)to_tokenize[0][*i]))
 		return (BREAK);
@@ -98,7 +93,7 @@ void	tokenize(char *line, t_token *toks, t_env *env)
 	to_tokenize = ft_strdup(line);
 	init_lexer_struct(&l, to_tokenize);
 	fill_token_buff(&l, &to_tokenize, &i, env);
-	if (l.ref_char != TOK_EAT)// && l.exp_res != 404)// && ft_strlen(l.token) != 0)
+	if (l.ref_char != TOK_EAT)
 		create_token(&toks, &l);
 	l.exp_res = -2;
 	to_tokenize = ft_auto_substr(to_tokenize, i, ft_strlen(to_tokenize));
@@ -112,6 +107,6 @@ void	tokenize(char *line, t_token *toks, t_env *env)
 		if (error_tab(toks->type) == OP)
 			syntax_error_detector(toks, TRUE);
 	}
-	free(to_tokenize);
+	free (to_tokenize);
 	to_tokenize = NULL;
 }
