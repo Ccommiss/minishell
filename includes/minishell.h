@@ -147,14 +147,6 @@ typedef struct s_cmd
 	t_cmd *prev;
 } t_cmd;
 
-
-typedef struct s_data
-{
-	char ***envp;  // stocke envuronnemebnt
-	t_token *toks; // ptr sur la head de la liste chainee des tokens
-	t_cmd *cmds;   // ptr sur la head de la liste chainee des commandes
-
-} t_data;
 /*
  * the struct for the env
  */

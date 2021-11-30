@@ -17,17 +17,19 @@ void intHandler_heredoc()
 }
 
 /*
-**
+**	my_getc overrides default function rl_getc that
+**	ignores signals
+**	Reads character by character and
 */
 
 static int my_getc(FILE *stream)
 {
- (void)stream;
-   int r;
-   char c;
+	int		r;
+	char	c;
 
-    r = read(0, &c, 1); // read from stdin, will return -1 when interrupted by a signal
-    if (r == -1)// && errno == EINTR)
+	(void)stream;
+    r = read(0, &c, 1);
+    if (r == -1)
         return EOF;
     else
         return c;

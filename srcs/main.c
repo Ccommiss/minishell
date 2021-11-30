@@ -85,7 +85,6 @@ int main(int ac, char **av, char **envp)
 	get_the_env(&env, envp);
 	while (1)
 	{
-
 		handle_signal(MAIN_PROCESS);
 		line = choose_prompt();
 		if (line && ft_strlen(line) == 0)
@@ -106,15 +105,9 @@ int main(int ac, char **av, char **envp)
 		{
 			printf("\n");
 			if (isatty(STDIN_FILENO))
-			{
-				//cleanup(&cmd, &toks, line);
 				exit(1);
-			}
 			if (!isatty(STDIN_FILENO))
-			{
-				//cleanup(&cmd, &toks, line);
 				exit(0);
-			}
 		}
 	}
 	return (0);

@@ -26,25 +26,20 @@ void free_toks(t_token *toks)
 
 void free_cmds(t_cmd *cmd)
 {
-	int i;
 	t_cmd *tmp;
 
 	while (cmd && cmd->index >= 0)
 	{
-		i = 0;
 		if (cmd->cmd_args)
-		{
-			while (cmd->cmd_args[i])
-				free(cmd->cmd_args[i++]);
-			free(cmd->cmd_args);
-			cmd->cmd_args = NULL;
-		}
+			ft_free_double_tab(cmd->cmd_args);
 		if (cmd->cmdp)
 			free(cmd->cmdp);
+		if (cmd->io_here)
+			ft_free_double_tab(cmd->io_here);
 		tmp = cmd;
 		cmd = cmd->next;
 		if (tmp->index > 0)
-		free((void*)tmp);
+			free((void*)tmp);
 	}
 }
 

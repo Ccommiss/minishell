@@ -14,7 +14,7 @@ void set_status(int status, int process)
 		if (return_value == 131 && process == 1)
 			printf ("Quit (core dumped)\n");
 		if (return_value == 130 && process == 1)
-			printf ("YO\n");
+			printf ("\n");
 	}
 	else if (WIFEXITED(status) == 1) // fils interrompu normalement par un exit
 		return_value = WEXITSTATUS(status);
