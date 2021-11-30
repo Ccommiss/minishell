@@ -60,36 +60,35 @@
 
 void	handle_signal(int state)
 {
-	// rl_getc_function = rl_getc;
+	rl_getc_function = rl_getc;
 
-	// int i = 0;
-	(void)state;
-	// while (++i <= 31)
-	// {
-	// 	if (i != SIGINT && i != SIGQUIT
-	// 	&& i != SIGCHLD)
-	// 		signal(i, SIG_IGN);
-	// }
-	// if (state == MAIN_PROCESS)
-	// {
-	// 	signal(SIGINT, intHandlerMain);
-	// 	signal(SIGQUIT, SIG_IGN);
-    // }
-	// if (state == HEREDOC)
-	// {
-    //     rl_getc_function = my_getc;
-	// 	signal(SIGINT, intHandler_heredoc);
-	// 	signal(SIGQUIT, SIG_IGN);
-	// }
-    // if (state == CHILD)
-    // {
-	// 	signal(SIGINT, SIG_DFL);
-	// 	signal(SIGQUIT, SIG_DFL);
-	// }
-	// if (state == CHILD_HANDLING)
-    // {
-    //    signal(SIGQUIT, SIG_IGN);
-    //    signal(SIGINT, SIG_IGN);
-    // }
+	int i = 0;
+	while (++i <= 31)
+	{
+		if (i != SIGINT && i != SIGQUIT
+		&& i != SIGCHLD)
+			signal(i, SIG_IGN);
+	}
+	if (state == MAIN_PROCESS)
+	{
+		signal(SIGINT, intHandlerMain);
+		signal(SIGQUIT, SIG_IGN);
+    }
+	if (state == HEREDOC)
+	{
+        rl_getc_function = my_getc;
+		signal(SIGINT, intHandler_heredoc);
+		signal(SIGQUIT, SIG_IGN);
+	}
+    if (state == CHILD)
+    {
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
+	}
+	if (state == CHILD_HANDLING)
+    {
+       signal(SIGQUIT, SIG_IGN);
+       signal(SIGINT, SIG_IGN);
+    }
 
 }
