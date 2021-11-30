@@ -11,6 +11,7 @@ void	extract_pure_var_name(char **var_name, int len, int start, char *str)
 		*var_name = ft_substr(str, start + 2, len - 2);
 	else
 		*var_name = ft_substr(str, start + 1, len);
+	printf ("VAR NAME =%s \n", *var_name);
 }
 
 /*
@@ -59,6 +60,8 @@ char	*ft_str_replace(char *str, int start, int len, t_env *env)
 
 	extract_pure_var_name(&var_name, len, start, str);
 	value = assign_value(env, var_name);
+	printf ("VALUE = %s \n", value);
+
 	free(var_name);
 	tmp = ft_substr(str, 0, start);
 	new_str = ft_strconcat(tmp, value, start + ft_strlen(value));
@@ -114,11 +117,14 @@ static int	is_valid_expand_char(int *exception, int c, int j)
 ** 	the to_tokenize string
 */
 
-int	expand(char **to_tokenize, int *i, int *context, t_env *env)
+int	expand(char **to_tokenize, int *i, t_lex **l, t_env *env)
 {
 	int		j;
 	int		exception;
 	char	*var_name;
+
+	if ((*l)->exp_len != 0)
+		return (0);
 
 	j = 1;
 	exception = 0;
@@ -126,10 +132,22 @@ int	expand(char **to_tokenize, int *i, int *context, t_env *env)
 		&& is_valid_expand_char(&exception, to_tokenize[0][*i + j], j))
 		j++;
 	var_name = ft_substr(*to_tokenize, *(i), j);
+
+	char *len_computing = ft_strdup(var_name);
+	extract_pure_var_name(&len_computing, j - 1, *i, *to_tokenize);
+	printf ("pure var name  = %s \n", len_computing );
+	char *value = assign_value(env, len_computing);
+	(**l).exp_len = ft_strlen(value);
+		printf ("value in main function : %s %d \n", value, (**l).exp_len);
+
+
+
 	if (j == 1)
 		return (2);
 	if (j > 1)
 		*to_tokenize = ft_str_replace(*to_tokenize, *i, j - 1, env);
-	handle_quoted_context(context, i, *to_tokenize);
+	handle_quoted_context(&((*l)->context), i, *to_tokenize);
+	printf ("YO \n");
+	//idee: renvoyer la len de l'expand pour ne pas y toucher 
 	return (expand_substitution_error_detector(var_name, exception));
 }

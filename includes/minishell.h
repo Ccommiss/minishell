@@ -113,6 +113,7 @@ typedef struct s_lex
 	int		context;
 	int		ref_char;
 	int		exp_res;
+	int		exp_len;
 }	t_lex;
 
 
@@ -280,7 +281,7 @@ enum tokens quote_toks(int c);
 ** expand.c
 */
 char		*ft_str_replace(char *str, int start, int len, t_env *env);
-int			expand(char **to_tokenize, int *i, int *context, t_env *env);
+int			expand(char **to_tokenize, int *i, t_lex **lex, t_env *env);
 void		handle_quoted_context(int *context, int *i, char *to_tokenize);
 
 void ft_print_error(char *arg);
