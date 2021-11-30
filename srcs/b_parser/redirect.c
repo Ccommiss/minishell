@@ -15,9 +15,10 @@ void	redirect_out(t_cmd *cmd, t_token **toks, int len)
 	}
 	if (cmd->io_out == -1)
 	{
+		if (cmd->error == FALSE)
+			ft_print_error(cmd->cmd_args[0]);
 		cmd->error = TRUE;
 		return_value = 1;
-		ft_print_error(cmd->cmd_args[0]);
 	}
 }
 
@@ -44,12 +45,12 @@ void	redirect_in(t_cmd *cmd, t_token **toks, int len)
 	}
 	if (cmd->io_in == -1 && cmd->dless == FALSE)
 	{
+		if (cmd->error == FALSE)
+			ft_print_error((*toks)->content);
 		cmd->error = TRUE;
 		return_value = 1;
-		ft_print_error((*toks)->content);
 	}
 }
-
 
 /*
 **	redirect choose whether
@@ -63,8 +64,8 @@ void	redirect(t_cmd *cmd, t_token **toks, int type, int len)
 	if (!(*toks)->next)
 		return ((void)0);
 	*toks = (*toks)->next;
-	if (type == TOK_LESS && cmd->error == FALSE)
+	if (type == TOK_LESS)// && cmd->error == FALSE)
 		redirect_in(cmd, toks, len);
-	else if (type == TOK_GREAT && cmd->error == FALSE)
+	else if (type == TOK_GREAT)// && cmd->error == FALSE)
 		redirect_out(cmd, toks, len);
 }
