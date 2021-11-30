@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_the_var.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpochard <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mpochard <mpochard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 17:23:21 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/24 12:00:34 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/11/30 17:19:11 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,20 +25,6 @@ int	export_visible(char *cmd_suffix, t_env *env)
 	ft_lstadd_backenv(&env, ft_lstenv_inv(cmd));
 	return (1);
 }*/
-
-
-int	count_tab(char **tab)
-{
-	int i;
-
-	i = 0;
-	printf("yoloooooo %zu\n",ft_strlen(tab[i]));
-	while (tab[i])
-	{
-		i++;
-	}
-		return (i);
-}
 
 void	ft_concatene_exp(t_env *env, char **tab)
 {
@@ -90,7 +76,7 @@ int	remplace(t_env *env, int egal, char *cmd_suffix)
 	}
 	while (env)
 	{
-		if (ft_strncmp(env->key, tab[0], ft_strlen(env->key)) == 0)
+		if (ft_strncmp(env->key, tab[0], ft_strlen(tab[0])) == 0)
 		{
 			return (need_replace(env, tab, egal));
 		}
@@ -106,6 +92,14 @@ int	remplace(t_env *env, int egal, char *cmd_suffix)
  *
  * */
 
+void	put_in_list(t_env **env, char *cmd_suffix, int egal)
+{
+	if (egal == 1 || egal == 2)
+		ft_lstadd_backenv(env, ft_lstenv(cmd_suffix));
+	else if (egal == 0)
+		ft_lstadd_backenv(env, ft_lstenv_inv(cmd_suffix));
+}
+
 int	export_the(t_env *env, char	**cmd_suffix)
 {
 	int		k;
@@ -116,7 +110,6 @@ int	export_the(t_env *env, char	**cmd_suffix)
 	tmp = env;
 	k = 0;
 	error = 0;
-	
 	if (count_double_tab(cmd_suffix) == 0)
 		return (print_the_export(env));
 	while (cmd_suffix[k])
@@ -127,19 +120,9 @@ int	export_the(t_env *env, char	**cmd_suffix)
 			k++;
 			continue ;
 		}
-		if (ft_parse_concate(cmd_suffix[k]) == 1)
-			egal = 2;
-		else if (ft_isin('=', cmd_suffix[k]) == 1)
-			egal = 1;
-		else
-			egal = 0;
+		egal = find_value_egal(cmd_suffix[k]);
 		if (remplace(tmp, egal, cmd_suffix[k]) == 0)
-		{
-			if (egal == 1 || egal == 2)
-				ft_lstadd_backenv(&env, ft_lstenv(cmd_suffix[k]));
-			else if (egal == 0)
-				ft_lstadd_backenv(&env, ft_lstenv_inv(cmd_suffix[k]));
-		}
+			put_in_list(&env, cmd_suffix[k], egal);
 		k++;
 	}
 	return (error);

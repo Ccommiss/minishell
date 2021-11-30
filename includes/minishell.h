@@ -169,6 +169,8 @@ typedef struct s_pipe
 	pid_t	*pid;
 	int		nbr_cmd;
 	int		nbr_p;
+	int		status;
+	int		temp;
 }				t_pipe;
 
 /* d_env
@@ -179,13 +181,13 @@ void	get_the_env(t_env **envp, char **env);
 int		export_the_var(t_env *env, char *cmd_suffix);
 int		remplace_the_var(t_env *env, char *cmd_suffix);
 char	**ft_split_one_egal(char *str);
-t_env *ft_lstlastenv(t_env *lst);
+t_env 	*ft_lstlastenv(t_env *lst);
 void	ft_lstadd_backenv(t_env **alst, t_env *nev);
 t_env	*ft_lstenv(char *content);
 t_env	*ft_lstenv_inv(char *content);
-int	need_to_unset(t_env *env, char *cmd_suffix);
-void	delete_the_node(t_env **env, t_env *del);
-int	unset_the_var(t_env *env, char *cmd_suffix);
+int		need_to_unset(t_env *env, char *cmd_suffix);
+int		delete_the_node(t_env **env, t_env *del);
+int		unset_the_var(t_env *env, char *cmd_suffix);
 int		check_the_cmd(char *cmd_suffix);
 int		do_the_unset(t_env *env, char **cmd_suffix);
 char	**list_to_cmd(t_env *env);
@@ -198,7 +200,8 @@ int		parse_cmd_suf(char *str);
 int		ft_parse_concate(char *cmd_suffix);
 int		print_the_export(t_env *env);
 char	**free_tab_index(char **tab, int i);
-
+int		case_first(t_env *tmp);
+int		find_value_egal(char *cmd);
 /*
  * END OF D_ENV
  * */
@@ -214,43 +217,58 @@ void	set_thepwd(t_env *env);
 int		check_echo(char *cmd_suffix);
 int		count_double_tab(char **tab);
 int		do_echo(char **cmd_suffix);
-void	exito(char *str);
+void	exito(char *str, t_cmd *cmd, t_env *env, char *line);
 void	exit_p(char *str);
+int		error_chdir(char *str, char *home);
+int		no_home(char *home);
+char	*strjoin_char(char *str, char *str1, char c);
+int		set_the_oldpwd(t_env *tmp, char *home);
 /*
  * f_redirection
  * */
-void	cmd_to_exec(t_cmd *cmd, t_env *env);
+void	cmd_to_exec(t_cmd *cmd, t_env *env, char *line);
 int		is_a_builtin(char *cmd);
-int		redir_in(t_env *env, t_cmd cmd, int fd, char *path);
-int		simple_redir_o(t_env *env, int fd, t_cmd cmd, char *ath);
-int		there_is_redir(t_env *env, t_cmd cmd);
-int		both_redir(t_env *env, t_cmd cmd, int in, int out);
+int		redir_in(t_env *env, t_cmd cmd, char *line);
+int		simple_redir_o(t_env *env, t_cmd cmd, char *line);
+int		there_is_redir(t_env *env, t_cmd cmd, char *line);
+int		both_redir(t_env *env, t_cmd cmd, char *line);
 int		fill_thefd(t_cmd cmd);
 void	here_doc(t_env *env, t_cmd cmd , int fd);
 int		no_cmd(int fd, int error);
 int		no_cmd_d(int fd, int fd1, int error);
 int		fork_fail(char *str, int fd, char **tenvp);
-int		fork_fail_d(char *str, int in, int out,  char **tenvp);
+int		fork_fail_d(char *str, int in, int out, char **tenvp);
 void	ft_execve(char *path, char **cmd, char **tenvp);
-int		redir_in_built(t_env *env, char **cmd, int fd , int builtin);
-int		redir_out_built(t_env *env, char **cmd, int fd , int builtin);
-int		redir_double_built(t_env *env, t_cmd cmd, int builtin);
+int		redir_in_built(t_env *env, t_cmd cmd, int builtin, char *line );
+int		redir_out_built(t_env *env,t_cmd cmd, int builtin, char *line);
+int		redir_double_built(t_env *env, t_cmd cmd, int builtin, char *line);
+void	built(t_env *env, t_cmd cmd, int *value, int builtin);
+int		fd_neg(int *fd);
+void	plus_plus(int *i, int *here_word, int fd);
 /* end of f_redir*/
 
 /*
  * g_pipe
  */
-int	do_the_pipe(t_cmd *cmd, t_env *env);
+int		do_the_pipe(t_cmd *cmd, t_env *env);
 int		first_pid(t_cmd, t_env *env, int *pipefd, int nbr_p);
-void		last_pid(t_cmd, t_env *env, int *pipefd, int nbr_p);
-int		other_pid(t_cmd, t_env *env, int *pipefd, int i, int nbr_p);
+void	last_pid(t_cmd, t_env *env, int *pipefd, int nbr_p);
+int		other_pid(t_cmd, t_env *env, t_pipe piped, int i);
 int		nb_of_pipe(t_cmd *cmd);
-int		malloc_of_pipe(t_cmd *cmd, int **pipefd, pid_t **pid, int *nbr_cmd);
+int		malloc_of_pipe(t_cmd *cmd, t_pipe *piped);
 void	close_all_p(int *fd, int nbr);
-int		deploy_pipe(int *pipefd, pid_t *pid, int nbr_cmd, int nbr_p);
+int		deploy_pipe(t_pipe piped);
 int		which_redir(t_cmd cmd);
 void	we_wait(pid_t *pid, int nbr_cmd, int *pipefd, int pipee);
 void	exec_builtin(t_env *env, char **cmd, int builtin);
+/*
+*	h_clean
+*/
+void	clean_env(t_env *env);
+void	free_cmds(t_cmd *cmd);
+void 	free_toks(t_token *toks);
+void 	cleanup(t_cmd *cmd, t_token *toks, char *line);
+
 /*
 **									[LEXER]
 */
@@ -311,8 +329,5 @@ void 	quithandler2();
 /*
 **	utils.c
 */
-void cleanup(t_cmd *cmd, t_token *toks, char *line);
-void free_toks(t_token *toks);
-void free_cmds(t_cmd *cmd);
 
 #endif

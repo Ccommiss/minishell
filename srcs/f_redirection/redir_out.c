@@ -3,17 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   redir_out.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mpochard <mpochard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/05 17:41:18 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/29 15:02:08 by ccommiss         ###   ########.fr       */
+/*   Updated: 2021/11/30 18:23:17 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <fcntl.h>
 
-int	simple_redir_o(t_env *env, int fd, t_cmd cmd, char *path)
+void	in_the_pid(t_cmd cmd, char **tenvp)
+{
+	dup2(cmd.io_in, 0);
+	ft_execve(cmd.cmdp, cmd.cmd_args, tenvp);
+}
+
+int	simple_redir_o(t_env *env, t_cmd cmd, char *line)
 {
 	pid_t	pid;
 	int		builtin;
@@ -21,32 +27,35 @@ int	simple_redir_o(t_env *env, int fd, t_cmd cmd, char *path)
 	int		status;
 
 	if (cmd.cmd_args[0] == NULL || cmd.error == 1)
-		return (no_cmd(fd, cmd.error));
+		return (no_cmd(cmd.io_in, cmd.error));
 	builtin = is_a_builtin(cmd.cmd_args[0]);
-	if ((builtin >= 1 && builtin <= 7) && fd > -1)
-		return_value = redir_out_built(env, cmd.cmd_args, fd, builtin);
-	else if (builtin == 0 && fd > -1)
+	if ((builtin >= 1 && builtin <= 7) && cmd.io_in > -1)
+		return_value = redir_out_built(env, cmd, builtin, line);
+	else if (builtin == 0 && cmd.io_in > -1)
 	{
 		tenvp = list_to_cmd(env);
 		pid = fork();
 		if (pid == -1)
-			return (fork_fail("fork failed", fd, tenvp));
+			return (fork_fail("fork failed", cmd.io_in, tenvp));
 		else if (pid == 0)
-		{
-			dup2(fd, 0);
-			ft_execve(path, cmd.cmd_args, tenvp);
-		}
-		else
-			handle_signal(CHILD_HANDLING);
+			in_the_pid(cmd, tenvp);
+		handle_signal(CHILD_HANDLING);
 		waitpid(pid, &status, 0);
-		set_status(status, 0);
+		set_status(status, 1);
 		ft_free_double_tab(tenvp);
 	}
-	close(fd);
+	close(cmd.io_in);
 	return (return_value);
 }
 
-int		both_redir(t_env *env, t_cmd cmd, int in, int out)
+void	in_the_pid_doubl(t_cmd cmd, char **tenvp)
+{
+	dup2(cmd.io_out, 1);
+	dup2(cmd.io_in, 0);
+	ft_execve(cmd.cmdp, cmd.cmd_args, tenvp);
+}
+
+int	both_redir(t_env *env, t_cmd cmd, char *line)
 {
 	int		builtin;
 	pid_t	pid;
@@ -54,26 +63,24 @@ int		both_redir(t_env *env, t_cmd cmd, int in, int out)
 	int		status;
 
 	if (cmd.cmd_args[0] == NULL || cmd.error == 1)
-		return (no_cmd_d(in, out, cmd.error));
+		return (no_cmd_d(cmd.io_in, cmd.io_out, cmd.error));
 	builtin = is_a_builtin(cmd.cmd_args[0]);
-	if ((builtin >= 1 && builtin <= 7) && in >= -1 && out >= -1)
-		return_value = redir_double_built(env, cmd, builtin);
-	else if (builtin == 0 && (in >= -1 && out >= -1))
+	if ((builtin >= 1 && builtin <= 7) && cmd.io_in >= -1 && cmd.io_out >= -1)
+		return_value = redir_double_built(env, cmd, builtin, line);
+	else if (builtin == 0 && (cmd.io_in >= -1 && cmd.io_out >= -1))
 	{
 		tenvp = list_to_cmd(env);
 		pid = fork();
 		if (pid == -1)
-			return (fork_fail_d("fork failed", in, out, tenvp));
+			return (fork_fail_d("fork failed", cmd.io_in, cmd.io_out, tenvp));
 		if (pid == 0)
-		{
-			dup2(out, 1);
-			dup2(in, 0);
-			ft_execve(cmd.cmdp, cmd.cmd_args, tenvp);
-		}
+			in_the_pid_doubl(cmd, tenvp);
+		handle_signal(CHILD_HANDLING);
 		waitpid(pid, &status, 0);
-		set_status(status, 0);
+		set_status(status, 1);
 	}
-	close(out);
-	close(in);
+	close(cmd.io_in);
+	close(cmd.io_out);
 	return (return_value);
 }
+

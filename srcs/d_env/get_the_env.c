@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_the_env.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpochard <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mpochard <mpochard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 17:06:05 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/22 11:37:22 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/11/30 17:23:18 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,21 +81,21 @@ int	printf_the_env(t_env *envp, char **cmd)
 	temp = envp;
 	if (count_double_tab(cmd) > 1)
 	{
-		write(2, "env: ",5);
+		write(2, "env: ", 5);
 		write(2, cmd[1], ft_strlen(cmd[1]));
-		write(2, ": No such file or directory\n",28);
+		write(2, ": No such file or directory\n", 28);
 		return (127);
 	}
 	while (envp)
 	{
-		if (envp->visible == 0 && strcmp (envp->key, "_") != 0
-			&& envp->visible == 0)
+		if (envp->visible == 0 && ft_strncmp(envp->key, "_",
+				ft_strlen(envp->key)) != 0 && envp->visible == 0)
 			printf("%s\n", envp->env);
 		envp = envp->next;
 	}
 	while (temp)
 	{
-		if (strcmp (temp->key, "_") == 0)
+		if (ft_strncmp (temp->key, "_", ft_strlen(temp->key)) == 0)
 			printf("%s\n", temp->env);
 		temp = temp->next;
 	}

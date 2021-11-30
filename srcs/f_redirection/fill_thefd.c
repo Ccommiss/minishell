@@ -1,6 +1,7 @@
 #include "minishell.h"
 
-int inside_thefill(char *io_here, char *line)
+
+int	inside_thefill(char *io_here, char *line)
 {
 	if (ft_strncmp(io_here, line, ft_strlen(io_here)) == 0)
 	{
@@ -10,71 +11,68 @@ int inside_thefill(char *io_here, char *line)
 	return (0);
 }
 
-int fd_neg(int fd)
+int	write_the(int fd, char *line, char *io_here, int param)
 {
-	if (fd == -1)
+	if (param == 0)
 	{
-		perror(">");
-		return (-1);
+		write(fd, line, ft_strlen(line));
+		write(fd, "\n", 1);
+		free(line);
+	}
+	if (param == 1)
+	{
+		if (return_value != 130)
+		{
+			write(1, "minishell: warning: here-document ", 34);
+			write(1, "delimited by end-of-file ", 25);
+			printf ("(wanted `%s')\n", io_here);
+		}
+		return (1);
 	}
 	return (0);
 }
 
-void write_the(int fd, char *line)
+int	if_the_same(char *io_here, char *line)
 {
-	write(fd, line, ft_strlen(line));
-	write(fd, "\n", 1);
-	free(line);
+	if (ft_strncmp(io_here, line, (ft_strlen(line) + 1)) == 0)
+	{
+		free(line);
+		return (0);
+	}
+	return (1);
 }
 
-void plus_plus(int *i, int *here_word, int fd)
+void	init(int *i)
 {
-	*i += 1;
-	*here_word -= 1;
-	close(fd);
-}
-
-int fill_thefd(t_cmd cmd)
-{
-	int fd;
-	int i;
-	char *line;
-
-	i = 0;
+	*i = 0;
 	handle_signal(HEREDOC);
-	return_value = -1; //test si heere doc apres ctrl C
+}
+
+int	fill_thefd(t_cmd cmd)
+{
+	int		fd;
+	int		i;
+	char	*line;
+
+	init(&i);
 	while (cmd.here_words && return_value != 130)
 	{
-		fd = open(".here_doc", O_CREAT | O_TRUNC | O_RDWR, 0777);
-		if (fd == -1)
-		{
-			perror(">");
+		if (fd_neg(&fd) == -1)
 			return (-1);
-		}
 		while (return_value != 130)
 		{
 			line = readline("> ");
 			if (line && return_value != 130)
 			{
-				if (ft_strncmp(cmd.io_here[i], line, ft_strlen(cmd.io_here[i])) == 0)
-				{
-					free(line);
-					break;
-				}
+				if (if_the_same(cmd.io_here[i], line) == 0)
+					break ;
 			}
 			else if (line == NULL)
-			{
-				if (return_value != 130)
-					printf("minishell: warning: here-document delimited by end-of-file (wanted `%s')\n", cmd.io_here[i]);
-				break;
-			}
-			write(fd, line, ft_strlen(line));
-			write(fd, "\n", 1);
-			free(line);
+				if (write_the(fd, line, cmd.io_here[i], 1) == 1)
+					break ;
+			write_the(fd, line, cmd.io_here[i], 0);
 		}
-		i++;
-		cmd.here_words--;
-		close(fd);
+		plus_plus(&i, &cmd.here_words, fd);
 	}
 	return (fd);
 }

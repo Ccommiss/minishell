@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   first_pid.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mpochard <mpochard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/05 16:05:45 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/24 11:56:19 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/11/30 18:20:40 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,10 +60,7 @@ void	exec_builtin(t_env *env, char **cmd, int builtin)
 	else if (builtin == 3)
 		ft_putendl_fd(get_pwd(), 1);
 	else if (builtin == 4)
-	{
 		exit_p(cmd[1]);
-		return ;
-	}
 	else if (builtin == 5)
 		export_the(env, &cmd[1]);
 	else if (builtin == 6)
@@ -83,12 +80,8 @@ int	first_pid(t_cmd cmd, t_env *env, int *pipefd, int nbr_p )
 	tenvp = list_to_cmd(env);
 	builtin = is_a_builtin(cmd.cmd_args[0]);
 	do_redir_f(cmd, pipefd, nbr_p, redir);
-	if (!isatty(STDIN_FILENO))
-		return 0;
 	if (builtin >= 1 && builtin <= 7)
-	{
 		exec_builtin(env, cmd.cmd_args, builtin);
-	}
 	else if (builtin == 0)
 		ft_execve(cmd.cmdp, cmd.cmd_args, tenvp);
 	return (0);

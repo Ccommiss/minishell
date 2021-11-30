@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_to_exec.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mpochard <mpochard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/13 10:05:27 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/29 15:03:12 by ccommiss         ###   ########.fr       */
+/*   Updated: 2021/11/30 18:27:28 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
 
 /*
  * permet d'articulier le parser avec mes builtin
@@ -24,83 +23,73 @@
  * mettre export en **
  */
 // fo incremeter les shlvl  de +1 au debut comme ca  cgerer
-
-void	cmd_to_exec(t_cmd *cmd, t_env *env)
+void	exec_the_built(t_env *env, t_cmd *cmd, char *line, int builtin)
 {
-
-	int		status = 0;
-	(void)env;
 	char	*buf;
-	char	**tenvp;
 
+	if (builtin == 1)
+		return_value = do_echo(cmd->cmd_args);
+	else if (builtin == 2)
+	{
+		return_value = cd(env, cmd->cmd_args[1]);
+		set_thepwd(env);
+	}
+	else if (builtin == 3)
+	{
+		buf = get_pwd();
+		ft_putendl_fd(buf, 1);
+		free(buf);
+		return_value = 0;
+	}
+	else if (builtin == 4)
+		exito(cmd->cmd_args[1], cmd, env, line);
+	else if (builtin == 5)
+		return_value = export_the(env, &cmd->cmd_args[1]);
+	else if (builtin == 6)
+		return_value = do_the_unset(env, cmd->cmd_args);
+	else if (builtin == 7)
+		return_value = printf_the_env(env, cmd->cmd_args);
+}
+
+void	no_a_builtin(t_cmd *cmd, t_env *env, int status)
+{
+	char	**tenvp;
+	pid_t	pid;
+
+	tenvp = list_to_cmd(env);
+	pid = fork();
+	if (pid == 0)
+		ft_execve(cmd->cmdp, cmd->cmd_args, tenvp);
+	handle_signal(CHILD_HANDLING);
+	waitpid(pid, &status, 0);
+	set_status(status, 1);
+	ft_free_double_tab(tenvp);
+}
+
+void	cmd_to_exec(t_cmd *cmd, t_env *env, char *line)
+{
+	int		status;
+	int		builtin;
+
+	status = 0;
 	if (cmd == NULL)
-		return;
+		return ;
 	while (cmd && cmd->index >= 0)
 	{
-//		if (cmd->error == TRUE)
-//		{
-//			cmd = cmd->next;
-//			break ;
-//		}
-//		else
-//			return_value = 0;
 		if (cmd->next)
 		{
 			if (do_the_pipe(cmd, env) == 0)
 				return ;
 		}
-		else if ( there_is_redir (env, *cmd) == 0)
-		{
-
-		}
+		else if (there_is_redir (env, *cmd, line) == 0)
+			status = 0;
 		else
 		{
-			if (cmd->cmd_args[0] != NULL && strcmp(cmd->cmd_args[0], "echo") == 0)
-				return_value = do_echo(cmd->cmd_args);
-			else if (cmd->cmd_args[0] != NULL &&strcmp(cmd->cmd_args[0], "cd") == 0)
-			{
-				return_value =cd(env, cmd->cmd_args[1]);
-				set_thepwd(env);
-			}
-			else if (cmd->cmd_args[0] != NULL && strcmp(cmd->cmd_args[0], "pwd") == 0)
-			{
-				buf = get_pwd();
-				ft_putendl_fd(buf, 1);
-				free(buf);
-				return_value = 0;
-			}
-			else if(cmd->cmd_args[0] && strcmp(cmd->cmd_args[0], "env") == 0)
-				return_value =printf_the_env(env, cmd->cmd_args);
-			else if(cmd->cmd_args[0] && strcmp(cmd->cmd_args[0], "export") == 0)
-			{
-				return_value =export_the(env, &cmd->cmd_args[1]);
-			}
-			else if(cmd->cmd_args[0] != NULL && ft_strncmp(cmd->cmd_args[0], "exit", 5) == 0)
-					exito(cmd->cmd_args[1]);
-			else if (cmd->cmd_args[0] && strcmp(cmd->cmd_args[0], "unset") == 0)
-				return_value = do_the_unset(env, cmd->cmd_args);
-			else
-			{
-				pid_t pid;
-				tenvp = list_to_cmd(env);
-				pid = fork();
-
-				if (pid == 0)
-				{
-				/*	handle_signal(CHILD);
-					if (execve(cmd->cmdp, cmd->cmd_args, tenvp) == -1)
-					{
-						printf ("minishell: command not found: %s\n", cmd->cmd_args[0]);
-						exit (127);
-					}*/
-					ft_execve(cmd->cmdp, cmd->cmd_args,tenvp);
-				}
-				else
-					handle_signal(CHILD_HANDLING);
-				waitpid(pid, &status, 0);
-				ft_free_double_tab(tenvp);
-				set_status(status, 1);
-			}
+			builtin = is_a_builtin(cmd->cmd_args[0]);
+			if (builtin >= 1 && builtin <= 7)
+				exec_the_built(env, cmd, line, builtin);
+			else if (builtin == 0)
+				no_a_builtin(cmd, env, status);
 		}
 		cmd = cmd->next;
 	}

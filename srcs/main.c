@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mpochard <mpochard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/15 16:46:53 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/29 15:04:14 by ccommiss         ###   ########.fr       */
+/*   Updated: 2021/11/30 18:28:31 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ int main(int ac, char **av, char **envp)
 			token_to_cmds(&cmd, &toks);
 			find_path(&cmd, env);
 			debug_cmds(&cmd);
-			cmd_to_exec(&cmd, env);
+			cmd_to_exec(&cmd, env, line);
 			cleanup(&cmd, &toks, line);
 		}
 		else if (!line)

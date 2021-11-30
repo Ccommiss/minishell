@@ -1,41 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   util_unset.c                                       :+:      :+:    :+:   */
+/*   util_fillfd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mpochard <mpochard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/17 12:21:10 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/30 17:26:16 by mpochard         ###   ########.fr       */
+/*   Created: 2021/11/30 18:11:57 by mpochard          #+#    #+#             */
+/*   Updated: 2021/11/30 18:12:16 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	check_the_cmd(char *cmd_suffix)
+int	fd_neg(int *fd)
 {
-	int	i;
-
-	if (ft_isalpha(cmd_suffix[0]) == 0 && cmd_suffix[0] != '_')
+	*fd = open(".here_doc", O_CREAT | O_TRUNC | O_RDWR, 0777);
+	if (*fd == -1)
 	{
-		printf(" unset: '%s': not a valid identifier\n", cmd_suffix);
+		perror(">");
 		return (-1);
-	}
-	i = 1;
-	while (cmd_suffix[i])
-	{
-		if (ft_isalnum(cmd_suffix[i]) == 0 && cmd_suffix[i] != '_')
-		{
-			printf(" unset: '%s': not a valid identifier\n", cmd_suffix);
-			return (-1);
-		}
-		i++;
 	}
 	return (0);
 }
 
-int	case_first(t_env *tmp)
+void	plus_plus(int *i, int *here_word, int fd)
 {
-	tmp->visible = -3;
-	return (0);
+	*i += 1;
+	*here_word -= 1;
+	close(fd);
 }

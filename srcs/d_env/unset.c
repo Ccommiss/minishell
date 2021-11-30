@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpochard <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mpochard <mpochard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/29 17:49:53 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/17 15:10:31 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/11/30 17:25:12 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,11 +69,16 @@ int	case_pwd(t_env *temp, int param)
 int	unset_the_var(t_env *env, char *cmd_suffix)
 {
 	t_env	*temp;
+	int		i;
 
 	temp = env;
+	i = 0;
 	while (temp)
 	{
-		if (ft_strncmp(cmd_suffix, "PWD", 4) == 0
+		if ((ft_strncmp(temp->key, cmd_suffix,
+					ft_strlen(cmd_suffix)) == 0) && i == 0)
+			return (case_first(temp));
+		else if (ft_strncmp(cmd_suffix, "PWD", 4) == 0
 			&& ft_strncmp(temp->key, "PWD", 4) == 0)
 			return (case_pwd(temp, 0));
 		else if (ft_strncmp(cmd_suffix, "OLDPWD", 7) == 0
@@ -82,11 +87,9 @@ int	unset_the_var(t_env *env, char *cmd_suffix)
 		else if (ft_strncmp(cmd_suffix, "SHLVL", 6) == 0
 			&& ft_strncmp(temp->key, "SHLVL", 6) == 0)
 			return (case_of_sh(temp));
-		else if (ft_strncmp(temp->key, cmd_suffix, ft_strlen(temp->key)) == 0)
-		{
-			delete_the_node(&env, temp);
-			return (1);
-		}
+		else if (ft_strncmp(temp->key, cmd_suffix, ft_strlen(cmd_suffix)) == 0)
+			return (delete_the_node(&env, temp));
+		i++;
 		temp = temp->next;
 	}
 	return (0);

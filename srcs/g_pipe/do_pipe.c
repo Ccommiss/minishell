@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   do_pipe.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mpochard <mpochard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/05 17:40:25 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/29 15:01:46 by ccommiss         ###   ########.fr       */
+/*   Updated: 2021/11/30 18:47:45 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,75 +24,78 @@ int	which_redir(t_cmd cmd)
 		return (4);
 	return (0);
 }
+
+void	if_here_doc(t_env *env, t_cmd *cmd, t_pipe piped)
+{	
+	if (cmd->io_out < 0 && piped.i == 0)
+	{
+		if (dup2(piped.pipefd[1], 1) == -1)
+			perror("dup2 failed");
+	}
+	else if (cmd->io_out && piped.i < piped.nbr_cmd - 1)
+	{
+		if (dup2(piped.pipefd[piped.i + piped.i + 1], 1) == -1)
+			perror("dup2 failed");
+	}
+	here_doc(env, *cmd, 0);
+	close_all_p(piped.pipefd, piped.nbr_p);
+	exit(return_value);
+}
+
+void	inside_pid(t_env *env, t_cmd *cmd, t_pipe piped)
+{
+	if (cmd->dless == 1)
+		if_here_doc(env, cmd, piped);
+	else if (piped.i == 0)
+		first_pid(*cmd, env, piped.pipefd, piped.nbr_p);
+	else if (piped.i == piped.nbr_cmd - 1)
+		last_pid(*cmd, env, piped.pipefd, piped.nbr_p);
+	else
+		other_pid(*cmd, env, piped, piped.i);
+}
+
+void	after_the_pid(t_cmd *cmd, t_pipe *piped)
+{
+	if (cmd->dless == 1)
+	{
+		waitpid(piped->pid[piped->i], &piped->temp, 0);
+		set_status(piped->temp, 1);
+		piped->temp = return_value;
+		if (piped->i == (piped->nbr_cmd - 1))
+			piped->status = 1;
+	}
+	if (cmd->io_out > 0)
+		close(cmd->io_out);
+	if (cmd->io_in > 0)
+		close(cmd->io_in);
+}
+
 int	do_the_pipe(t_cmd *cmd, t_env *env)
 {
-	int		nbr_cmd;
-	int		*pipefd;
-	pid_t	*pid;
-	int		i;
-	int		temp;
-	int		status;
+	t_pipe	piped;
 
-	i = 0;
-	temp = 0;
-	status = 0;
-	if (malloc_of_pipe(cmd, &pipefd, &pid, &nbr_cmd) == -1)
+	piped.i = 0;
+//	bzero(&piped, sizeof(t_pipe));
+	if (malloc_of_pipe(cmd, &piped) == -1)
 		return (-1);
-	if (deploy_pipe(pipefd, pid, nbr_cmd, ((nbr_cmd - 1) * 2)) == -1)
+	if (deploy_pipe(piped) == -1)
 		return (-1);
 	while (cmd)
 	{
 		if (cmd->dless == 1)
 			fill_thefd(*cmd);
-		pid[i] = fork();
-		if (pid[i] == 0)
-		{
-		//	handle_signal(CHILD);
-			if (cmd->dless == 1)
-			{
-				if (cmd->io_out < 0 && i == 0)
-					dup2(pipefd[1], 1);
-				else if (cmd->io_out && i < nbr_cmd - 1)
-					dup2(pipefd[i + i + 1], 1);
-				here_doc(env, *cmd, 0);
-				close_all_p(pipefd, (nbr_cmd - 1) * 2);
-				exit(return_value);
-			}
-			else if (i == 0)
-			{
-				if (first_pid(*cmd, env, pipefd, ((nbr_cmd - 1) * 2)) == -1)
-					return (-1);
-			}
-			else if (i == nbr_cmd - 1)
-			{
-				last_pid(*cmd, env, pipefd, ((nbr_cmd - 1) * 2));
-			}
-			else
-			{
-				if (other_pid(*cmd, env, pipefd, i, (nbr_cmd - 1) * 2 ) == -1)
-					return (-1);
-			}
-		}
+		piped.pid[piped.i] = fork();
+		if (piped.pid[piped.i] == 0)
+			inside_pid(env, cmd, piped);
 		else
 			handle_signal(CHILD_HANDLING);
-		if (cmd->dless == 1)
-		{
-			waitpid(pid[i],&temp , 0);
-			set_status(temp, 0);
-			temp = return_value;
-			if ( i ==  nbr_cmd - 1)
-				status = 1;
-		}
-			if (cmd->io_out > 0)
-			close(cmd->io_out);
-		if (cmd->io_in > 0)
-			close(cmd->io_in);
-		i++;
+		after_the_pid(cmd, &piped);
+		piped.i++;
 		cmd = cmd->next;
 	}
-		we_wait(pid, nbr_cmd, pipefd, ((nbr_cmd - 1) * 2));
-	if (status == 1)
-		return_value = temp;
+	we_wait(piped.pid, piped.nbr_cmd, piped.pipefd, piped.nbr_p);
+	if (piped.status == 1)
+		return_value = piped.temp;
 	unlink(".here_doc");
 	return (0);
 }

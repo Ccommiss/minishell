@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mpochard <mpochard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/20 11:11:36 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/29 16:03:34 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/11/30 18:25:55 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	the_rest_built(t_env *env, t_cmd cmd, int builtin)
 	if (builtin == 3)
 		ft_putendl_fd(get_pwd(), 1);
 	else if (builtin == 4)
-		exito(cmd.cmd_args[1]);
+		exito(cmd.cmd_args[1], &cmd, env, NULL);
 	else if (builtin == 5)
 		export_the(env, &cmd.cmd_args[1]);
 	else if (builtin == 6)
@@ -64,12 +64,15 @@ void	redir_here_built(t_env *env, t_cmd cmd, int builtin)
 		close(cmd.io_in);
 }
 
-void	do_the_dup(int out, int fd)
+void	do_the_dup(int out, int fd, t_cmd cmd, char **tenvp)
 {
+	fd = open(".here_doc", O_RDWR, 0666);
 	if (out > 0)
 		dup2(out, 1);
 	dup2(fd, 0);
+	ft_execve(cmd.cmdp, cmd.cmd_args, tenvp);
 }
+
 void	here_doc(t_env *env, t_cmd cmd, int fd)
 {
 	int		builtin;
@@ -77,7 +80,7 @@ void	here_doc(t_env *env, t_cmd cmd, int fd)
 	pid_t	pid;
 	char	**tenvp;
 
-	if (cmd.cmd_args[0] == NULL || cmd.error == 1) // mettre en place si ya un pb t rentre pas dedans)
+	if (cmd.cmd_args[0] == NULL || cmd.error == 1)
 		return (no_cmd_here(cmd.io_in, cmd.io_out));
 	builtin = is_a_builtin(cmd.cmd_args[0]);
 	if ((builtin >= 1 && builtin <= 7))
@@ -89,15 +92,10 @@ void	here_doc(t_env *env, t_cmd cmd, int fd)
 		if (pid == -1)
 			fork_fail_d("fork failed", cmd.io_out, cmd.io_in, tenvp);
 		else if (pid == 0)
-		{
-			fd = open(".here_doc", O_RDWR, 0666);
-			do_the_dup(cmd.io_out, fd);
-			ft_execve(cmd.cmdp, cmd.cmd_args, tenvp);
-		}
-		else
-			handle_signal(CHILD_HANDLING);
+			do_the_dup(cmd.io_out, fd, cmd, tenvp);
+		handle_signal(CHILD_HANDLING);
 		waitpid(pid, &status, 0);
-		set_status(status, 0);
+		set_status(status, 1);
 	}
 	unlink(".here_doc");
 }

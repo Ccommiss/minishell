@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpochard <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mpochard <mpochard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/05 17:41:59 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/22 15:58:02 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/11/30 17:34:51 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,19 +17,19 @@
  *	this fct is for check is the sec arg of echo is -n or not 
  *	-nnnnm dont work but -nnnnnn  work !!!
  */
+
 int	check_echo(char *cmd_suffix)
 {
 	int	i;
 
 	i = 0;
-//	printf("cmd_suffix %s\n", cmd_suffix);
 	if (cmd_suffix[i] == '-')
 	{
 		i++;
-	if ( cmd_suffix[i] == '\0')
-		return (0);
+		if (cmd_suffix[i] == '\0')
+			return (0);
 	}
-		else
+	else
 		return (0);
 	while (cmd_suffix[i] == 'n')
 		i++;
@@ -40,9 +40,9 @@ int	check_echo(char *cmd_suffix)
 	return (0);
 }
 
-int		count_double_tab(char **tab)
+int	count_double_tab(char **tab)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (tab[i])
@@ -56,38 +56,54 @@ int		count_double_tab(char **tab)
  *  -the program begin at i = 1 because i = 0 is echo 
  *  - need to tchek the nbr of arg of echo, security of segfault
  */
-int		do_echo(char **cmd_suffix)
+
+void	with_op(char **cmd_suffix, int count, int param)
+{
+	int	i;
+
+	i = 1;
+	if (param == 0)
+	{
+		while (cmd_suffix[i])
+		{
+			write(1, cmd_suffix[i], ft_strlen(cmd_suffix[i]));
+			if (i < count - 1)
+				write(1, " ", 1);
+			i++;
+		}
+	}
+	if (param == 1)
+	{
+		while (cmd_suffix[i])
+		{
+			write(1, cmd_suffix[i], ft_strlen(cmd_suffix[i]));
+			if (i < count - 1)
+				write(1, " ", 1);
+			i++;
+		}
+	}
+}
+
+int	do_echo(char **cmd_suffix)
 {
 	int	i;
 	int	count;
 
 	i = 1;
-	count = count_double_tab(cmd_suffix); 
+	count = count_double_tab(cmd_suffix);
 	if (count > 1 && check_echo(cmd_suffix[i]) == 1)
 	{
 		i++;
 		if (count > 2)
 		{
-		while (cmd_suffix[i])
-		{
-			write(1, cmd_suffix[i], ft_strlen(cmd_suffix[i]));
-			if ( i < count -1)
-				write(1," ", 1);
-			i++;
+			with_op(cmd_suffix, count, 0);
 		}
-	}
 	}
 	else
 	{
 		if (count > 1)
 		{
-		while (cmd_suffix[i])
-		{
-			write(1, cmd_suffix[i], ft_strlen(cmd_suffix[i]));
-			if ( i < count -1)
-				write(1," ", 1);
-			i++;
-		}
+			with_op(cmd_suffix, count, 1);
 		}
 		write(1, "\n", 1);
 	}

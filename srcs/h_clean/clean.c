@@ -1,24 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit_pipe.c                                        :+:      :+:    :+:   */
+/*   clean.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mpochard <mpochard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/08 20:17:43 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/30 17:35:10 by mpochard         ###   ########.fr       */
+/*   Created: 2021/11/30 17:41:15 by mpochard          #+#    #+#             */
+/*   Updated: 2021/11/30 17:42:50 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-
-void	exit_p(char *str)
+void	clean_env(t_env *env)
 {
-	char	n;
+	void	*tmp;
 
-	if (str == NULL)
-		exit(return_value);
-	n = (char)ft_atoi(str);
-	exit(n);
+	while (env)
+	{
+		free(env->key);
+		free(env->value);
+		free(env->env);
+		tmp = env->next;
+		free(env);
+		env = tmp;
+	}
 }

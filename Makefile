@@ -6,6 +6,7 @@ ENV_PATH = d_env
 BUILT_PATH = e_builtin
 REDIR_PATH = f_redirection
 PIPE_PATH = g_pipe
+CLEAN_PATH = h_clean
 
 SOURCES =	main.c\
 			$(LEX_PATH)/tokenizer2.c \
@@ -33,11 +34,15 @@ SOURCES =	main.c\
 			${BUILT_PATH}/echo.c\
 			${BUILT_PATH}/exit.c\
 			${BUILT_PATH}/exit_pipe.c\
+			${BUILT_PATH}/cd_utils.c\
+			${BUILT_PATH}/pwd.c\
 			${REDIR_PATH}/is_redir.c\
 			${REDIR_PATH}/redir_out.c\
 			${REDIR_PATH}/redir_in.c\
 			${REDIR_PATH}/here_doc.c\
 			${REDIR_PATH}/util_redir.c\
+			${REDIR_PATH}/util_error.c\
+			${REDIR_PATH}/util_fillfd.c\
 			${REDIR_PATH}/fill_thefd.c\
 			${EXEC_PATH}/cmd_to_exec.c\
 			${PIPE_PATH}/do_pipe.c\
@@ -47,6 +52,7 @@ SOURCES =	main.c\
 			${PIPE_PATH}/util_pipe.c\
 			${EXEC_PATH}/signals.c \
 			${EXEC_PATH}/set_status.c \
+			${CLEAN_PATH}/clean.c\
 			utils.c
 
 

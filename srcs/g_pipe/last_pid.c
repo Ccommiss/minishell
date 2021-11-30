@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   last_pid.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpochard <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mpochard <mpochard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/05 17:28:47 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/12 17:27:04 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/11/29 20:12:10 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,11 +51,7 @@ void	last_pid(t_cmd cmd, t_env *env, int *pipefd, int nbr_p)
 	builtin = is_a_builtin(cmd.cmd_args[0]);
 	do_redir_l(cmd, pipefd, nbr_p, redir);
 	if (builtin >= 1 && builtin <= 7)
-	{
 		exec_builtin(env, cmd.cmd_args, builtin);
-		write(2, "ici", 3);
-	}
 	else if (builtin == 0)
 		ft_execve(cmd.cmdp, cmd.cmd_args, tenvp);
-	return ;
 }

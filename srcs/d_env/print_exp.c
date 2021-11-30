@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print_exp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpochard <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mpochard <mpochard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/17 10:32:10 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/17 11:33:19 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/11/30 17:24:33 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
  * util for swap  when we print the export
  * because export is print with ascii order
  */
+
 void	ft_charswap(char **a, char **b)
 {
 	char	*c;
@@ -91,13 +92,12 @@ int	print_the_export(t_env *env)
 		while (j < nbr - 1 - i)
 		{
 			if (strcmp(exp[j], exp[j + 1]) > 0)
-			{
 				ft_charswap(&exp[j], &exp[j + 1]);
-			}
 			j++;
 		}
 		i++;
 	}
 	print(exp);
+	ft_free_double_tab(exp);
 	return (0);
 }
