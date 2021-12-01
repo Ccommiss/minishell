@@ -95,6 +95,20 @@ enum tokens
 	DQUOTE = '\"'
 };
 
+
+/*
+ * the struct for the env
+ */
+typedef struct	s_env
+{
+	char	*key;
+	char	*value;
+	char	*env;
+	int		visible;
+	struct	s_env *next;
+	struct	s_env *prev;
+}				t_env;
+
 /*
 ** s_lex struct
 **
@@ -114,6 +128,7 @@ typedef struct s_lex
 	int		ref_char;
 	int		exp_res;
 	int		exp_len;
+	t_env	**env;
 }	t_lex;
 
 
@@ -148,18 +163,7 @@ typedef struct s_cmd
 	t_cmd *prev;
 } t_cmd;
 
-/*
- * the struct for the env
- */
-typedef struct	s_env
-{
-	char	*key;
-	char	*value;
-	char	*env;
-	int		visible;
-	struct	s_env *next;
-	struct	s_env *prev;
-}				t_env;
+
 /*
  * struct for the pipe bc 4 args in fct is too light
  */
@@ -280,7 +284,7 @@ enum tokens quote_toks(int c);
 /*
 ** expand.c
 */
-char		*ft_str_replace(char *str, int start, int len, t_env *env);
+char		*ft_str_replace(char *str, int start, int len, t_lex **l);
 int			expand(char **to_tokenize, int *i, t_lex **lex, t_env *env);
 void		handle_quoted_context(int *context, int *i, char *to_tokenize);
 

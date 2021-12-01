@@ -40,7 +40,7 @@ int	handle_expand(char **to_tokenize, int *i, t_lex *l, t_env *env)
 
 	old_context = l->context;
 	old_i = *i;
-	if (l->exp_len > 0) //si on a pas fini cet expand on reexpand pas 
+	if (l->exp_len > 0) //si on a pas fini cet expand on reexpand pas
 		return (0);
 	while (to_tokenize[0][*i] == '$' && l->context != SQUOTE && l->exp_res != 2 && l->exp_len == 0)
 	{
@@ -73,13 +73,11 @@ void	fill_token_buff(t_lex *l, char **to_tokenize, int *i, t_env *env)
 		handle_quoted_context(&(l->context), i, *to_tokenize);
 		if (handle_expand(to_tokenize, i, l, env) == -1)
 			break ;
-		printf ("EXP LEN = %d \n", l->exp_len);
 		l->token[l->buf_i++] = to_tokenize[0][*i];
 		if (to_tokenize[0][*i])
 			*i += 1;
 		if (l->exp_len > 0)
 			l->exp_len--;
-		printf ("EXP LEN = %d \n", l->exp_len);
 	}
 	l->token[l->buf_i] = '\0';
 }

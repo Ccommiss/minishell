@@ -1,0 +1,16 @@
+Dockerfile
+Makefile
+b
+d
+fakjsefhqeaf
+includes
+kwufhuwifh
+libft
+lol
+lol.c
+lolilol
+ls
+melpoch
+minishell
+nouveaufichier
+srcs

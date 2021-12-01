@@ -51,7 +51,7 @@ char	*assign_value(t_env *env, char *var_name)
 **		"hello$var that was what was after $lol" becomes
 **		"helloworld that was what was after $lol"
 */
-char	*ft_str_replace(char *str, int start, int len, t_env *env)
+char	*ft_str_replace(char *str, int start, int len, t_lex **l)
 {
 	char	*var_name;
 	char	*new_str;
@@ -59,9 +59,8 @@ char	*ft_str_replace(char *str, int start, int len, t_env *env)
 	char	*tmp;
 
 	extract_pure_var_name(&var_name, len, start, str);
-	value = assign_value(env, var_name);
-	printf ("VALUE = %s \n", value);
-
+	value = assign_value(*((**l).env), var_name);
+	(*l)->exp_len = ft_strlen(value);
 	free(var_name);
 	tmp = ft_substr(str, 0, start);
 	new_str = ft_strconcat(tmp, value, start + ft_strlen(value));
@@ -73,7 +72,6 @@ char	*ft_str_replace(char *str, int start, int len, t_env *env)
 	free(tmp);
 	free(value);
 	free(str); //TEST MAIS PTETRE VA TOUT CASSER
-	
 	return (new_str);
 }
 
@@ -125,29 +123,17 @@ int	expand(char **to_tokenize, int *i, t_lex **l, t_env *env)
 
 	if ((*l)->exp_len != 0)
 		return (0);
-
 	j = 1;
 	exception = 0;
 	while (to_tokenize[0][*i + j]
 		&& is_valid_expand_char(&exception, to_tokenize[0][*i + j], j))
 		j++;
 	var_name = ft_substr(*to_tokenize, *(i), j);
-
-	char *len_computing = ft_strdup(var_name);
-	extract_pure_var_name(&len_computing, j - 1, *i, *to_tokenize);
-	printf ("pure var name  = %s \n", len_computing );
-	char *value = assign_value(env, len_computing);
-	(**l).exp_len = ft_strlen(value);
-		printf ("value in main function : %s %d \n", value, (**l).exp_len);
-
-
-
+	(**l).env = &env;
 	if (j == 1)
 		return (2);
 	if (j > 1)
-		*to_tokenize = ft_str_replace(*to_tokenize, *i, j - 1, env);
+		*to_tokenize = ft_str_replace(*to_tokenize, *i, j - 1, l);
 	handle_quoted_context(&((*l)->context), i, *to_tokenize);
-	printf ("YO \n");
-	//idee: renvoyer la len de l'expand pour ne pas y toucher 
 	return (expand_substitution_error_detector(var_name, exception));
 }

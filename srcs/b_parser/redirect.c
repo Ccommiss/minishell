@@ -2,13 +2,13 @@
 
 void	redirect_out(t_cmd *cmd, t_token **toks, int len)
 {
-	if (len == 1)
+	if (len == 1 && cmd->error == FALSE)
 	{
 		if (cmd->io_out > 0)
 			close(cmd->io_out);
 		cmd->io_out = open((*toks)->content, O_RDWR | O_TRUNC | O_CREAT, 0666);
 	}
-	if (len == 2)
+	if (len == 2 && cmd->error == FALSE)
 	{
 		cmd->io_out = open((*toks)->content, O_RDWR | O_APPEND | O_CREAT, 0666);
 		cmd->dgreat = TRUE;
@@ -24,7 +24,7 @@ void	redirect_out(t_cmd *cmd, t_token **toks, int len)
 
 void	redirect_in(t_cmd *cmd, t_token **toks, int len)
 {
-	if (len == 1)
+	if (len == 1 && cmd->error == FALSE)
 	{
 		if (cmd->io_in > 0)
 			close(cmd->io_in);
