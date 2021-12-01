@@ -6,7 +6,7 @@
 /*   By: mpochard <mpochard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/05 17:41:18 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/30 18:23:17 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/12/01 14:16:26 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,4 +83,3 @@ int	both_redir(t_env *env, t_cmd cmd, char *line)
 	close(cmd.io_out);
 	return (return_value);
 }
-

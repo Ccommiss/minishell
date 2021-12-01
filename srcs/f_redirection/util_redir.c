@@ -6,7 +6,7 @@
 /*   By: mpochard <mpochard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/05 17:41:40 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/30 18:12:51 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/12/01 14:14:52 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,4 +104,3 @@ int	redir_double_built(t_env *env, t_cmd cmd, int builtin, char *line)
 	dup2(fd1, 1);
 	return (value);
 }
-

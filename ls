@@ -1,7 +1,7 @@
-Dockerfile
-Makefile
 b
+cat
 d
+Dockerfile
 fakjsefhqeaf
 includes
 kwufhuwifh
@@ -10,6 +10,7 @@ lol
 lol.c
 lolilol
 ls
+Makefile
 melpoch
 minishell
 nouveaufichier

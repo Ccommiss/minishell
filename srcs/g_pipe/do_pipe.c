@@ -6,7 +6,7 @@
 /*   By: mpochard <mpochard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/05 17:40:25 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/30 18:47:45 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/12/01 14:16:59 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,7 @@ int	do_the_pipe(t_cmd *cmd, t_env *env)
 {
 	t_pipe	piped;
 
-	piped.i = 0;
-//	bzero(&piped, sizeof(t_pipe));
+	bzero(&piped, sizeof(t_pipe));
 	if (malloc_of_pipe(cmd, &piped) == -1)
 		return (-1);
 	if (deploy_pipe(piped) == -1)
