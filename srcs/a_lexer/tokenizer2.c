@@ -99,6 +99,8 @@ void	tokenize(char *line, t_token *toks, t_env *env)
 
 	i = 0;
 	to_tokenize = ft_strdup(line);
+	if (!to_tokenize)
+		ft_exit_program(NULL, toks, line);
 	init_lexer_struct(&l, to_tokenize);
 	l.exp_len = save_exp;
 	fill_token_buff(&l, &to_tokenize, &i, env);
