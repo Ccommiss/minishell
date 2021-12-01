@@ -50,7 +50,7 @@ char	*assign_value(t_env *env, char *var_name)
 **		"hello$var that was what was after $lol" becomes
 **		"helloworld that was what was after $lol"
 */
-char	*ft_str_replace(char *str, int start, int len, t_env *env)
+char	*ft_str_replace(char *str, int start, int len, t_lex **l)
 {
 	char	*var_name;
 	char	*new_str;
@@ -58,7 +58,8 @@ char	*ft_str_replace(char *str, int start, int len, t_env *env)
 	char	*tmp;
 
 	extract_pure_var_name(&var_name, len, start, str);
-	value = assign_value(env, var_name);
+	value = assign_value(*((**l).env), var_name);
+	(*l)->exp_len = ft_strlen(value);
 	free(var_name);
 	tmp = ft_substr(str, 0, start);
 	new_str = ft_strconcat(tmp, value, start + ft_strlen(value));
@@ -70,7 +71,6 @@ char	*ft_str_replace(char *str, int start, int len, t_env *env)
 	free(tmp);
 	free(value);
 	free(str); //TEST MAIS PTETRE VA TOUT CASSER
-	
 	return (new_str);
 }
 
@@ -114,22 +114,25 @@ static int	is_valid_expand_char(int *exception, int c, int j)
 ** 	the to_tokenize string
 */
 
-int	expand(char **to_tokenize, int *i, int *context, t_env *env)
+int	expand(char **to_tokenize, int *i, t_lex **l, t_env *env)
 {
 	int		j;
 	int		exception;
 	char	*var_name;
 
+	if ((*l)->exp_len != 0)
+		return (0);
 	j = 1;
 	exception = 0;
 	while (to_tokenize[0][*i + j]
 		&& is_valid_expand_char(&exception, to_tokenize[0][*i + j], j))
 		j++;
 	var_name = ft_substr(*to_tokenize, *(i), j);
+	(**l).env = &env;
 	if (j == 1)
 		return (2);
 	if (j > 1)
-		*to_tokenize = ft_str_replace(*to_tokenize, *i, j - 1, env);
-	handle_quoted_context(context, i, *to_tokenize);
+		*to_tokenize = ft_str_replace(*to_tokenize, *i, j - 1, l);
+	handle_quoted_context(&((*l)->context), i, *to_tokenize);
 	return (expand_substitution_error_detector(var_name, exception));
 }

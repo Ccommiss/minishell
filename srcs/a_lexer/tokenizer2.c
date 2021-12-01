@@ -10,6 +10,7 @@ void	init_lexer_struct(t_lex *lex, char *to_tokenize)
 	if (lex->context == SQUOTE || lex->context == DQUOTE)
 		lex->context = WORD;
 	lex->exp_res = -2;
+	lex->exp_len = 0;
 }
 
 void	create_token(t_token **toks, t_lex *l)
@@ -24,6 +25,7 @@ void	create_token(t_token **toks, t_lex *l)
 	else
 		(*toks)->len = -1;
 	syntax_error_detector(*toks, FALSE);
+	printf ("TOKEN = |%s|\n", (*toks)->content);
 	(*toks)->next = malloc(sizeof(t_token));
 	(*toks)->next->content = NULL;
 	(*toks)->next->prev = (*toks);
@@ -38,9 +40,12 @@ int	handle_expand(char **to_tokenize, int *i, t_lex *l, t_env *env)
 
 	old_context = l->context;
 	old_i = *i;
-	while (to_tokenize[0][*i] == '$' && l->context != SQUOTE && l->exp_res != 2)
+	if (l->exp_len > 0) //si on a pas fini cet expand on reexpand pas
+		return (0);
+	while (to_tokenize[0][*i] == '$' && l->context != SQUOTE && l->exp_res != 2 && l->exp_len == 0)
 	{
-		l->exp_res = expand(to_tokenize, i, &l->context, env);
+		printf ("la ? \n");
+		l->exp_res = expand(to_tokenize, i, &l, env);
 		if (l->exp_res == ERROR)
 		{
 			l->ref_char = TOK_ERR;
@@ -71,6 +76,8 @@ void	fill_token_buff(t_lex *l, char **to_tokenize, int *i, t_env *env)
 		l->token[l->buf_i++] = to_tokenize[0][*i];
 		if (to_tokenize[0][*i])
 			*i += 1;
+		if (l->exp_len > 0)
+			l->exp_len--;
 	}
 	l->token[l->buf_i] = '\0';
 }
@@ -88,11 +95,14 @@ void	tokenize(char *line, t_token *toks, t_env *env)
 	t_lex	l;
 	int		i;
 	char	*to_tokenize;
+	static int save_exp;
 
 	i = 0;
 	to_tokenize = ft_strdup(line);
 	init_lexer_struct(&l, to_tokenize);
+	l.exp_len = save_exp;
 	fill_token_buff(&l, &to_tokenize, &i, env);
+	save_exp = l.exp_len;
 	if (l.ref_char != TOK_EAT)
 		create_token(&toks, &l);
 	l.exp_res = -2;

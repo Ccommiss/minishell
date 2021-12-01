@@ -44,6 +44,7 @@ void catch_all(int sig)
 	//	rl_replace_line("", 0);
 	// signal(sig, SIG_IGN);
 }
+
 /*
 **  Handles signal according to the current situation
 **
@@ -63,11 +64,10 @@ void	handle_signal(int state)
 	rl_getc_function = rl_getc;
 
 	int i = 0;
-
 	while (++i <= 31)
 	{
 		if (i != SIGINT && i != SIGQUIT
-		&& i != SIGCHLD)
+		&& i != SIGCHLD && i != SIGPIPE)
 			signal(i, SIG_IGN);
 	}
 	if (state == MAIN_PROCESS)
