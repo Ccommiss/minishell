@@ -67,7 +67,7 @@ void	handle_signal(int state)
 	while (++i <= 31)
 	{
 		if (i != SIGINT && i != SIGQUIT
-		&& i != SIGCHLD)
+		&& i != SIGCHLD && i != SIGPIPE)
 			signal(i, SIG_IGN);
 	}
 	if (state == MAIN_PROCESS)
