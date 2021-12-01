@@ -28,9 +28,7 @@ char	*assign_value(t_env *env, char *var_name)
 	while (env && ft_strncmp(var_name, env->key, ft_strlen(env->key) + 1) != 0)
 		env = env->next;
 	if (env == NULL)
-	{
 		return(ft_strdup(""));
-	}
 	else
 		return (ft_strdup(env->value));
 }
@@ -74,40 +72,7 @@ char	*ft_str_replace(char *str, int start, int len, t_lex **l)
 	return (new_str);
 }
 
-/*
-** is_valid_expand_char test each of character to know if
-**	1 - We are still in the expand context (no space) or
-**		no followed by another var (another $var)
-**	2 - In case of braces, if no 'bad substitution char'
-**		is found inside
-*/
 
-static int	is_valid_expand_char(int *exception, int c, int j)
-{
-	static int	valid_tab[4][256] = {
-	[NO_BRACE]['A'...'Z'] = 1,
-	[NO_BRACE]['a'...'z'] = 1,
-	[NO_BRACE]['1'...'9'] = 1,
-	[NO_BRACE]['{'] = 1,
-	[OPEN_BRACE]['\0'...u'ÿ'] = 1,
-	[CLOSE_BRACE]['}'] = 1,
-	[DOL_OR_QUEST]['?'] = 1,
-	[DOL_OR_QUEST]['$'] = 1,
-	};
-	static int	set_exception[4][256] = {
-	[NO_BRACE]['?'] = DOL_OR_QUEST,
-	[NO_BRACE]['$'] = DOL_OR_QUEST,
-	[NO_BRACE]['{'] = OPEN_BRACE,
-	[OPEN_BRACE]['}'] = CLOSE_BRACE,
-	[OPEN_BRACE]['$'] = DOL_OR_QUEST,
-	[DOL_OR_QUEST]['$'] = NO_BRACE,
-	[DOL_OR_QUEST]['}'] = CLOSE_BRACE,
-	};
-
-	if (j == 1 || c == '}' || (j > 1 && *exception == DOL_OR_QUEST))
-		*exception = set_exception[*exception][c];
-	return (valid_tab[*exception][c]);
-}
 
 /*
 ** expand : extract the expand var and replace the remaining of
@@ -128,6 +93,8 @@ int	expand(char **to_tokenize, int *i, t_lex **l, t_env *env)
 		&& is_valid_expand_char(&exception, to_tokenize[0][*i + j], j))
 		j++;
 	var_name = ft_substr(*to_tokenize, *(i), j);
+	if (!var_name)
+		return (MALLOC_FAIL);
 	(**l).env = &env;
 	if (j == 1)
 		return (2);
