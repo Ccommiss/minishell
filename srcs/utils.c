@@ -3,11 +3,13 @@
 void free_toks(t_token *toks)
 {
 	t_token *tmp;
-
+	if (toks->index == -1)
+		return ;
 	while (toks && toks->index > 0 && toks->index != 0)
 		toks = toks->prev;
 	while (toks)
 	{
+		printf("keblo ? \n");
 		tmp = toks;
 		toks = toks->next;
 		if (tmp->content)
@@ -65,5 +67,7 @@ void cleanup(t_cmd *cmd, t_token *toks, char *line)
 void	ft_exit_program(t_cmd *cmd, t_token *toks, char *str, void *stuff)
 {
 	cleanup(cmd, toks, str);
+	if (stuff)
+		free(stuff);
 	exit(1);
 }

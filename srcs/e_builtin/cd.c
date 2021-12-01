@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpochard <mpochard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/05 17:41:53 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/30 17:33:36 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/12/01 14:09:58 by ccommiss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,7 @@ int	cd(t_env *env, char *pwd)
 	char	*temp;
 
 	set_home(env, &home);
+	temp = NULL;
 	if (pwd == NULL)
 	{
 		if (is_home_unset(env, home) == -1)

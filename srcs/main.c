@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpochard <mpochard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/15 16:46:53 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/30 18:28:31 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/12/01 14:34:21 by ccommiss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,10 @@ int main(int ac, char **av, char **envp)
 			init_tok_and_cmd(&toks, &cmd);
 			tokenize(line, &toks, env);
 			debug_tokens(&toks);
+			printf ("NEXT STEP : TOK TO CMD \n");
 			token_to_cmds(&cmd, &toks);
+			printf ("NEXT STEP : FIND PATH \n");
+
 			find_path(&cmd, env);
 			debug_cmds(&cmd);
 			cmd_to_exec(&cmd, env, line);

@@ -2,7 +2,7 @@
 
 void	init_token(t_token *toks)
 {
-	toks->index = 0;
+	toks->index = -1;
 	toks->content = NULL;
 	toks->len = -1;
 	toks->type = -1;

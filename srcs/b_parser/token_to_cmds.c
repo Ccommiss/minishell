@@ -74,6 +74,8 @@ int	check_syn_err(t_token *toks)
 */
 int  syn_err_or_no_tok(t_cmd *cmd, t_token *toks)
 {
+	if (toks->index == -1)
+		return (ERROR);
 	if (toks->index == 0 && check_syn_err(toks) == ERROR)
 	{
 		cmd->error = 1;
