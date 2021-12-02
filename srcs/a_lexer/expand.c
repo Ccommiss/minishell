@@ -71,7 +71,6 @@ char	*ft_str_replace(char *str, int start, int len, t_lex **l)
 	value = assign_value(*((**l).env), var_name);
 	printf ("VALUE = %s \n", value);
 	(*l)->exp_len = ft_strlen(value);
-	//(*l)->context = VAR;
 	free(var_name);
 	tmp = ft_substr(str, 0, start);
 	new_str = ft_strconcat(tmp, value, start + ft_strlen(value));

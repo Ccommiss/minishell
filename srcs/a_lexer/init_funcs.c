@@ -6,13 +6,13 @@
 /*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 15:59:03 by ccommiss          #+#    #+#             */
-/*   Updated: 2021/12/02 15:59:04 by ccommiss         ###   ########.fr       */
+/*   Updated: 2021/12/02 22:31:25 by ccommiss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	init_lexer_struct(t_lex *lex, char *to_tokenize)
+void	init_lexer_struct(t_lex *lex, char *to_tokenize, int save_exp)
 {
 	ft_bzero(lex->token, 2048);
 	lex->buf_i = 0;
@@ -22,7 +22,9 @@ void	init_lexer_struct(t_lex *lex, char *to_tokenize)
 	if (lex->context == SQUOTE || lex->context == DQUOTE)
 		lex->context = WORD;
 	lex->exp_res = -2;
-	lex->exp_len = 0;
+	lex->exp_len = save_exp;
+	if (lex->exp_len > 0)
+		lex->context = VAR;
 }
 
 void	init_token(t_token *toks)

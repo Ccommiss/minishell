@@ -6,7 +6,7 @@
 /*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 15:59:57 by ccommiss          #+#    #+#             */
-/*   Updated: 2021/12/02 22:24:14 by ccommiss         ###   ########.fr       */
+/*   Updated: 2021/12/02 22:30:14 by ccommiss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,19 +45,21 @@ int	create_exp_err_token(char **to_tokenize, int *i, t_lex *l)
 int	fill_token_buff(t_lex *l, char **to_tokenize, int *i, t_env *env)
 {
 	int	protect;
-	int old_context;
+	static int old_context = -1;
 
 	protect = 0;
-
 	while (to_tokenize[0][*i] && l->ref_char == (int)tok(l->context,
 		(unsigned char)to_tokenize[0][*i]))
 	{
 		if (l->context == VAR && l->exp_len == 0)
 			l->context = old_context;
+		printf ("1. l->context %d   OLD CONTEXT = %d \n", l->context, old_context);
 		handle_quoted_context(&(l->context), i, *to_tokenize);
 		if (l->context != VAR)
 			old_context = l->context;
+		printf ("2. l->context %d   OLD CONTEXT = %d \n", l->context, old_context);
 		protect = handle_expand(to_tokenize, i, l, env);
+		printf ("3. l->context %d   OLD CONTEXT = %d \n", l->context, old_context);
 		if (protect == MALLOC_FAIL)
 			return (MALLOC_FAIL);
 		else if (protect == -1)
@@ -100,10 +102,8 @@ void	tokenize(char *line, t_token *toks, t_env *env)
 	to_tokenize = ft_strdup(line);
 	if (!to_tokenize)
 		ft_exit_program(NULL, toks, line, NULL);
-	init_lexer_struct(&l, to_tokenize);
-	l.exp_len = save_exp;
-	if (l.exp_len > 0)
-		l.context = VAR;
+	init_lexer_struct(&l, to_tokenize, save_exp);
+
 	if (fill_token_buff(&l, &to_tokenize, &i, env) == MALLOC_FAIL)
 		ft_exit_program(NULL, toks, line, NULL);
 	save_exp = l.exp_len;

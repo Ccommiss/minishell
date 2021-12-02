@@ -123,6 +123,7 @@ typedef struct s_lex
 	int		ref_char;
 	int		exp_res;
 	int		exp_len;
+	int		old_context;
 	t_env	**env;
 }t_lex;
 
@@ -282,7 +283,7 @@ void 	cleanup(t_cmd *cmd, t_token *toks, char *line);
 */
 
 void		init_tok_and_cmd(t_token *toks, t_cmd *cmd);
-void		init_lexer_struct(t_lex *lex, char *to_tokenize);
+void		init_lexer_struct(t_lex *lex, char *to_tokenize, int save_exp);
 
 
 void		tokenize(char *to_tokenize, t_token *toks, t_env *env);

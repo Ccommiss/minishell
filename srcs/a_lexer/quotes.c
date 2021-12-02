@@ -24,6 +24,9 @@
 */
 void	handle_quoted_context(int *context, int *i, char *to_tokenize)
 {
+	printf ("%d %c \n\n", *context, to_tokenize[*i]);
+	if (*context < 0 || *context > 100)
+		exit (0);
 	if (!to_tokenize[*i] || *context == VAR)
 		return ;
 	if (*context != DQUOTE && *context != SQUOTE
