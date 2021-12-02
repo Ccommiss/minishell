@@ -6,7 +6,7 @@
 /*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 16:01:19 by ccommiss          #+#    #+#             */
-/*   Updated: 2021/12/02 16:01:20 by ccommiss         ###   ########.fr       */
+/*   Updated: 2021/12/02 21:46:57 by ccommiss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,8 @@ int	check_syn_err(t_token *toks)
 	max_len = -1;
 	while (toks)
 	{
-		max_len = toks->len;
+		if (toks->len > max_len)
+			max_len = toks->len;
 		if (toks->type == SYNT_ERR)
 			error = TRUE;
 		toks = toks->next;
