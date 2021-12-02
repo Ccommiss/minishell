@@ -6,7 +6,7 @@
 /*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 16:00:40 by ccommiss          #+#    #+#             */
-/*   Updated: 2021/12/02 16:01:01 by ccommiss         ###   ########.fr       */
+/*   Updated: 2021/12/02 21:44:15 by ccommiss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ void	token_to_cmds(t_cmd *cmd, t_token *toks)
 	head = toks;
 	if (syn_err_or_no_tok(cmd, toks) == ERROR)
 		return ;
+	printf ("INIT \n");
 	init_cmd (cmd);
 	while (toks && toks->type != TOK_PIPE)
 	{

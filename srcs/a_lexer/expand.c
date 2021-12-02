@@ -6,7 +6,7 @@
 /*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 15:57:28 by ccommiss          #+#    #+#             */
-/*   Updated: 2021/12/02 16:11:46 by ccommiss         ###   ########.fr       */
+/*   Updated: 2021/12/02 22:23:38 by ccommiss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,9 @@ char	*ft_str_replace(char *str, int start, int len, t_lex **l)
 
 	extract_pure_var_name(&var_name, len, start, str);
 	value = assign_value(*((**l).env), var_name);
+	printf ("VALUE = %s \n", value);
 	(*l)->exp_len = ft_strlen(value);
+	//(*l)->context = VAR;
 	free(var_name);
 	tmp = ft_substr(str, 0, start);
 	new_str = ft_strconcat(tmp, value, start + ft_strlen(value));
@@ -110,7 +112,9 @@ int	expand(char **to_tokenize, int *i, t_lex **l, t_env *env)
 		return (2);
 	if (j > 1)
 		*to_tokenize = ft_str_replace(*to_tokenize, *i, j - 1, l);
-	handle_quoted_context(&((*l)->context), i, *to_tokenize);
+
+	if ((*l)->exp_len == 0)
+		handle_quoted_context(&((*l)->context), i, *to_tokenize);
 	return (expand_substitution_error_detector(var_name, exception));
 }
 
@@ -121,12 +125,13 @@ int	handle_expand(char **to_tokenize, int *i, t_lex *l, t_env *env)
 
 	old_context = l->context;
 	old_i = *i;
-	if (l->exp_len > 0)
+	if (l->exp_len > 0 || l->context == SQUOTE)
 		return (0);
-	while (to_tokenize[0][*i] == '$' && l->context != SQUOTE
-		&& l->exp_res != 2 && l->exp_len == 0)
+	printf("context %d \n", l->context);
+	while (to_tokenize[0][*i] == '$' && l->context != SQUOTE && l->exp_res != 2 && l->exp_len == 0)
 	{
 		l->exp_res = expand(to_tokenize, i, &l, env);
+		l->context = VAR; //test
 		if (l->exp_res == MALLOC_FAIL)
 			return (MALLOC_FAIL);
 		if (l->exp_res == ERROR)

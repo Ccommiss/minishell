@@ -6,7 +6,7 @@
 /*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 15:58:45 by ccommiss          #+#    #+#             */
-/*   Updated: 2021/12/02 17:36:23 by ccommiss         ###   ########.fr       */
+/*   Updated: 2021/12/02 17:20:21 by ccommiss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,16 @@ enum	tokens	word_toks(int c)
 }
 
 enum	tokens	quote_toks(int c)
+{
+	static enum tokens	tok[256] = {
+	['\0'...' '] = TOK_EAT, // CARACTERES D'ARRET
+	['#'...u'ÿ'] = TOK_WORD
+	};
+
+	return (tok[c]);
+}
+
+enum	tokens	expand_toks(int c)
 {
 	static enum tokens	tok[256] = {
 	['\0'...u'ÿ'] = TOK_WORD
@@ -109,25 +119,16 @@ enum tokens	corresp(int c)
 	return (corresp[c]);
 }
 
-enum	tokens	expand_toks(int c)
-{
-	static enum tokens	tok[256] = {
-	['\0'...' '] = TOK_EAT,
-	['\"'...u'ÿ'] = TOK_WORD
-	};
-
-	return (tok[c]);
-}
-
 enum tokens	tok(int x, int y)
 {
 	if (x == OP)
 		return (op_toks(y));
 	if (x == WORD)
 		return (word_toks(y));
-	if (x == SQUOTE || x == DQUOTE)
-		return (quote_toks(y));
 	if (x == VAR)
 		return (expand_toks(y));
+	if (x == SQUOTE || x == DQUOTE)
+		return (quote_toks(y));
 	return (WORD);
 }
+
