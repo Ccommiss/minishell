@@ -1,92 +1,41 @@
 #include "minishell.h"
 
-void	command_and_suffix(t_cmd *cmd, t_token *toks, int *j)
+/*
+**	Create next command will create the next command
+*/
+
+void	create_next_command(t_cmd **cmd, t_token **toks)
 {
-	cmd->cmd_args = (char **)ft_realloc_double_pointer((void **)cmd->cmd_args,
-			(sizeof(char **) * (*j + 1)), (sizeof(char **) * (*j + 2)));
-	cmd->cmd_args[*j] = ft_strdup(toks->content);
-	*j += 1;
-	cmd->cmd_args[*j] = NULL;
-}
-
-void	init_cmd(t_cmd *cmd)
-{
-	cmd->cmd_args = malloc(sizeof(char **) * 1);
-	cmd->cmd_args[0] = NULL;
-	cmd->cmdp = NULL;
-	cmd->index = 0;
-	if (cmd->prev != NULL)
-		cmd->index = cmd->prev->index + 1;
-	cmd->io_in = NOT_SPECIFIED;
-	cmd->io_out = NOT_SPECIFIED;
-	cmd->io_here = NULL;
-	cmd->here_words = 0;
-	cmd->dgreat = FALSE;
-	cmd->dless = FALSE;
-	cmd->error = FALSE;
-}
-
-void	free_command_items(t_cmd *cmd)
-{
-	int	i;
-
-	i = 0;
-	if (cmd->cmd_args)
-	{
-		while (cmd->cmd_args[i])
-			free(cmd->cmd_args[i++]);
-		free(cmd->cmd_args);
-		cmd->cmd_args = NULL;
-	}
-	if (cmd->cmdp)
-		free(cmd->cmdp);
-}
-
-int	check_syn_err(t_token *toks)
-{
-	t_token	*head;
-	int		error;
-	int		max_len;
-
-	head = toks;
-	error = 0;
-	max_len = -1;
-	while (toks)
-	{
-		max_len = toks->len;
-		if (toks->type == SYNT_ERR)
-			error = TRUE;
-		toks = toks->next;
-	}
-	if (error || max_len == -1)
-		return (ERROR);
-	toks = head;
-	return (TRUE);
+	(*cmd)->next = malloc(sizeof(t_cmd));
+	if (!(*cmd)->next)
+		ft_exit_program((*cmd), (*toks), NULL, NULL);
+	(*cmd)->next->prev = *cmd;
+	if ((*toks)->type == TOK_PIPE)
+		(*toks) = (*toks)->next;
+	token_to_cmds((*cmd)->next, (*toks));
 }
 
 /*
-**  syn_err_or_no_tok returns error if errors are found
-**	- Call to check syn error : sends the whole packet of
-**		toks and iterates through them to find if an error
-**		is detected before pointing back on head
-**		(that's why we only check once when we are on 0 index)
-**	- If no toks are found (tok->index = -1)
+**	Set error to the current cmd when a
+** 	TOK_ERR (= a bad substitution) is encountered.
+**
+**	It then iterates through tokens without analyse
+**	until next command (if so).
+**
+**	Nexts commands are made.
 */
-int  syn_err_or_no_tok(t_cmd *cmd, t_token *toks)
+
+int	set_error(t_cmd *cmd, t_token **toks)
 {
-	if (toks->index == -1)
-		return (ERROR);
-	if (toks->index == 0 && check_syn_err(toks) == ERROR)
-	{
-		cmd->error = 1;
-		free_command_items(cmd);
-		free_toks(toks);
-		return (ERROR);
-	}
+	if ((*toks)->type != TOK_ERR)
+		return (0);
+	cmd->error = TRUE;
+	while ((*toks) && (*toks)->type != TOK_PIPE)
+		(*toks) = (*toks)->next;
 	return (1);
 }
 
-t_cmd	*token_to_cmds(t_cmd *cmd, t_token *toks)
+void	token_to_cmds(t_cmd *cmd, t_token *toks)
 {
 	int		j;
 	t_token	*head;
@@ -94,35 +43,23 @@ t_cmd	*token_to_cmds(t_cmd *cmd, t_token *toks)
 	j = 0;
 	head = toks;
 	if (syn_err_or_no_tok(cmd, toks) == ERROR)
-		return (NULL);
+		return ;
 	init_cmd (cmd);
-	if (toks->type == TOK_PIPE)
-		toks = toks->next;
-	while (toks && toks->type != TOK_PIPE) //ajout oks content si le premier et seul tok est espace
+	while (toks && toks->type != TOK_PIPE)
 	{
-		if (toks->type == TOK_ERR) // on ne fait pas cette commande
-		{
-			cmd->error = TRUE;
-			while (toks && toks->type != TOK_PIPE)
-				toks = toks->next;
-			break;
-		}
-		if (toks->type == TOK_WORD) // && ft_strlen(toks->content) > 0)
+		if (toks->type == TOK_ERR && set_error(cmd, &toks) == 1)
+			break ;
+		if (toks->type == TOK_WORD)
 			command_and_suffix(cmd, toks, &j);
 		if (toks->type == TOK_LESS || toks->type == TOK_GREAT)
 			redirect(cmd, &toks, toks->type, ft_strlen(toks->content));
 		toks = toks->next;
 	}
 	if (toks != NULL && !(toks->type == TOK_PIPE && !toks->next))
-	{
-		cmd->next = malloc(sizeof(t_cmd));
-		cmd->next->prev = cmd;
-		token_to_cmds(cmd->next, toks);
-	}
+		create_next_command(&cmd, &toks);
 	else
 	{
 		cmd->next = NULL;
 		free_toks(head);
 	}
-	return (cmd);
 }

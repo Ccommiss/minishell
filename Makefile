@@ -21,6 +21,9 @@ SOURCES =	main.c\
 			$(PAR_PATH)/redirect.c \
 			$(PAR_PATH)/token_to_cmds.c \
 			$(PAR_PATH)/debug_cmds.c \
+			$(PAR_PATH)/parse_error_detector.c \
+			$(PAR_PATH)/command_and_suffix.c \
+			$(PAR_PATH)/init_cmd.c \
 			$(ENV_PATH)/get_the_env.c \
 			$(ENV_PATH)/the_list.c \
 			$(ENV_PATH)/unset.c \

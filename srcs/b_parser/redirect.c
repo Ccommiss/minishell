@@ -24,17 +24,16 @@ void	redirect_out(t_cmd *cmd, t_token **toks, int len)
 
 void	set_heredoc(t_cmd *cmd, t_token **toks)
 {
-		if (!cmd->io_here)
-			cmd->io_here = malloc(sizeof(char *) * (cmd->here_words + 2));
-		else
-			cmd->io_here = ft_realloc(cmd->io_here, sizeof(char *)
-					* (cmd->here_words + 1), sizeof(char *)
-					* (cmd->here_words + 2));
-		cmd->io_here[cmd->here_words] = ft_strdup((*toks)->content);
-		cmd->io_here[cmd->here_words + 1] = NULL;
-		cmd->here_words += 1;
-		cmd->dless = TRUE;
-
+	if (!cmd->io_here)
+		cmd->io_here = malloc(sizeof(char *) * (cmd->here_words + 2));
+	else
+		cmd->io_here = ft_realloc(cmd->io_here, sizeof(char *)
+				* (cmd->here_words + 1), sizeof(char *)
+				* (cmd->here_words + 2));
+	cmd->io_here[cmd->here_words] = ft_strdup((*toks)->content);
+	cmd->io_here[cmd->here_words + 1] = NULL;
+	cmd->here_words += 1;
+	cmd->dless = TRUE;
 }
 
 void	redirect_in(t_cmd *cmd, t_token **toks, int len)
@@ -46,9 +45,7 @@ void	redirect_in(t_cmd *cmd, t_token **toks, int len)
 		cmd->io_in = open((*toks)->content, O_RDWR, 0666);
 	}
 	if (len == 2)
-	{
 		set_heredoc(cmd, toks);
-	}
 	if (cmd->io_in == -1 && cmd->dless == FALSE)
 	{
 		if (cmd->error == FALSE)
@@ -70,8 +67,8 @@ void	redirect(t_cmd *cmd, t_token **toks, int type, int len)
 	if (!(*toks)->next)
 		return ((void)0);
 	*toks = (*toks)->next;
-	if (type == TOK_LESS)// && cmd->error == FALSE)
+	if (type == TOK_LESS)
 		redirect_in(cmd, toks, len);
-	else if (type == TOK_GREAT)// && cmd->error == FALSE)
+	else if (type == TOK_GREAT)
 		redirect_out(cmd, toks, len);
 }

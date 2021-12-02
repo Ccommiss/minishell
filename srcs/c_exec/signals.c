@@ -1,19 +1,32 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   signals.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/12/02 15:57:16 by ccommiss          #+#    #+#             */
+/*   Updated: 2021/12/02 15:57:18 by ccommiss         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-void intHandlerMain()
+void	sigint_handler_main(int sig)
 {
-    	printf("\n");
-   		rl_replace_line("", 0);
-		rl_redisplay();
-		printf(BWHT"Minishell "BRED"> "RESET);
-    	return_value = 130;
+	(void)sig;
+	printf("\n");
+	rl_replace_line("", 0);
+	rl_redisplay();
+	printf(BWHT"Minishell "BRED"> "RESET);
+	return_value = 130;
 }
 
-void intHandler_heredoc()
+void	sigint_handler_heredoc(int sig)
 {
+	(void)sig;
 	return_value = 130;
-    //printf("\n");
-    return ;
+	printf("\n");
 }
 
 /*
@@ -22,29 +35,31 @@ void intHandler_heredoc()
 **	Reads character by character and
 */
 
-static int my_getc(FILE *stream)
+int	my_getc(FILE *stream)
 {
 	int		r;
 	char	c;
 
 	(void)stream;
-    r = read(0, &c, 1);
-    if (r == -1)
-        return (EOF);
-    else
-        return (c);
+	r = read(0, &c, 1);
+	if (r == -1)
+		return (EOF);
+	else
+		return (c);
 }
 
-
-void catch_all(int sig)
+void	ignore_other_sig(void)
 {
-	if (sig == 18)
-		printf("catched %d \n", sig);
-	printf("%d %d\n", getppid(), getpid());
-	//	rl_replace_line("", 0);
-	// signal(sig, SIG_IGN);
-}
+	int	i;
 
+	i = 0;
+	while (++i <= 31)
+	{
+		if (i != SIGINT && i != SIGQUIT
+			&& i != SIGCHLD && i != SIGPIPE)
+			signal(i, SIG_IGN);
+	}
+}
 /*
 **  Handles signal according to the current situation
 **
@@ -58,38 +73,29 @@ void catch_all(int sig)
 **      was killed
 */
 
-
 void	handle_signal(int state)
 {
 	rl_getc_function = rl_getc;
-
-	int i = 0;
-	while (++i <= 31)
-	{
-		if (i != SIGINT && i != SIGQUIT
-		&& i != SIGCHLD && i != SIGPIPE)
-			signal(i, SIG_IGN);
-	}
+	ignore_other_sig();
 	if (state == MAIN_PROCESS)
 	{
-		signal(SIGINT, intHandlerMain);
-		signal(SIGQUIT, SIG_IGN);
-    }
-	if (state == HEREDOC)
-	{
-        rl_getc_function = my_getc;
-		signal(SIGINT, intHandler_heredoc);
+		signal(SIGINT, sigint_handler_main);
 		signal(SIGQUIT, SIG_IGN);
 	}
-    if (state == CHILD)
-    {
+	if (state == HEREDOC)
+	{
+		rl_getc_function = my_getc;
+		signal(SIGINT, sigint_handler_heredoc);
+		signal(SIGQUIT, SIG_IGN);
+	}
+	if (state == CHILD)
+	{
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
 	}
 	if (state == CHILD_HANDLING)
-    {
-       signal(SIGQUIT, SIG_IGN);
-       signal(SIGINT, SIG_IGN);
-    }
-
+	{
+		signal(SIGQUIT, SIG_IGN);
+		signal(SIGINT, SIG_IGN);
+	}
 }

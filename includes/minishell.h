@@ -321,7 +321,7 @@ void handle_quoted_context(int *context, int *i, char *to_tokenize);
 /*
 ** 									[PARSER]
 */
-t_cmd		*token_to_cmds(t_cmd *cmd, t_token *toks);
+void		token_to_cmds(t_cmd *cmd, t_token *toks);
 void		redirect(t_cmd *cmd, t_token **toks, int type, int len);
 void		debug_cmds(t_cmd *cmds);
 void		find_path(t_cmd *cmds, t_env *env);
@@ -329,6 +329,16 @@ void	handle_signal(int state);
 void 	set_status(int status, int process);
 void 	quithandler();
 void 	quithandler2();
+
+int syn_err_or_no_tok(t_cmd *cmd, t_token *toks);
+int check_syn_err(t_token *toks);
+
+void init_cmd(t_cmd *cmd);
+void command_and_suffix(t_cmd *cmd, t_token *toks, int *j);
+
+void free_command_items(t_cmd *cmd);
+
+
 /*
 **	utils.c
 */
