@@ -6,7 +6,7 @@
 /*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/05 17:41:53 by mpochard          #+#    #+#             */
-/*   Updated: 2021/12/02 14:04:53 by ccommiss         ###   ########.fr       */
+/*   Updated: 2021/12/02 14:21:05 by ccommiss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,7 @@ int	cd(t_env *env, char *pwd)
 
 	temp = NULL;
 	set_home(env, &home);
+	temp = NULL;
 	if (pwd == NULL)
 	{
 		if (is_home_unset(env, home) == -1)

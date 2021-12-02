@@ -1,32 +1,29 @@
 #include "minishell.h"
 
-
-static char *tokentype[1000] = {
-	[TOK_PIPE] = "PIPE",
-	[TOK_WORD] = "WORD",
-	[TOK_LESS] = "LESS",
-	[TOK_GREAT] = "GREAT",
-	[TOK_EQUAL] = "EQUAL",
-	[SYNT_ERR] = "SYNTAX ERR",
-	[TOK_ERR] = "EXPAND ERR",
-	[TOK_NO_VAR] = "EXP. NO VAR"
+static char	*tokentype[1000] = {
+[TOK_PIPE] = "PIPE",
+[TOK_WORD] = "WORD",
+[TOK_LESS] = "LESS",
+[TOK_GREAT] = "GREAT",
+[TOK_EQUAL] = "EQUAL",
+[SYNT_ERR] = "SYNTAX ERR",
+[TOK_ERR] = "EXPAND ERR",
+[TOK_NO_VAR] = "EXP. NO VAR"
 };
 
 void	debug_tokens(t_token *toks)
 {
-
-
 	printf (BCYN"\n\n 			--- DEBUG TOKEN ---\n\n"RESET);
 	printf("-------------------------------------------------------------------\n");
 	printf("| INDEX | TYPE       | LEN | CONTENT                               |\n");
 	printf("|-------|------------|-----|---------------------------------------|\n");
-	while (toks != NULL)
+	while (toks != NULL && toks->index >= 0)
 	{
 		printf("| %2d    ", toks->index);
-
 		if (toks->type == SYNT_ERR)
 			printf(BWHT"| "BRED"%10s ", tokentype[toks->type]);
-		else if (toks->type == TOK_LESS || toks->type == TOK_PIPE || toks->type == TOK_GREAT)
+		else if (toks->type == TOK_LESS || toks->type == TOK_PIPE
+			|| toks->type == TOK_GREAT)
 			printf(BWHT"| "BYEL"%10s ", tokentype[toks->type]);
 		else
 			printf(BWHT"| %10s ", tokentype[toks->type]);
@@ -35,5 +32,4 @@ void	debug_tokens(t_token *toks)
 		printf("|------------------------------------------------------------------|\n");
 		toks = toks->next;
 	}
-
 }

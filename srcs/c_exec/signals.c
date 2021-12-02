@@ -12,7 +12,7 @@ void intHandlerMain()
 void intHandler_heredoc()
 {
 	return_value = 130;
-    printf("\n");
+    //printf("\n");
     return ;
 }
 
@@ -30,9 +30,9 @@ static int my_getc(FILE *stream)
 	(void)stream;
     r = read(0, &c, 1);
     if (r == -1)
-        return EOF;
+        return (EOF);
     else
-        return c;
+        return (c);
 }
 
 

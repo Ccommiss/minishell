@@ -22,16 +22,8 @@ void	redirect_out(t_cmd *cmd, t_token **toks, int len)
 	}
 }
 
-void	redirect_in(t_cmd *cmd, t_token **toks, int len)
+void	set_heredoc(t_cmd *cmd, t_token **toks)
 {
-	if (len == 1 && cmd->error == FALSE)
-	{
-		if (cmd->io_in > 0)
-			close(cmd->io_in);
-		cmd->io_in = open((*toks)->content, O_RDWR, 0666);
-	}
-	if (len == 2)
-	{
 		if (!cmd->io_here)
 			cmd->io_here = malloc(sizeof(char *) * (cmd->here_words + 2));
 		else
@@ -42,6 +34,20 @@ void	redirect_in(t_cmd *cmd, t_token **toks, int len)
 		cmd->io_here[cmd->here_words + 1] = NULL;
 		cmd->here_words += 1;
 		cmd->dless = TRUE;
+
+}
+
+void	redirect_in(t_cmd *cmd, t_token **toks, int len)
+{
+	if (len == 1 && cmd->error == FALSE)
+	{
+		if (cmd->io_in > 0)
+			close(cmd->io_in);
+		cmd->io_in = open((*toks)->content, O_RDWR, 0666);
+	}
+	if (len == 2)
+	{
+		set_heredoc(cmd, toks);
 	}
 	if (cmd->io_in == -1 && cmd->dless == FALSE)
 	{

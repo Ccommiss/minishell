@@ -9,9 +9,10 @@ PIPE_PATH = g_pipe
 CLEAN_PATH = h_clean
 
 SOURCES =	main.c\
-			$(LEX_PATH)/tokenizer2.c \
-			$(LEX_PATH)/init_token.c \
+			$(LEX_PATH)/tokenizer.c \
+			$(LEX_PATH)/init_funcs.c \
 			$(LEX_PATH)/expand.c \
+			$(LEX_PATH)/valid_expand_char_tab.c \
 			$(LEX_PATH)/lex_error_detector.c \
 			$(LEX_PATH)/quotes.c \
 			$(LEX_PATH)/debug_tokens.c \

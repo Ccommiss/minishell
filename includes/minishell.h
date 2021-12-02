@@ -20,14 +20,7 @@
 #include "../libft/libft.h"
 
 
-// typedef struct s_utils {
-
-// 	int return_value; //globale
-// 	int g_sig;
-// }				t_utils;
-// extern t_utils g_utils;
 extern int return_value;
-extern int process;
 
 typedef struct s_arg
 {
@@ -42,7 +35,8 @@ enum bool
 	ERROR = -1,
 	BREAK = -1,
 	FALSE,
-	TRUE
+	TRUE,
+	MALLOC_FAIL = -100
 };
 
 enum io {
@@ -62,7 +56,8 @@ enum expand
 	NO_BRACE,
 	OPEN_BRACE = 1,
 	CLOSE_BRACE = 2,
-	DOL_OR_QUEST = 3
+	DOL_OR_QUEST = 3,
+	BAD_SUBSTIT = 4
 };
 
 
@@ -287,6 +282,9 @@ void 	cleanup(t_cmd *cmd, t_token *toks, char *line);
 */
 
 void		init_tok_and_cmd(t_token *toks, t_cmd *cmd);
+void		init_lexer_struct(t_lex *lex, char *to_tokenize);
+
+
 void		tokenize(char *to_tokenize, t_token *toks, t_env *env);
 void 		syntax_error_detector(t_token *toks, int last_tok_is_op);
 int			expand_substitution_error_detector(char *var_name, int exception);
@@ -306,9 +304,13 @@ enum tokens quote_toks(int c);
 /*
 ** expand.c
 */
+int handle_expand(char **to_tokenize, int *i, t_lex *l, t_env *env);
+int create_exp_err_token(char **to_tokenize, int *i, t_lex *l);
+
 char		*ft_str_replace(char *str, int start, int len, t_lex **l);
 int			expand(char **to_tokenize, int *i, t_lex **lex, t_env *env);
 void		handle_quoted_context(int *context, int *i, char *to_tokenize);
+ int is_valid_expand_char(int *exception, int c, int j);
 
 void ft_print_error(char *arg);
 

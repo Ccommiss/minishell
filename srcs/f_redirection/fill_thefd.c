@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fill_thefd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpochard <mpochard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 14:15:55 by mpochard          #+#    #+#             */
-/*   Updated: 2021/12/01 14:16:05 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/12/02 14:13:25 by ccommiss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ int	fill_thefd(t_cmd cmd)
 	char	*line;
 
 	init(&i);
+	return_value = 0;
 	while (cmd.here_words && return_value != 130)
 	{
 		if (fd_neg(&fd) == -1)

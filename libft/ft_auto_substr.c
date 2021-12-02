@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "libft.h"
-
+#include <stdio.h>
 char	*ft_auto_substr(char const *s, unsigned int start, size_t len)
 {
 	size_t		i;
@@ -22,7 +22,7 @@ char	*ft_auto_substr(char const *s, unsigned int start, size_t len)
 	j = 0;
 	if (!s)
 		return (NULL);
-	if (start >= ft_strlen(s))
+	if (start > ft_strlen(s))
 	{
 		free((char *)s);
 		return (NULL);
