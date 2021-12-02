@@ -6,7 +6,7 @@
 /*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 15:57:28 by ccommiss          #+#    #+#             */
-/*   Updated: 2021/12/02 22:23:38 by ccommiss         ###   ########.fr       */
+/*   Updated: 2021/12/02 23:27:02 by ccommiss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,6 @@ int	expand(char **to_tokenize, int *i, t_lex **l, t_env *env)
 		return (2);
 	if (j > 1)
 		*to_tokenize = ft_str_replace(*to_tokenize, *i, j - 1, l);
-
 	if ((*l)->exp_len == 0)
 		handle_quoted_context(&((*l)->context), i, *to_tokenize);
 	return (expand_substitution_error_detector(var_name, exception));
@@ -126,11 +125,11 @@ int	handle_expand(char **to_tokenize, int *i, t_lex *l, t_env *env)
 	old_i = *i;
 	if (l->exp_len > 0 || l->context == SQUOTE)
 		return (0);
-	printf("context %d \n", l->context);
-	while (to_tokenize[0][*i] == '$' && l->context != SQUOTE && l->exp_res != 2 && l->exp_len == 0)
+	while (to_tokenize[0][*i] == '$' && l->context != SQUOTE
+		&& l->exp_res != 2 && l->exp_len == 0)
 	{
 		l->exp_res = expand(to_tokenize, i, &l, env);
-		l->context = VAR; //test
+		l->context = VAR;
 		if (l->exp_res == MALLOC_FAIL)
 			return (MALLOC_FAIL);
 		if (l->exp_res == ERROR)

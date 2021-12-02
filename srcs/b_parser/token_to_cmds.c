@@ -57,7 +57,6 @@ void	token_to_cmds(t_cmd *cmd, t_token *toks)
 	head = toks;
 	if (syn_err_or_no_tok(cmd, toks) == ERROR)
 		return ;
-	printf ("INIT \n");
 	init_cmd (cmd);
 	while (toks && toks->type != TOK_PIPE)
 	{

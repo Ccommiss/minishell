@@ -6,7 +6,7 @@
 /*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 15:59:17 by ccommiss          #+#    #+#             */
-/*   Updated: 2021/12/02 22:19:23 by ccommiss         ###   ########.fr       */
+/*   Updated: 2021/12/02 23:26:02 by ccommiss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,6 @@
 */
 void	handle_quoted_context(int *context, int *i, char *to_tokenize)
 {
-	printf ("%d %c \n\n", *context, to_tokenize[*i]);
-	if (*context < 0 || *context > 100)
-		exit (0);
 	if (!to_tokenize[*i] || *context == VAR)
 		return ;
 	if (*context != DQUOTE && *context != SQUOTE

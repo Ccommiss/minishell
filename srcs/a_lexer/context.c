@@ -6,7 +6,7 @@
 /*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 15:58:45 by ccommiss          #+#    #+#             */
-/*   Updated: 2021/12/02 17:36:23 by ccommiss         ###   ########.fr       */
+/*   Updated: 2021/12/02 23:33:15 by ccommiss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,15 +50,6 @@ enum	tokens	word_toks(int c)
 	['>'] = TOK_GREAT,
 	['\''] = TOK_WORD, //39
 	['\"'] = TOK_WORD, //34
-	};
-
-	return (tok[c]);
-}
-
-enum	tokens	quote_toks(int c)
-{
-	static enum tokens	tok[256] = {
-	['\0'...u'ÿ'] = TOK_WORD
 	};
 
 	return (tok[c]);
@@ -126,7 +117,7 @@ enum tokens	tok(int x, int y)
 	if (x == WORD)
 		return (word_toks(y));
 	if (x == SQUOTE || x == DQUOTE)
-		return (quote_toks(y));
+		return (TOK_WORD);
 	if (x == VAR)
 		return (expand_toks(y));
 	return (WORD);
