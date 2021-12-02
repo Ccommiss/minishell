@@ -6,7 +6,7 @@
 /*   By: mpochard <mpochard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/05 17:41:59 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/30 17:34:51 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/12/02 10:03:14 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ void	with_op(char **cmd_suffix, int count, int param)
 	i = 1;
 	if (param == 0)
 	{
+		i++;
 		while (cmd_suffix[i])
 		{
 			write(1, cmd_suffix[i], ft_strlen(cmd_suffix[i]));

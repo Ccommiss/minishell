@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mpochard <mpochard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/21 17:22:14 by mpochard          #+#    #+#             */
-/*   Updated: 2021/09/28 14:54:33 by ccommiss         ###   ########.fr       */
+/*   Updated: 2021/12/02 10:25:02 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,23 +68,17 @@ int					ft_malloc_char_pointer(int size, char **ptr);
 int					ft_malloc_int_pointer(int size, int	**ptr);
 int					ft_isalnum_str(char *str);
 void				*ft_realloc(void *ptr, size_t cursize, size_t newsize);
-void				**ft_realloc_double_pointer(void **ptr, size_t cursize, size_t newsize);
+void				**ft_realloc_double_pointer(void **ptr,
+						size_t cursize, size_t newsize);
 void				ft_free_double_tab(char **tab);
-char				*ft_auto_substr(char const *s, unsigned int start, size_t len);
-
-
-
-
-
-
-
+char				*ft_auto_substr(char const *s,
+						unsigned int start, size_t len);
 typedef struct s_list
 {
 	char			**content;
 	struct s_list	*next;
 	struct s_list	*prev;
 }					t_list;
-
 t_list				*ft_lstnew(void *content);
 void				ft_lstadd_front(t_list **alst, t_list *new);
 int					ft_lstsize(t_list *lst);

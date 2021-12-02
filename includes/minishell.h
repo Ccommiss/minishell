@@ -129,7 +129,7 @@ typedef struct s_lex
 	int		exp_res;
 	int		exp_len;
 	t_env	**env;
-}	t_lex;
+}t_lex;
 
 
 typedef struct s_token t_token;
@@ -142,26 +142,26 @@ typedef struct s_token
 
 	t_token *next;
 	t_token *prev;
-} t_token;
+} 				t_token;
 
 typedef struct s_cmd t_cmd;
 typedef struct s_cmd
 {
-	int index;
-	char *cmdp; //le path
-	char **cmd_args;
+	int 	index;
+	char 	*cmdp; //le path
+	char 	**cmd_args;
 	int		test;
-	int io_in; //fd entree commande
-	int dless; // <<
-	char **io_here;
-	int here_words; //compte le nb de io_here pour faire io_here[here_words]
-	int io_out; //fd sortie commande
-	int dgreat; // >>
-	int error;
+	int 	io_in; //fd entree commande
+	int 	dless; // <<
+	char	 **io_here;
+	int 	here_words; //compte le nb de io_here pour faire io_here[here_words]
+	int 	io_out; //fd sortie commande
+	int 	dgreat; // >>
+	int 	error;
 
-	t_cmd *next;
-	t_cmd *prev;
-} t_cmd;
+	t_cmd 	*next;
+	t_cmd 	*prev;
+}t_cmd;
 
 
 /*
@@ -222,12 +222,16 @@ void	set_thepwd(t_env *env);
 int		check_echo(char *cmd_suffix);
 int		count_double_tab(char **tab);
 int		do_echo(char **cmd_suffix);
-void	exito(char *str, t_cmd *cmd, t_env *env, char *line);
-void	exit_p(char *str);
+void	exito(char **cmd_suffix, t_cmd *cmd, t_env *env, char *line);
+void	exit_p(char **cmd_suffix);
 int		error_chdir(char *str, char *home);
 int		no_home(char *home);
 char	*strjoin_char(char *str, char *str1, char c);
 int		set_the_oldpwd(t_env *tmp, char *home);
+int		if_num(char *str);
+void	error_num(char *str, t_env *env, int param);
+int		error_count(char *str, t_env *env, int param);
+
 /*
  * f_redirection
  * */
@@ -238,14 +242,14 @@ int		simple_redir_o(t_env *env, t_cmd cmd, char *line);
 int		there_is_redir(t_env *env, t_cmd cmd, char *line);
 int		both_redir(t_env *env, t_cmd cmd, char *line);
 int		fill_thefd(t_cmd cmd);
-void	here_doc(t_env *env, t_cmd cmd , int fd);
+void	here_doc(t_env *env, t_cmd cmd, int fd);
 int		no_cmd(int fd, int error);
 int		no_cmd_d(int fd, int fd1, int error);
 int		fork_fail(char *str, int fd, char **tenvp);
 int		fork_fail_d(char *str, int in, int out, char **tenvp);
 void	ft_execve(char *path, char **cmd, char **tenvp);
 int		redir_in_built(t_env *env, t_cmd cmd, int builtin, char *line );
-int		redir_out_built(t_env *env,t_cmd cmd, int builtin, char *line);
+int		redir_out_built(t_env *env, t_cmd cmd, int builtin, char *line);
 int		redir_double_built(t_env *env, t_cmd cmd, int builtin, char *line);
 void	built(t_env *env, t_cmd cmd, int *value, int builtin);
 int		fd_neg(int *fd);
@@ -312,31 +316,19 @@ void ft_print_error(char *arg);
 ** quotes.c
 */
 void handle_quoted_context(int *context, int *i, char *to_tokenize);
-
-
 /*
 ** 									[PARSER]
 */
-
 t_cmd		*token_to_cmds(t_cmd *cmd, t_token *toks);
 void		redirect(t_cmd *cmd, t_token **toks, int type, int len);
 void		debug_cmds(t_cmd *cmds);
 void		find_path(t_cmd *cmds, t_env *env);
-
 void	handle_signal(int state);
 void 	set_status(int status, int process);
-
-
 void 	quithandler();
 void 	quithandler2();
-
-
 /*
 **	utils.c
 */
-
 void	ft_exit_program(t_cmd *cmd, t_token *toks, char *str, void *stuff);
-
-
-
 #endif

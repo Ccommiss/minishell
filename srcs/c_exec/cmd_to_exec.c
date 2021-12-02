@@ -6,7 +6,7 @@
 /*   By: mpochard <mpochard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/13 10:05:27 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/30 18:27:28 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/12/02 10:17:16 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	exec_the_built(t_env *env, t_cmd *cmd, char *line, int builtin)
 		return_value = 0;
 	}
 	else if (builtin == 4)
-		exito(cmd->cmd_args[1], cmd, env, line);
+		exito(cmd->cmd_args, cmd, env, line);
 	else if (builtin == 5)
 		return_value = export_the(env, &cmd->cmd_args[1]);
 	else if (builtin == 6)
@@ -86,9 +86,9 @@ void	cmd_to_exec(t_cmd *cmd, t_env *env, char *line)
 		else
 		{
 			builtin = is_a_builtin(cmd->cmd_args[0]);
-			if (builtin >= 1 && builtin <= 7)
+			if (builtin >= 1 && builtin <= 7 && cmd->error != 1)
 				exec_the_built(env, cmd, line, builtin);
-			else if (builtin == 0)
+			else if (builtin == 0 && cmd->error != 1)
 				no_a_builtin(cmd, env, status);
 		}
 		cmd = cmd->next;

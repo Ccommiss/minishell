@@ -6,7 +6,7 @@
 /*   By: mpochard <mpochard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/05 17:36:27 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/30 18:39:08 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/12/02 10:26:37 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ void	we_wait(pid_t *pid, int nbr_cmd, int *pipefd, int pipee)
 	while (i < nbr_cmd)
 	{
 		waitpid(pid[i], &status, 0);
-		set_status(status, 0);
+		set_status(status, 1);
 		i++;
 	}
 	free(pid);

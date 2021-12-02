@@ -6,7 +6,7 @@
 /*   By: mpochard <mpochard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/20 11:11:36 by mpochard          #+#    #+#             */
-/*   Updated: 2021/12/01 14:16:16 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/12/02 10:12:48 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	the_rest_built(t_env *env, t_cmd cmd, int builtin)
 	if (builtin == 3)
 		ft_putendl_fd(get_pwd(), 1);
 	else if (builtin == 4)
-		exito(cmd.cmd_args[1], &cmd, env, NULL);
+		exito(cmd.cmd_args, &cmd, env, NULL);
 	else if (builtin == 5)
 		export_the(env, &cmd.cmd_args[1]);
 	else if (builtin == 6)

@@ -6,7 +6,7 @@
 /*   By: mpochard <mpochard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/15 16:46:53 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/30 18:28:31 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/12/02 10:21:25 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,10 +72,10 @@ char *choose_prompt()
 
 int main(int ac, char **av, char **envp)
 {
-	char *line;
+	char 	*line;
 	t_token toks;
-	t_cmd cmd;
-	t_env *env;
+	t_cmd 	cmd;
+	t_env 	*env;
 
 	env = NULL;
 	(void)ac;
@@ -87,8 +87,8 @@ int main(int ac, char **av, char **envp)
 	{
 		handle_signal(MAIN_PROCESS);
 		line = choose_prompt();
-		if (line && ft_strlen(line) == 0)
-			return_value = 0;
+	//	if (line && ft_strlen(line) == 0)
+		//	return_value = 0;
 		if (line && ft_strlen(line) > 0)
 		{
 			add_history(line);

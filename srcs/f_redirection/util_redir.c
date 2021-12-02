@@ -6,7 +6,7 @@
 /*   By: mpochard <mpochard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/05 17:41:40 by mpochard          #+#    #+#             */
-/*   Updated: 2021/12/01 14:14:52 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/12/02 10:13:18 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	redir_out_built(t_env *env, t_cmd cmd, int builtin, char *line)
 	else if (builtin == 4)
 	{
 		close(cmd.io_in);
-		exito(cmd.cmd_args[1], &cmd, env, line);
+		exito(cmd.cmd_args, &cmd, env, line);
 	}
 	else if (builtin == 5)
 		value = export_the(env, &cmd.cmd_args[1]);
@@ -78,7 +78,7 @@ void	built(t_env *env, t_cmd cmd, int *value, int builtin)
 	else if (builtin == 3)
 		ft_putendl_fd(get_pwd(), 1);
 	else if (builtin == 4)
-		exito(cmd.cmd_args[1], &cmd, env, NULL);
+		exito(cmd.cmd_args, &cmd, env, NULL);
 	else if (builtin == 5)
 		*value = export_the(env, &cmd.cmd_args[1]);
 	else if (builtin == 6)
