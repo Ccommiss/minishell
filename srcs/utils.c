@@ -9,7 +9,6 @@ void free_toks(t_token *toks)
 		toks = toks->prev;
 	while (toks)
 	{
-		printf("keblo ? \n");
 		tmp = toks;
 		toks = toks->next;
 		if (tmp->content)

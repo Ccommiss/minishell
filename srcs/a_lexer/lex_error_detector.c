@@ -49,10 +49,36 @@ void	syntax_error_detector(t_token *toks, int last_tok_is_op)
 		|| last_tok_is_op == TRUE)
 	{
 		toks->type = SYNT_ERR;
-		//if (return_value != 2)
+		if (return_value != 2)
 			printf("minishell : syntax error near \"%c\"\n", tok_op);
 		return_value = 2;
 	}
+}
+
+/*
+**	Prints expand errors for :
+**	- Open brace (ex : ${var   )
+**	- Bad subsitution (when non alphanum character is found in {} )
+*/
+
+int	print_expand_errors(int error_type, char *var_name, char *trimmed_var)
+{
+	if (error_type == OPEN_BRACE)
+	{
+		printf("%s : brace error, please close them\n", var_name);
+		return_value = 1;
+		free(var_name);
+		return (ERROR);
+	}
+	if (error_type == BAD_SUBSTIT)
+	{
+		printf("%s : bad substitution\n", var_name);
+		return_value = 1;
+		free(var_name);
+		free(trimmed_var);
+		return (ERROR);
+	}
+	return (0);
 }
 
 /*
@@ -65,25 +91,17 @@ int	expand_substitution_error_detector(char *var_name, int exception)
 	char	*trimmed_var;
 
 	if (exception == OPEN_BRACE)
-	{
-		printf("%s : brace error, please close them\n", var_name);
-		free(var_name);
-		return (ERROR);
-	}
+		return (print_expand_errors(OPEN_BRACE, var_name, NULL));
 	if (exception == CLOSE_BRACE)
 		trimmed_var = ft_substr(var_name, 2, ft_strlen(var_name) - 3);
 	else
 		trimmed_var = ft_substr(var_name, 1, ft_strlen(var_name) - 1);
+	if (!trimmed_var)
+		return (MALLOC_FAIL);
 	if (!ft_isalnum_str(trimmed_var)
 		&& ft_strncmp(trimmed_var, "?", 2) != 0
 		&& ft_strncmp(trimmed_var, "$", 2) != 0)
-	{
-		printf("%s : bad substitution\n", var_name);
-		return_value = 1;
-		free(var_name);
-		free(trimmed_var);
-		return (ERROR);
-	}
+		return (print_expand_errors(BAD_SUBSTIT, var_name, trimmed_var));
 	free(trimmed_var);
 	free(var_name);
 	return (0);

@@ -30,32 +30,6 @@ int	create_exp_err_token(char **to_tokenize, int *i, t_lex *l)
 	return (ERROR);
 }
 
-int	handle_expand(char **to_tokenize, int *i, t_lex *l, t_env *env)
-{
-	int	old_context;
-	int	old_i;
-
-	old_context = l->context;
-	old_i = *i;
-	if (l->exp_len > 0)
-		return (0);
-	while (to_tokenize[0][*i] == '$' && l->context != SQUOTE
-		&& l->exp_res != 2 && l->exp_len == 0)
-	{
-		l->exp_res = expand(to_tokenize, i, &l, env);
-		if (l->exp_res == MALLOC_FAIL)
-			return (MALLOC_FAIL);
-		if (l->exp_res == ERROR)
-			return (create_exp_err_token(to_tokenize, i, l));
-		if (old_context == WORD && old_i == 0
-			&& tok(l->context, (unsigned char)to_tokenize[0][*i]) == TOK_EAT)
-			l->ref_char = TOK_NO_VAR;
-	}
-	if (l->ref_char != (int)tok(l->context, (unsigned char)to_tokenize[0][*i]))
-		return (BREAK);
-	return (0);
-}
-
 int	fill_token_buff(t_lex *l, char **to_tokenize, int *i, t_env *env)
 {
 	int	protect;

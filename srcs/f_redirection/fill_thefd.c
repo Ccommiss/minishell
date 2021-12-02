@@ -55,6 +55,7 @@ int	fill_thefd(t_cmd cmd)
 	char	*line;
 
 	init(&i);
+	return_value = 0;
 	while (cmd.here_words && return_value != 130)
 	{
 		if (fd_neg(&fd) == -1)
@@ -62,6 +63,8 @@ int	fill_thefd(t_cmd cmd)
 		while (return_value != 130)
 		{
 			line = readline("> ");
+			// if (line[0] == EOF)
+			// 	break;
 			if (line && return_value != 130)
 			{
 				if (if_the_same(cmd.io_here[i], line) == 0)

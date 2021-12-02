@@ -41,5 +41,3 @@ void	init_tok_and_cmd(t_token *toks, t_cmd *cmd)
 	init_token(toks);
 	start_cmd(cmd);
 }
-
-

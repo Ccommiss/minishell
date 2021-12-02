@@ -28,7 +28,7 @@ char	*assign_value(t_env *env, char *var_name)
 	while (env && ft_strncmp(var_name, env->key, ft_strlen(env->key) + 1) != 0)
 		env = env->next;
 	if (env == NULL)
-		return(ft_strdup(""));
+		return (ft_strdup(""));
 	else
 		return (ft_strdup(env->value));
 }
@@ -68,11 +68,9 @@ char	*ft_str_replace(char *str, int start, int len, t_lex **l)
 			ft_strlen(tmp) + ft_strlen(str + start + len));
 	free(tmp);
 	free(value);
-	free(str); //TEST MAIS PTETRE VA TOUT CASSER
+	free(str);
 	return (new_str);
 }
-
-
 
 /*
 ** expand : extract the expand var and replace the remaining of
@@ -102,4 +100,30 @@ int	expand(char **to_tokenize, int *i, t_lex **l, t_env *env)
 		*to_tokenize = ft_str_replace(*to_tokenize, *i, j - 1, l);
 	handle_quoted_context(&((*l)->context), i, *to_tokenize);
 	return (expand_substitution_error_detector(var_name, exception));
+}
+
+int	handle_expand(char **to_tokenize, int *i, t_lex *l, t_env *env)
+{
+	int	old_context;
+	int	old_i;
+
+	old_context = l->context;
+	old_i = *i;
+	if (l->exp_len > 0)
+		return (0);
+	while (to_tokenize[0][*i] == '$' && l->context != SQUOTE
+		&& l->exp_res != 2 && l->exp_len == 0)
+	{
+		l->exp_res = expand(to_tokenize, i, &l, env);
+		if (l->exp_res == MALLOC_FAIL)
+			return (MALLOC_FAIL);
+		if (l->exp_res == ERROR)
+			return (create_exp_err_token(to_tokenize, i, l));
+		if (old_context == WORD && old_i == 0
+			&& tok(l->context, (unsigned char)to_tokenize[0][*i]) == TOK_EAT)
+			l->ref_char = TOK_NO_VAR;
+	}
+	if (l->ref_char != (int)tok(l->context, (unsigned char)to_tokenize[0][*i]))
+		return (BREAK);
+	return (0);
 }

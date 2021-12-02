@@ -8,7 +8,7 @@
 **		is found inside
 */
 
-static int	is_valid_expand_char(int *exception, int c, int j)
+int	is_valid_expand_char(int *exception, int c, int j)
 {
 	static int	valid_tab[4][256] = {
 	[NO_BRACE]['A'...'Z'] = 1,
