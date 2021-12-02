@@ -17,6 +17,7 @@ SOURCES =	main.c\
 			$(LEX_PATH)/lex_error_detector.c \
 			$(LEX_PATH)/quotes.c \
 			$(LEX_PATH)/debug_tokens.c \
+			$(LEX_PATH)/create_tokens_funcs.c \
 			$(LEX_PATH)/context.c \
 			$(PAR_PATH)/find_path.c \
 			$(PAR_PATH)/redirect.c \

@@ -291,6 +291,9 @@ void 		syntax_error_detector(t_token *toks, int last_tok_is_op);
 int			expand_substitution_error_detector(char *var_name, int exception);
 enum tokens error_tab(int type);
 void debug_tokens(t_token *toks);
+void create_token(t_token **toks, t_lex *l);
+int create_exp_err_token(char **to_tokenize, int *i, t_lex *l);
+
 
 /*
 ** context.c

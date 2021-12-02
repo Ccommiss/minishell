@@ -6,40 +6,27 @@
 /*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 15:59:57 by ccommiss          #+#    #+#             */
-/*   Updated: 2021/12/02 23:27:54 by ccommiss         ###   ########.fr       */
+/*   Updated: 2021/12/03 00:35:09 by ccommiss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	create_token(t_token **toks, t_lex *l)
+/*
+** 	After expands, reset the original context
+**	(cause $a or "$a" if $a = ls -la wont be interpreted the same)
+*/
+void	save_and_reset_context(int	*old_context, t_lex **l)
 {
-	if ((*toks)->index == -1)
-		(*toks)->index = 0;
-	if ((*toks)->content == NULL && l->ref_char != TOK_NO_VAR)
-		(*toks)->content = ft_strdup(l->token);
-	else
-		(*toks)->content = NULL;
-	(*toks)->type = l->ref_char;
-	if ((*toks)->content)
-		(*toks)->len = ft_strlen((*toks)->content);
-	else
-		(*toks)->len = -1;
-	syntax_error_detector(*toks, FALSE);
-	(*toks)->next = malloc(sizeof(t_token));
-	(*toks)->next->content = NULL;
-	(*toks)->next->prev = (*toks);
-	(*toks)->next->index = (*toks)->index + 1;
-	(*toks) = (*toks)->next;
-}
-
-int	create_exp_err_token(char **to_tokenize, int *i, t_lex *l)
-{
-	l->ref_char = TOK_ERR;
-	ft_bzero(l->token, 2048);
-	while (to_tokenize[0][*i] && to_tokenize[0][*i] != '|')
-		*i += 1;
-	return (ERROR);
+	if (*old_context == -1)
+	{
+		*old_context = (*l)->context;
+		return ;
+	}
+	if ((*l)->context == VAR && (*l)->exp_len == 0)
+		(*l)->context = *old_context;
+	else if ((*l)->context != VAR)
+		*old_context = (*l)->context;
 }
 
 int	fill_token_buff(t_lex *l, char **to_tokenize, int *i, t_env *env)
@@ -48,18 +35,13 @@ int	fill_token_buff(t_lex *l, char **to_tokenize, int *i, t_env *env)
 	static int	old_context = -1;
 
 	protect = 0;
-	if (old_context == -1)
-		old_context = l->context;
-	// while (to_tokenize[0][*i] && l->ref_char == (int)tok(l->context,
-	// 	(unsigned char)to_tokenize[0][*i]))
+	save_and_reset_context(&old_context, &l);
 	while (to_tokenize[0][*i] && l->ref_char == (int)tok(old_context,
 		(unsigned char)to_tokenize[0][*i]))
 	{
-		if (l->context == VAR && l->exp_len == 0)
-			l->context = old_context;
+		save_and_reset_context(&old_context, &l);
 		handle_quoted_context(&(l->context), i, *to_tokenize);
-		if (l->context != VAR)
-			old_context = l->context;
+		save_and_reset_context(&old_context, &l);
 		protect = handle_expand(to_tokenize, i, l, env);
 		if (protect == MALLOC_FAIL)
 			return (MALLOC_FAIL);
