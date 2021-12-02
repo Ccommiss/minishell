@@ -6,7 +6,7 @@
 /*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/15 16:46:53 by mpochard          #+#    #+#             */
-/*   Updated: 2021/12/02 14:49:36 by ccommiss         ###   ########.fr       */
+/*   Updated: 2021/12/02 16:43:47 by ccommiss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,97 +15,83 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
-int return_value;
+int	g_return_value;
 
-int check_quote(char *line)
+
+void	choose_prompt(char **line)
 {
-	int i;
-	int j;
-	int context;
-
-	i = 0;
-	j = ft_strlen(line);
-	context = WORD;
-	while (line[i])
+	if ((!isatty(STDIN_FILENO)))
 	{
-		if (context == WORD && line[i] == SQUOTE)
-			context = SQUOTE;
-		else if (context == WORD && line[i] == DQUOTE)
-			context = DQUOTE;
-		else if (context == SQUOTE && line[i] == SQUOTE)
-			context = WORD;
-		else if (context == DQUOTE && line[i] == DQUOTE)
-			context = WORD;
-		i++;
+		rl_outstream = stdin;
+		*line = readline("");
 	}
-	if (context != WORD)
+	if (g_return_value != 0)
+		*line = readline(BWHT "Minishell " BRED "> " RESET);
+	else
+		*line = readline(BWHT "Minishell " BGRN "> " RESET);
+}
+
+void	quit_from_main(void)
+{
+	if (isatty(STDIN_FILENO))
+		exit(1);
+	if (!isatty(STDIN_FILENO))
+		exit(0);
+}
+
+void	shell_loop(char **line, t_env **env)
+{
+	t_token	toks;
+	t_cmd	cmd;
+
+	if (check_quote(*line) != 0)
+		return;
+	init_tok_and_cmd(&toks, &cmd);
+	tokenize(*line, &toks, *env);
+	debug_tokens(&toks);
+	token_to_cmds(&cmd, &toks);
+	find_path(&cmd, *env);
+	debug_cmds(&cmd);
+	cmd_to_exec(&cmd, *env, *line);
+	cleanup(&cmd, &toks, *line);
+}
+
+int	error_management(int ac, char **envp)
+{
+	if (envp[0] == NULL)
 	{
-		printf ("Please check quotes and close them.\n");
-		free (line);
-		return_value = 1;
+		printf("Need environment.\n");
+		return (ERROR);
+	}
+	if (ac > 2)
+	{
+		printf("Usage: ./minishell\n");
 		return (ERROR);
 	}
 	return (0);
 }
 
-
-
-char *choose_prompt()
+int	main(int ac, char **av, char **envp)
 {
-	char *line;
-
-	if ((!isatty(STDIN_FILENO)))
-	{
-		rl_outstream = stdin;
-		line = readline("");
-		return (line);
-	}
-	if (return_value != 0)
-		line = readline(BWHT "Minishell " BRED "> " RESET);
-	else
-		line = readline(BWHT "Minishell " BGRN "> " RESET);
-	return (line);
-}
-
-int main(int ac, char **av, char **envp)
-{
-	char 	*line;
-	t_token toks;
-	t_cmd 	cmd;
-	t_env 	*env;
+	char	*line;
+	t_env	*env;
 
 	env = NULL;
 	(void)ac;
 	(void)av;
-	if (envp[0] == NULL)
-		return (printf(" need environment\n"));
+
+	if (error_management(ac, envp) == ERROR)
+		return 1;
 	get_the_env(&env, envp);
 	while (1)
 	{
 		handle_signal(MAIN_PROCESS);
-		line = choose_prompt();
+		choose_prompt(&line);
+		add_history(line);
 		if (line && ft_strlen(line) > 0)
-		{
-			add_history(line);
-			if (check_quote(line) == 0)
-			{
-				init_tok_and_cmd(&toks, &cmd);
-				tokenize(line, &toks, env);
-				debug_tokens(&toks);
-				token_to_cmds(&cmd, &toks);
-				find_path(&cmd, env);
-				debug_cmds(&cmd);
-				cmd_to_exec(&cmd, env, line);
-				cleanup(&cmd, &toks, line);
-			}
-		}
+			shell_loop(&line, &env);
 		else if (!line)
-		{
-			if (isatty(STDIN_FILENO))
-				exit(1);
-			if (!isatty(STDIN_FILENO))
-				exit(0);
-		}
+			quit_from_main();
 	}
 	return (0);
 }

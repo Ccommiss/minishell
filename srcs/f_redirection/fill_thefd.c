@@ -6,7 +6,7 @@
 /*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 14:15:55 by mpochard          #+#    #+#             */
-/*   Updated: 2021/12/02 14:13:25 by ccommiss         ###   ########.fr       */
+/*   Updated: 2021/12/02 16:11:46 by ccommiss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	write_the(int fd, char *line, char *io_here, int param)
 	}
 	if (param == 1)
 	{
-		if (return_value != 130)
+		if (g_return_value != 130)
 		{
 			write(1, "minishell: warning: here-document ", 34);
 			write(1, "delimited by end-of-file ", 25);
@@ -66,15 +66,15 @@ int	fill_thefd(t_cmd cmd)
 	char	*line;
 
 	init(&i);
-	return_value = 0;
-	while (cmd.here_words && return_value != 130)
+	g_return_value = 0;
+	while (cmd.here_words && g_return_value != 130)
 	{
 		if (fd_neg(&fd) == -1)
 			return (-1);
-		while (return_value != 130)
+		while (g_return_value != 130)
 		{
 			line = readline("> ");
-			if (line && return_value != 130)
+			if (line && g_return_value != 130)
 			{
 				if (if_the_same(cmd.io_here[i], line) == 0)
 					break ;

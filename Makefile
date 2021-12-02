@@ -9,6 +9,7 @@ PIPE_PATH = g_pipe
 CLEAN_PATH = h_clean
 
 SOURCES =	main.c\
+			unclosed_quotes_management.c \
 			$(LEX_PATH)/tokenizer.c \
 			$(LEX_PATH)/init_funcs.c \
 			$(LEX_PATH)/expand.c \

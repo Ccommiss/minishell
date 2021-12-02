@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir_in.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpochard <mpochard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/05 17:41:12 by mpochard          #+#    #+#             */
-/*   Updated: 2021/12/01 14:15:34 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/12/02 16:11:46 by ccommiss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int	redir_in(t_env *env, t_cmd cmd, char *line)
 		return (no_cmd(cmd.io_out, cmd.error));
 	builtin = is_a_builtin(cmd.cmd_args[0]);
 	if (builtin >= 1 && builtin <= 7)
-		return_value = redir_in_built(env, cmd, builtin, line);
+		g_return_value = redir_in_built(env, cmd, builtin, line);
 	else if (builtin == 0)
 	{
 		tenvp = list_to_cmd(env);
@@ -83,5 +83,5 @@ int	redir_in(t_env *env, t_cmd cmd, char *line)
 		ft_free_double_tab(tenvp);
 	}
 	close(cmd.io_out);
-	return (return_value);
+	return (g_return_value);
 }

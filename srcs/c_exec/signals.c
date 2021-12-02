@@ -6,7 +6,7 @@
 /*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 15:57:16 by ccommiss          #+#    #+#             */
-/*   Updated: 2021/12/02 15:57:18 by ccommiss         ###   ########.fr       */
+/*   Updated: 2021/12/02 16:11:46 by ccommiss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,13 @@ void	sigint_handler_main(int sig)
 	rl_replace_line("", 0);
 	rl_redisplay();
 	printf(BWHT"Minishell "BRED"> "RESET);
-	return_value = 130;
+	g_return_value = 130;
 }
 
 void	sigint_handler_heredoc(int sig)
 {
 	(void)sig;
-	return_value = 130;
+	g_return_value = 130;
 	printf("\n");
 }
 

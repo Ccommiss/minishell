@@ -51,11 +51,11 @@ int	error_count(char *str, t_env *env, int param)
 	if (if_num(str) == 1)
 	{
 		write(2, "Minishell: exit: too many arguments\n", 36);
-		if (return_value >= 1)
+		if (g_return_value >= 1)
 			return (1);
 		else
 		{
-			return_value = 1;
+			g_return_value = 1;
 			return (1);
 		}
 	}
@@ -77,7 +77,7 @@ void	exito(char	**cmd_suff, t_cmd *cmd, t_env *env, char *line)
 	if (cmd_suff[1] == NULL)
 	{
 		clean_env(env);
-		exit(return_value);
+		exit(g_return_value);
 	}
 	if (count > 2)
 	{
@@ -90,4 +90,3 @@ void	exito(char	**cmd_suff, t_cmd *cmd, t_env *env, char *line)
 	n = (char)ft_atoi(cmd_suff[1]);
 	exit(n);
 }
-	

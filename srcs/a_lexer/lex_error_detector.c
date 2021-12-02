@@ -6,7 +6,7 @@
 /*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 15:59:10 by ccommiss          #+#    #+#             */
-/*   Updated: 2021/12/02 15:59:11 by ccommiss         ###   ########.fr       */
+/*   Updated: 2021/12/02 16:11:46 by ccommiss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,9 @@ void	syntax_error_detector(t_token *toks, int last_tok_is_op)
 		|| last_tok_is_op == TRUE)
 	{
 		toks->type = SYNT_ERR;
-		if (return_value != 2)
+		if (g_return_value != 2)
 			printf("minishell : syntax error near \"%c\"\n", tok_op);
-		return_value = 2;
+		g_return_value = 2;
 	}
 }
 
@@ -78,14 +78,14 @@ int	print_expand_errors(int error_type, char *var_name, char *trimmed_var)
 	if (error_type == OPEN_BRACE)
 	{
 		printf("%s : brace error, please close them\n", var_name);
-		return_value = 1;
+		g_return_value = 1;
 		free(var_name);
 		return (ERROR);
 	}
 	if (error_type == BAD_SUBSTIT)
 	{
 		printf("%s : bad substitution\n", var_name);
-		return_value = 1;
+		g_return_value = 1;
 		free(var_name);
 		free(trimmed_var);
 		return (ERROR);

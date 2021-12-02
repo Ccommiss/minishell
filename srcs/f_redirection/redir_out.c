@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir_out.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpochard <mpochard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/05 17:41:18 by mpochard          #+#    #+#             */
-/*   Updated: 2021/12/01 14:16:26 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/12/02 16:11:46 by ccommiss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	simple_redir_o(t_env *env, t_cmd cmd, char *line)
 		return (no_cmd(cmd.io_in, cmd.error));
 	builtin = is_a_builtin(cmd.cmd_args[0]);
 	if ((builtin >= 1 && builtin <= 7) && cmd.io_in > -1)
-		return_value = redir_out_built(env, cmd, builtin, line);
+		g_return_value = redir_out_built(env, cmd, builtin, line);
 	else if (builtin == 0 && cmd.io_in > -1)
 	{
 		tenvp = list_to_cmd(env);
@@ -45,7 +45,7 @@ int	simple_redir_o(t_env *env, t_cmd cmd, char *line)
 		ft_free_double_tab(tenvp);
 	}
 	close(cmd.io_in);
-	return (return_value);
+	return (g_return_value);
 }
 
 void	in_the_pid_doubl(t_cmd cmd, char **tenvp)
@@ -66,7 +66,7 @@ int	both_redir(t_env *env, t_cmd cmd, char *line)
 		return (no_cmd_d(cmd.io_in, cmd.io_out, cmd.error));
 	builtin = is_a_builtin(cmd.cmd_args[0]);
 	if ((builtin >= 1 && builtin <= 7) && cmd.io_in >= -1 && cmd.io_out >= -1)
-		return_value = redir_double_built(env, cmd, builtin, line);
+		g_return_value = redir_double_built(env, cmd, builtin, line);
 	else if (builtin == 0 && (cmd.io_in >= -1 && cmd.io_out >= -1))
 	{
 		tenvp = list_to_cmd(env);
@@ -81,5 +81,5 @@ int	both_redir(t_env *env, t_cmd cmd, char *line)
 	}
 	close(cmd.io_in);
 	close(cmd.io_out);
-	return (return_value);
+	return (g_return_value);
 }

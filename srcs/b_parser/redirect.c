@@ -6,7 +6,7 @@
 /*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 16:01:28 by ccommiss          #+#    #+#             */
-/*   Updated: 2021/12/02 16:01:29 by ccommiss         ###   ########.fr       */
+/*   Updated: 2021/12/02 16:11:46 by ccommiss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	redirect_out(t_cmd *cmd, t_token **toks, int len)
 		if (cmd->error == FALSE)
 			ft_print_error(cmd->cmd_args[0]);
 		cmd->error = TRUE;
-		return_value = 1;
+		g_return_value = 1;
 	}
 }
 
@@ -63,7 +63,7 @@ void	redirect_in(t_cmd *cmd, t_token **toks, int len)
 		if (cmd->error == FALSE)
 			ft_print_error((*toks)->content);
 		cmd->error = TRUE;
-		return_value = 1;
+		g_return_value = 1;
 	}
 }
 

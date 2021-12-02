@@ -20,7 +20,7 @@
 #include "../libft/libft.h"
 
 
-extern int return_value;
+extern int g_return_value;
 
 typedef struct s_arg
 {
@@ -310,7 +310,7 @@ int create_exp_err_token(char **to_tokenize, int *i, t_lex *l);
 char		*ft_str_replace(char *str, int start, int len, t_lex **l);
 int			expand(char **to_tokenize, int *i, t_lex **lex, t_env *env);
 void		handle_quoted_context(int *context, int *i, char *to_tokenize);
- int is_valid_expand_char(int *exception, int c, int j);
+int	is_valid_expand_char(int *exception, int c, int j);
 
 void ft_print_error(char *arg);
 
@@ -343,4 +343,6 @@ void free_command_items(t_cmd *cmd);
 **	utils.c
 */
 void	ft_exit_program(t_cmd *cmd, t_token *toks, char *str, void *stuff);
+int check_quote(char *line);
+
 #endif

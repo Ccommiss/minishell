@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   do_pipe.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpochard <mpochard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/05 17:40:25 by mpochard          #+#    #+#             */
-/*   Updated: 2021/12/01 14:16:59 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/12/02 16:11:46 by ccommiss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	which_redir(t_cmd cmd)
 }
 
 void	if_here_doc(t_env *env, t_cmd *cmd, t_pipe piped)
-{	
+{
 	if (cmd->io_out < 0 && piped.i == 0)
 	{
 		if (dup2(piped.pipefd[1], 1) == -1)
@@ -39,7 +39,7 @@ void	if_here_doc(t_env *env, t_cmd *cmd, t_pipe piped)
 	}
 	here_doc(env, *cmd, 0);
 	close_all_p(piped.pipefd, piped.nbr_p);
-	exit(return_value);
+	exit(g_return_value);
 }
 
 void	inside_pid(t_env *env, t_cmd *cmd, t_pipe piped)
@@ -60,7 +60,7 @@ void	after_the_pid(t_cmd *cmd, t_pipe *piped)
 	{
 		waitpid(piped->pid[piped->i], &piped->temp, 0);
 		set_status(piped->temp, 1);
-		piped->temp = return_value;
+		piped->temp = g_return_value;
 		if (piped->i == (piped->nbr_cmd - 1))
 			piped->status = 1;
 	}
@@ -94,7 +94,7 @@ int	do_the_pipe(t_cmd *cmd, t_env *env)
 	}
 	we_wait(piped.pid, piped.nbr_cmd, piped.pipefd, piped.nbr_p);
 	if (piped.status == 1)
-		return_value = piped.temp;
+		g_return_value = piped.temp;
 	unlink(".here_doc");
 	return (0);
 }

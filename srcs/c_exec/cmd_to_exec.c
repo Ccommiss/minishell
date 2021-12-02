@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_to_exec.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpochard <mpochard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/13 10:05:27 by mpochard          #+#    #+#             */
-/*   Updated: 2021/12/02 10:17:16 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/12/02 16:11:46 by ccommiss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,10 @@ void	exec_the_built(t_env *env, t_cmd *cmd, char *line, int builtin)
 	char	*buf;
 
 	if (builtin == 1)
-		return_value = do_echo(cmd->cmd_args);
+		g_return_value = do_echo(cmd->cmd_args);
 	else if (builtin == 2)
 	{
-		return_value = cd(env, cmd->cmd_args[1]);
+		g_return_value = cd(env, cmd->cmd_args[1]);
 		set_thepwd(env);
 	}
 	else if (builtin == 3)
@@ -39,16 +39,16 @@ void	exec_the_built(t_env *env, t_cmd *cmd, char *line, int builtin)
 		buf = get_pwd();
 		ft_putendl_fd(buf, 1);
 		free(buf);
-		return_value = 0;
+		g_return_value = 0;
 	}
 	else if (builtin == 4)
 		exito(cmd->cmd_args, cmd, env, line);
 	else if (builtin == 5)
-		return_value = export_the(env, &cmd->cmd_args[1]);
+		g_return_value = export_the(env, &cmd->cmd_args[1]);
 	else if (builtin == 6)
-		return_value = do_the_unset(env, cmd->cmd_args);
+		g_return_value = do_the_unset(env, cmd->cmd_args);
 	else if (builtin == 7)
-		return_value = printf_the_env(env, cmd->cmd_args);
+		g_return_value = printf_the_env(env, cmd->cmd_args);
 }
 
 void	no_a_builtin(t_cmd *cmd, t_env *env, int status)

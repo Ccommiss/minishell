@@ -6,7 +6,7 @@
 /*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 16:02:02 by ccommiss          #+#    #+#             */
-/*   Updated: 2021/12/02 16:02:34 by ccommiss         ###   ########.fr       */
+/*   Updated: 2021/12/02 16:11:46 by ccommiss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,12 @@ void	set_status(int status, int process)
 	{
 		if (status < 128)
 			status = 128 + status;
-		return_value = status;
-		if (return_value == 131 && process == 1)
+		g_return_value = status;
+		if (g_return_value == 131 && process == 1)
 			printf ("Quit (core dumped)\n");
-		if (return_value == 130 && process == 1)
+		if (g_return_value == 130 && process == 1)
 			printf ("\n");
 	}
 	else if (WIFEXITED(status) == 1)
-		return_value = WEXITSTATUS(status);
+		g_return_value = WEXITSTATUS(status);
 }
