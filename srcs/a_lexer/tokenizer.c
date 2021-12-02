@@ -48,7 +48,11 @@ int	fill_token_buff(t_lex *l, char **to_tokenize, int *i, t_env *env)
 	static int	old_context = -1;
 
 	protect = 0;
-	while (to_tokenize[0][*i] && l->ref_char == (int)tok(l->context,
+	if (old_context == -1)
+		old_context = l->context;
+	// while (to_tokenize[0][*i] && l->ref_char == (int)tok(l->context,
+	// 	(unsigned char)to_tokenize[0][*i]))
+	while (to_tokenize[0][*i] && l->ref_char == (int)tok(old_context,
 		(unsigned char)to_tokenize[0][*i]))
 	{
 		if (l->context == VAR && l->exp_len == 0)
