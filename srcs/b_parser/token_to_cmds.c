@@ -1,7 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   token_to_cmds.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/12/02 16:00:40 by ccommiss          #+#    #+#             */
+/*   Updated: 2021/12/02 16:01:01 by ccommiss         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 /*
 **	Create next command will create the next command
+**	and set the current toks to next if it is a pipe
 */
 
 void	create_next_command(t_cmd **cmd, t_token **toks)
