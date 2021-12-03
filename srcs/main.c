@@ -6,7 +6,7 @@
 /*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/15 16:46:53 by mpochard          #+#    #+#             */
-/*   Updated: 2021/12/03 18:42:30 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/12/03 18:43:57 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ int	main(int ac, char **av, char **envp)
 		if (line && ft_strlen(line) > 0)
 			shell_loop(&line, &env);
 		else if (!line)
-			quit_from_main();
+			quit_from_main(env);
 	}
 	return (0);
 }
