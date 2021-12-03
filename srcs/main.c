@@ -6,28 +6,29 @@
 /*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/15 16:46:53 by mpochard          #+#    #+#             */
-/*   Updated: 2021/12/03 10:19:35 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/12/03 17:05:37 by ccommiss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <stdio.h>
-#include <readline/readline.h>
-#include <readline/history.h>
 
 int	g_return_value;
 
-void	choose_prompt(char **line)
+char	*choose_prompt(void)
 {
+	char	*line;
+
 	if ((!isatty(STDIN_FILENO)))
 	{
 		rl_outstream = stdin;
-		*line = readline("");
+		line = readline("");
+		return (line);
 	}
 	if (g_return_value != 0)
-		*line = readline(BWHT "Minishell " BRED "> " RESET);
+		line = readline(BWHT "Minishell " BRED "> " RESET);
 	else
-		*line = readline(BWHT "Minishell " BGRN "> " RESET);
+		line = readline(BWHT "Minishell " BGRN "> " RESET);
+	return (line);
 }
 
 void	quit_from_main(void)
@@ -47,10 +48,10 @@ void	shell_loop(char **line, t_env **env)
 		return ;
 	init_tok_and_cmd(&toks, &cmd);
 	tokenize(*line, &toks, *env);
-//	debug_tokens(&toks);
+	debug_tokens(&toks);
 	token_to_cmds(&cmd, &toks);
 	find_path(&cmd, *env);
-//	debug_cmds(&cmd);
+	debug_cmds(&cmd);
 	cmd_to_exec(&cmd, *env, *line);
 	cleanup(&cmd, &toks, *line);
 }
@@ -84,7 +85,7 @@ int	main(int ac, char **av, char **envp)
 	while (1)
 	{
 		handle_signal(MAIN_PROCESS);
-		choose_prompt(&line);
+		line = choose_prompt();
 		add_history(line);
 		if (line && ft_strlen(line) > 0)
 			shell_loop(&line, &env);
