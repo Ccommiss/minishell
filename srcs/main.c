@@ -6,7 +6,7 @@
 /*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/15 16:46:53 by mpochard          #+#    #+#             */
-/*   Updated: 2021/12/03 17:05:37 by ccommiss         ###   ########.fr       */
+/*   Updated: 2021/12/03 18:43:57 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,12 @@ char	*choose_prompt(void)
 	return (line);
 }
 
-void	quit_from_main(void)
+void	quit_from_main(t_env *env)
 {
+	clean_env(env);
 	if (isatty(STDIN_FILENO))
-		exit(1);
-	if (!isatty(STDIN_FILENO))
-		exit(0);
+		write(2, "exit\n", 5);
+	exit(0);
 }
 
 void	shell_loop(char **line, t_env **env)
@@ -90,7 +90,7 @@ int	main(int ac, char **av, char **envp)
 		if (line && ft_strlen(line) > 0)
 			shell_loop(&line, &env);
 		else if (!line)
-			quit_from_main();
+			quit_from_main(env);
 	}
 	return (0);
 }

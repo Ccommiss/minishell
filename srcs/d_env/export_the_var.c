@@ -6,7 +6,7 @@
 /*   By: mpochard <mpochard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 17:23:21 by mpochard          #+#    #+#             */
-/*   Updated: 2021/12/01 14:12:15 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/12/03 18:41:19 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,10 @@ int	need_replace(t_env *env, char **tab, int egal)
 	free(env->key);
 	free(env->value);
 	free(env->env);
-	env->key = tab[0];
-	env->value = tab[1];
-	env->env = strjoin_char(tab[0], tab[1], '=');
+	env->key = ft_strdup(tab[0]);
+	env->value = ft_strdup(tab[1]);
+	env->env = strjoin_char(env->key, env->value, '=');
+	ft_free_double_tab(tab);
 	return (1);
 }
 

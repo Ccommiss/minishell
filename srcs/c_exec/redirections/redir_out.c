@@ -6,7 +6,7 @@
 /*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/05 17:41:18 by mpochard          #+#    #+#             */
-/*   Updated: 2021/12/02 16:11:46 by ccommiss         ###   ########.fr       */
+/*   Updated: 2021/12/03 18:39:57 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ int	both_redir(t_env *env, t_cmd cmd, char *line)
 		handle_signal(CHILD_HANDLING);
 		waitpid(pid, &status, 0);
 		set_status(status, 1);
+		ft_free_double_tab(tenvp);
 	}
 	close(cmd.io_in);
 	close(cmd.io_out);
