@@ -6,7 +6,7 @@
 /*   By: mpochard <mpochard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/05 17:41:40 by mpochard          #+#    #+#             */
-/*   Updated: 2021/12/02 10:13:18 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/12/03 10:31:41 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	redir_out_built(t_env *env, t_cmd cmd, int builtin, char *line)
 		value = do_echo(cmd.cmd_args);
 	else if (builtin == 2)
 	{
-		value = cd(env, cmd.cmd_args[1]);
+		value = cd(env, &cmd.cmd_args[1]);
 		set_thepwd(env);
 	}
 	else if (builtin == 3)
@@ -72,7 +72,7 @@ void	built(t_env *env, t_cmd cmd, int *value, int builtin)
 		*value = do_echo(cmd.cmd_args);
 	else if (builtin == 2)
 	{
-		*value = cd(env, cmd.cmd_args[1]);
+		*value = cd(env, &cmd.cmd_args[1]);
 		set_thepwd(env);
 	}
 	else if (builtin == 3)

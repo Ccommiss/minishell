@@ -6,7 +6,7 @@
 /*   By: mpochard <mpochard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/20 11:11:36 by mpochard          #+#    #+#             */
-/*   Updated: 2021/12/02 10:12:48 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/12/03 10:31:16 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	redir_here_built(t_env *env, t_cmd cmd, int builtin)
 		do_echo(cmd.cmd_args);
 	else if (builtin == 2)
 	{
-		cd(env, cmd.cmd_args[1]);
+		cd(env, &cmd.cmd_args[1]);
 		set_thepwd(env);
 	}
 	else if (builtin >= 3 && builtin <= 7)

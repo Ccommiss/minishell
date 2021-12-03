@@ -6,15 +6,17 @@
 /*   By: mpochard <mpochard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 17:33:52 by mpochard          #+#    #+#             */
-/*   Updated: 2021/12/01 14:13:37 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/12/03 10:49:25 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	error_chdir(char *str, char *home)
+int	error_chdir(char *str, char *home, char *pwd)
 {
-	perror("cd:");
+	write(2," Minishell: cd: ", 16);
+	write(2, pwd, ft_strlen(pwd));
+	perror(" ");
 	free(home);
 	free(str);
 	return (-1);

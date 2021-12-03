@@ -6,7 +6,7 @@
 /*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/13 10:05:27 by mpochard          #+#    #+#             */
-/*   Updated: 2021/12/02 16:11:46 by ccommiss         ###   ########.fr       */
+/*   Updated: 2021/12/03 10:32:00 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	exec_the_built(t_env *env, t_cmd *cmd, char *line, int builtin)
 		g_return_value = do_echo(cmd->cmd_args);
 	else if (builtin == 2)
 	{
-		g_return_value = cd(env, cmd->cmd_args[1]);
+		g_return_value = cd(env, &cmd->cmd_args[1]);
 		set_thepwd(env);
 	}
 	else if (builtin == 3)

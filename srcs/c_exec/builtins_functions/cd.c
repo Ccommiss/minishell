@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mpochard <mpochard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/05 17:41:53 by mpochard          #+#    #+#             */
-/*   Updated: 2021/12/02 14:21:05 by ccommiss         ###   ########.fr       */
+/*   Updated: 2021/12/03 10:45:21 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,12 @@ int	is_home_unset(t_env *tmp, char *home)
 		tmp = tmp->next;
 	}
 	if (chdir(temp->value) == -1)
-		perror("cd:");
+	{
+		write(2, "Minishell: cd: ", 14);
+		write(2, home, ft_strlen(home));
+		perror(": ");
+		write(2, "\n", 1);
+	}
 	free(home);
 	return (0);
 }
@@ -65,20 +70,20 @@ int	on_coupe(t_env *env, char *pwd, char *home, char *temp)
 	if (ft_strncmp(pwd, "~", 2) == 0)
 	{
 		if (chdir((getenv("HOME"))) == -1)
-			return (error_chdir(temp, home));
+			return (error_chdir(temp, home, pwd));
 	}
 	else if (ft_strncmp(pwd, "-", 2) == 0)
 	{
 		if (env != NULL)
 		{
 			if (chdir(temp) == -1)
-				return (error_chdir(temp, home));
+				return (error_chdir(temp, home, pwd));
 		}
 		else if (env == NULL)
 			write(2, ">: cd: « OLDPWD » non defini\n", 2);
 	}
 	else if (chdir(pwd) == -1)
-		return (error_chdir(temp, home));
+		return (error_chdir(temp, home, pwd));
 	free(home);
 	free(temp);
 	return (0);
@@ -110,12 +115,18 @@ int	with_home_set(t_env *env, char *home, char **temp)
 	return (0);
 }
 
-int	cd(t_env *env, char *pwd)
+int	cd(t_env *env, char **pwd)
 {
 	char	*home;
 	char	*temp;
 
 	temp = NULL;
+	if(count_double_tab(pwd) > 1)
+	{
+		write(2, "Minishell: cd:", 15);
+		write(2, " too many arguments\n", 20);
+		return (-1);
+	}
 	set_home(env, &home);
 	temp = NULL;
 	if (pwd == NULL)
@@ -135,7 +146,7 @@ int	cd(t_env *env, char *pwd)
 			}
 			env = env->next;
 		}
-		if (on_coupe(env, pwd, home, temp) == -1)
+		if (on_coupe(env, pwd[0], home, temp) == -1)
 			return (-1);
 	}
 	return (0);

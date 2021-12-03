@@ -6,7 +6,7 @@
 /*   By: mpochard <mpochard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/05 16:05:45 by mpochard          #+#    #+#             */
-/*   Updated: 2021/12/02 10:14:12 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/12/03 10:32:20 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	exec_builtin(t_env *env, char **cmd, int builtin)
 		do_echo(cmd);
 	else if (builtin == 2)
 	{
-		cd(env, cmd[1]);
+		cd(env, &cmd[1]);
 		set_thepwd(env);
 	}
 	else if (builtin == 3)
