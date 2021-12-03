@@ -6,7 +6,7 @@
 /*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 17:35:35 by ccommiss          #+#    #+#             */
-/*   Updated: 2021/12/03 17:36:39 by ccommiss         ###   ########.fr       */
+/*   Updated: 2021/12/03 17:39:24 by ccommiss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,20 @@
 # define STRUCTS_H
 
 # include "libs.h"
+
+/*
+** s_env_struct
+*/
+
+typedef struct s_env
+{
+	char			*key;
+	char			*value;
+	char			*env;
+	int				visible;
+	struct s_env	*next;
+	struct s_env	*prev;
+}				t_env;
 
 /*
 ** s_lex struct
@@ -40,13 +54,13 @@ typedef struct s_lex
 
 typedef struct s_token
 {
-	char	*content;
-	int		type;
-	int		index;
-	int		len;
-	s_token	*next;
-	s_token	*prev;
-}			t_token;
+	char			*content;
+	int				type;
+	int				index;
+	int				len;
+	struct s_token	*next;
+	struct s_token	*prev;
+}				t_token;
 
 /*
 **	s_cmd is the struct used to store all commands data.
@@ -64,33 +78,19 @@ typedef struct s_token
 
 typedef struct s_cmd
 {
-	int		index;
-	cha		*cmdp;
-	cha		**cmd_args;
-	int		io_in;
-	int		dless;
-	cha		**io_here;
-	int		here_words;
-	int		io_out;
-	int		dgreat;
-	int		error;
-	s_cmd	*next;
-	s_cmd	*prev;
+	int				index;
+	char			*cmdp;
+	char			**cmd_args;
+	int				io_in;
+	int				dless;
+	char			**io_here;
+	int				here_words;
+	int				io_out;
+	int				dgreat;
+	int				error;
+	struct s_cmd	*next;
+	struct s_cmd	*prev;
 }			t_cmd;
-
-/*
-** s_env_struct
-*/
-
-typedef struct s_env
-{
-	char			*key;
-	char			*value;
-	char			*env;
-	int				visible;
-	struct s_env	*next;
-	struct s_env	*prev;
-}				t_env;
 
 /*
 **	s_arg struct

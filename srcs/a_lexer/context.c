@@ -6,7 +6,7 @@
 /*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 15:58:45 by ccommiss          #+#    #+#             */
-/*   Updated: 2021/12/02 23:33:15 by ccommiss         ###   ########.fr       */
+/*   Updated: 2021/12/03 17:41:12 by ccommiss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@
 **	character, while not if in a quoted context.
 */
 
-enum	tokens	op_toks(int c)
+enum	e_tokens	op_toks(int c)
 {
-	static enum tokens	tok[256] = {
+	static enum e_tokens	tok[256] = {
 	['|'] = TOK_PIPE,
 	['<'] = TOK_LESS,
 	['>'] = TOK_GREAT,
@@ -31,9 +31,9 @@ enum	tokens	op_toks(int c)
 	return (tok[c]);
 }
 
-enum	tokens	word_toks(int c)
+enum	e_tokens	word_toks(int c)
 {
-	static enum tokens	tok[256] = {
+	static enum e_tokens	tok[256] = {
 	['\0'...' '] = TOK_EAT, // CARACTERES D'ARRET
 	['#'...'&'] = TOK_WORD, // 35 a 38
 	['('...'/'] = TOK_WORD, //40 a 47
@@ -74,9 +74,9 @@ enum	tokens	word_toks(int c)
 **	128 a 254 : Ascii extended
 */
 
-enum tokens	corresp(int c)
+enum e_tokens	corresp(int c)
 {
-	static enum tokens	corresp[256] = {
+	static enum e_tokens	corresp[256] = {
 	['|'] = OP,
 	['<'] = OP,
 	['>'] = OP,
@@ -100,9 +100,9 @@ enum tokens	corresp(int c)
 	return (corresp[c]);
 }
 
-enum	tokens	expand_toks(int c)
+enum	e_tokens	expand_toks(int c)
 {
-	static enum tokens	tok[256] = {
+	static enum e_tokens	tok[256] = {
 	['\0'...' '] = TOK_EAT,
 	['\"'...u'ÿ'] = TOK_WORD
 	};
@@ -110,7 +110,7 @@ enum	tokens	expand_toks(int c)
 	return (tok[c]);
 }
 
-enum tokens	tok(int x, int y)
+enum e_tokens	tok(int x, int y)
 {
 	if (x == OP)
 		return (op_toks(y));

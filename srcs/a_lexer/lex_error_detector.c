@@ -6,15 +6,15 @@
 /*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 15:59:10 by ccommiss          #+#    #+#             */
-/*   Updated: 2021/12/02 16:11:46 by ccommiss         ###   ########.fr       */
+/*   Updated: 2021/12/03 17:41:24 by ccommiss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-enum tokens	error_tab(int type)
+enum e_tokens	error_tab(int type)
 {
-	static enum tokens	op_table[256] = {
+	static enum e_tokens	op_table[256] = {
 	[TOK_GREAT] = OP,
 	[TOK_LESS] = OP,
 	[TOK_PIPE] = OP
