@@ -12,6 +12,18 @@
 
 #include "minishell.h"
 
+int	line_length(char *line)
+{
+	if (ft_strlen(line) > 2048)
+	{
+		printf ("Input too long - it's a shell, not a Proust novel.\n");
+		free (line);
+		g_return_value = 1;
+		return (ERROR);
+	}
+	return (0);
+}
+
 int	check_quote(char *line)
 {
 	int	i;

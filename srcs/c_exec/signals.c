@@ -56,7 +56,8 @@ void	ignore_other_sig(void)
 	while (++i <= 31)
 	{
 		if (i != SIGINT && i != SIGQUIT
-			&& i != SIGCHLD && i != SIGPIPE)
+			&& i != SIGCHLD && i != SIGPIPE
+			&& i != SIGKILL && i != SIGSTOP)
 			signal(i, SIG_IGN);
 	}
 }
