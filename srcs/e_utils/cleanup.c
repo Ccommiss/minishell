@@ -1,6 +1,21 @@
 #include "minishell.h"
 
-void free_toks(t_token *toks)
+void	clean_env(t_env *env)
+{
+	void	*tmp;
+
+	while (env)
+	{
+		free(env->key);
+		free(env->value);
+		free(env->env);
+		tmp = env->next;
+		free(env);
+		env = tmp;
+	}
+}
+
+void	free_toks(t_token *toks)
 {
 	t_token *tmp;
 	if (toks->index == -1)
@@ -45,15 +60,6 @@ void free_cmds(t_cmd *cmd)
 }
 
 
-void	ft_print_error(char *arg)
-{
-	if (arg != NULL)
-		printf("minishell: %s: %s\n", arg, strerror(errno));
-	else
-		printf("minishell: %s\n", strerror(errno));
-
-}
-
 void cleanup(t_cmd *cmd, t_token *toks, char *line)
 {
 	free_cmds(cmd);
@@ -63,11 +69,3 @@ void cleanup(t_cmd *cmd, t_token *toks, char *line)
 	free(line);
 }
 
-void	ft_exit_program(t_cmd *cmd, t_token *toks, char *str, void *stuff)
-{
-	(void)stuff;
-	cleanup(cmd, toks, str);
-	if (stuff)
-		free(stuff);
-	exit(1);
-}

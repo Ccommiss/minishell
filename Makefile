@@ -3,13 +3,12 @@ LEX_PATH = a_lexer
 PAR_PATH = b_parser
 EXEC_PATH = c_exec
 ENV_PATH = d_env
-BUILT_PATH = e_builtin
-REDIR_PATH = f_redirection
-PIPE_PATH = g_pipe
-CLEAN_PATH = h_clean
+BUILT_PATH = ${EXEC_PATH}/builtins_functions
+REDIR_PATH = ${EXEC_PATH}/redirections
+PIPE_PATH = ${EXEC_PATH}/pipes_management
+UTILS_PATH = e_utils
 
 SOURCES =	main.c\
-			unclosed_quotes_management.c \
 			$(LEX_PATH)/tokenizer.c \
 			$(LEX_PATH)/init_funcs.c \
 			$(LEX_PATH)/expand.c \
@@ -58,8 +57,11 @@ SOURCES =	main.c\
 			${PIPE_PATH}/util_pipe.c\
 			${EXEC_PATH}/signals.c \
 			${EXEC_PATH}/set_status.c \
-			${CLEAN_PATH}/clean.c\
-			utils.c
+			$(UTILS_PATH)/cleanup.c \
+			$(UTILS_PATH)/ft_print_errors.c \
+			$(UTILS_PATH)/ft_exit_program.c \
+			$(UTILS_PATH)/unclosed_quotes_management.c
+
 
 
 
