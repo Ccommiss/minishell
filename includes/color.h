@@ -6,12 +6,13 @@
 /*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/22 13:15:22 by ccommiss          #+#    #+#             */
-/*   Updated: 2021/09/28 15:39:05 by ccommiss         ###   ########.fr       */
+/*   Updated: 2021/12/03 17:18:23 by ccommiss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef COLOR_H
 # define COLOR_H
+
 /*
 **	Regular text
 */

@@ -1,21 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   structs.h                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/12/03 17:35:35 by ccommiss          #+#    #+#             */
+/*   Updated: 2021/12/03 17:36:39 by ccommiss         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef STRUCTS_H
 # define STRUCTS_H
 
 # include "libs.h"
-
-
-/*
- *	s_env structure
- */
-typedef struct	s_env
-{
-	char	*key;
-	char	*value;
-	char	*env;
-	int		visible;
-	struct	s_env *next;
-	struct	s_env *prev;
-}				t_env;
 
 /*
 ** s_lex struct
@@ -27,7 +25,7 @@ typedef struct	s_env
 **	- ref_char : token type of the first char of the token
 **	- exp_res : result of expand
 */
-typedef struct s_lex t_lex;
+
 typedef struct s_lex
 {
 	char	token[2048];
@@ -38,52 +36,77 @@ typedef struct s_lex
 	int		exp_len;
 	int		old_context;
 	t_env	**env;
-}t_lex;
+}			t_lex;
 
-
-typedef struct s_token t_token;
 typedef struct s_token
 {
-	char *content;
-	int type;
-	int index;
-	int len;
+	char	*content;
+	int		type;
+	int		index;
+	int		len;
+	s_token	*next;
+	s_token	*prev;
+}			t_token;
 
-	t_token *next;
-	t_token *prev;
-} 				t_token;
+/*
+**	s_cmd is the struct used to store all commands data.
+**	- index : index of structure
+**	- cmdp : path of command
+**	- cmd_args : cmd + suffix
+**	- io_in : file descriptor of in command ; set default to -1
+**	- dless : if << is typed, set to TRUE
+**	- io_here : contains delimiters of heredoc
+**	- here_words : contains numbers of heredocs delimiters 
+**	- io_out : file descriptor of out command ; set default to -1
+**	- dgreat : if >> is typed, set to TRUE
+**	- error : if error is TRUE, cmd is not executed but still contains next 
+*/
 
-typedef struct s_cmd t_cmd;
 typedef struct s_cmd
 {
-	int 	index;
-	char 	*cmdp; //le path
-	char 	**cmd_args;
-	int		test;
-	int 	io_in; //fd entree commande
-	int 	dless; // <<
-	char	 **io_here;
-	int 	here_words; //compte le nb de io_here pour faire io_here[here_words]
-	int 	io_out; //fd sortie commande
-	int 	dgreat; // >>
-	int 	error;
+	int		index;
+	cha		*cmdp;
+	cha		**cmd_args;
+	int		io_in;
+	int		dless;
+	cha		**io_here;
+	int		here_words;
+	int		io_out;
+	int		dgreat;
+	int		error;
+	s_cmd	*next;
+	s_cmd	*prev;
+}			t_cmd;
 
-	t_cmd 	*next;
-	t_cmd 	*prev;
-}t_cmd;
+/*
+** s_env_struct
+*/
 
+typedef struct s_env
+{
+	char			*key;
+	char			*value;
+	char			*env;
+	int				visible;
+	struct s_env	*next;
+	struct s_env	*prev;
+}				t_env;
+
+/*
+**	s_arg struct
+*/
 
 typedef struct s_arg
 {
-	int s_quote;
-	int d_quote;
-	int nb_pipe;
-} t_arg;
-
+	int	s_quote;
+	int	d_quote;
+	int	nb_pipe;
+}				t_arg;
 
 /*
- *	s_pipe struct
- */
+**	s_pipe struct
+*/
+
 typedef struct s_pipe
 {
 	int		i;

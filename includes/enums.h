@@ -1,8 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   enums.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/12/03 17:16:41 by ccommiss          #+#    #+#             */
+/*   Updated: 2021/12/03 17:17:26 by ccommiss         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef ENUMS_H
 # define ENUMS_H
 
-
-enum booleen
+enum e_booleen
 {
 	ERROR = -1,
 	BREAK = -1,
@@ -11,11 +22,11 @@ enum booleen
 	MALLOC_FAIL = -100
 };
 
-enum io {
+enum e_io {
 	NOT_SPECIFIED = -100
 };
 
-enum signal_location
+enum e_signal_location
 {
 	MAIN_PROCESS,
 	CHILD,
@@ -23,7 +34,7 @@ enum signal_location
 	HEREDOC
 };
 
-enum expand
+enum e_expand
 {
 	NO_BRACE,
 	OPEN_BRACE = 1,
@@ -31,7 +42,6 @@ enum expand
 	DOL_OR_QUEST = 3,
 	BAD_SUBSTIT = 4
 };
-
 
 /*
 **	Enum mainly used in lexing for context purposes
@@ -43,7 +53,7 @@ enum expand
 **			resulting in NULL
 **		- SYNT_ERR : syntax error preventing the whole cmd line to be executed
 */
-enum tokens
+enum e_tokens
 {
 	OP = 4,
 	WORD = 1,
