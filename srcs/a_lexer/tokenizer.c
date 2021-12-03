@@ -6,7 +6,7 @@
 /*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 15:59:57 by ccommiss          #+#    #+#             */
-/*   Updated: 2021/12/03 00:35:09 by ccommiss         ###   ########.fr       */
+/*   Updated: 2021/12/03 13:02:02 by ccommiss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@ int	fill_token_buff(t_lex *l, char **to_tokenize, int *i, t_env *env)
 			l->exp_len--;
 	}
 	l->token[l->buf_i] = '\0';
+	printf ("buf i = %d \n",l->buf_i);
+	l->buf_i = 0;
 	return (0);
 }
 
@@ -83,12 +85,15 @@ void	tokenize(char *line, t_token *toks, t_env *env)
 
 	i = 0;
 	to_tokenize = ft_strdup(line);
+	printf ("ici \n");
 	if (!to_tokenize)
 		ft_exit_program(NULL, toks, line, NULL);
 	init_lexer_struct(&l, to_tokenize, save_exp);
 	if (fill_token_buff(&l, &to_tokenize, &i, env) == MALLOC_FAIL)
 		ft_exit_program(NULL, toks, line, NULL);
+	printf ("INDEX = %d \n", toks->index);
 	save_exp = l.exp_len;
+	l.buf_i = 0;
 	if (l.ref_char != TOK_EAT)
 		create_token(&toks, &l);
 	to_tokenize = ft_auto_substr(to_tokenize, i, ft_strlen(to_tokenize));
