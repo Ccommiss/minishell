@@ -6,7 +6,7 @@
 /*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 15:59:03 by ccommiss          #+#    #+#             */
-/*   Updated: 2021/12/03 13:03:40 by ccommiss         ###   ########.fr       */
+/*   Updated: 2021/12/03 19:32:17 by ccommiss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,9 @@ void	init_lexer_struct(t_lex *lex, char *to_tokenize, int save_exp)
 		lex->context = WORD;
 	lex->exp_res = -2;
 	lex->exp_len = save_exp;
-	if (lex->exp_len > 0)
-		lex->context = VAR;
+	if (lex->exp_len > 0 && lex->ref_char != TOK_EAT){
+		lex->context = VAR;//test
+	}
 }
 
 void	init_token(t_token *toks)

@@ -6,7 +6,7 @@
 /*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 15:57:28 by ccommiss          #+#    #+#             */
-/*   Updated: 2021/12/02 23:27:02 by ccommiss         ###   ########.fr       */
+/*   Updated: 2021/12/03 19:32:30 by ccommiss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,6 @@ char	*ft_str_replace(char *str, int start, int len, t_lex **l)
 
 	extract_pure_var_name(&var_name, len, start, str);
 	value = assign_value(*((**l).env), var_name);
-	printf ("VALUE = %s \n", value);
 	(*l)->exp_len = ft_strlen(value);
 	free(var_name);
 	tmp = ft_substr(str, 0, start);

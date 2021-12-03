@@ -6,7 +6,7 @@
 /*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 15:59:57 by ccommiss          #+#    #+#             */
-/*   Updated: 2021/12/03 13:02:02 by ccommiss         ###   ########.fr       */
+/*   Updated: 2021/12/03 19:31:14 by ccommiss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@
 **	(cause $a or "$a" if $a = ls -la wont be interpreted the same)
 */
 void	save_and_reset_context(int	*old_context, t_lex **l)
-{
+{	
+	//printf ("OLD CONTEXT LA = %d \n", *old_context);
 	if (*old_context == -1)
 	{
 		*old_context = (*l)->context;
@@ -27,6 +28,7 @@ void	save_and_reset_context(int	*old_context, t_lex **l)
 		(*l)->context = *old_context;
 	else if ((*l)->context != VAR)
 		*old_context = (*l)->context;
+	//printf ("CONTEXT = %d \n", (*l)->context);
 }
 
 int	fill_token_buff(t_lex *l, char **to_tokenize, int *i, t_env *env)
@@ -36,8 +38,8 @@ int	fill_token_buff(t_lex *l, char **to_tokenize, int *i, t_env *env)
 
 	protect = 0;
 	save_and_reset_context(&old_context, &l);
-	while (to_tokenize[0][*i] && l->ref_char == (int)tok(old_context,
-		(unsigned char)to_tokenize[0][*i]))
+	while (to_tokenize[0][*i] && ((l->ref_char == (int)tok(old_context, (unsigned char)to_tokenize[0][*i]))
+	|| (l->context == VAR && (l->ref_char == (int)tok(VAR, (unsigned char)to_tokenize[0][*i])))) )
 	{
 		save_and_reset_context(&old_context, &l);
 		handle_quoted_context(&(l->context), i, *to_tokenize);
@@ -87,6 +89,8 @@ void	tokenize(char *line, t_token *toks, t_env *env)
 	if (!to_tokenize)
 		ft_exit_program(NULL, toks, line, NULL);
 	init_lexer_struct(&l, to_tokenize, save_exp);
+	if (save_exp > 0 && l.ref_char != TOK_EAT)
+		l.ref_char = 100;
 	if (fill_token_buff(&l, &to_tokenize, &i, env) == MALLOC_FAIL)
 		ft_exit_program(NULL, toks, line, NULL);
 	save_exp = l.exp_len;
