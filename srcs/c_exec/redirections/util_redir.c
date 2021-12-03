@@ -19,9 +19,9 @@ void	ft_execve(char *path, char **cmd, char **tenvp)
 	{
 		if (execve(cmd[0], cmd, tenvp) == -1)
 		{
-			write(2, "Minishell: ", 11);
+			write(2, "minishell: ", 11);
 			write(2, cmd[0], ft_strlen(cmd[0]));
-			write(2, " : commande introuvable\n", 24);
+			write(2, ": command not found\n", 20);
 			exit(127);
 		}
 	}
@@ -29,9 +29,9 @@ void	ft_execve(char *path, char **cmd, char **tenvp)
 	{
 		if (execve(path, cmd, tenvp) == -1)
 		{
-			write(2, "Minishell: ", 11);
+			write(2, "minishell: ", 11);
 			write(2, cmd[0], ft_strlen(cmd[0]));
-			write(2, " : commande introuvable\n", 24);
+			write(2, ": command not found\n", 20);
 			exit(127);
 		}
 	}

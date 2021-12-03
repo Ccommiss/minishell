@@ -6,7 +6,7 @@
 /*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 15:59:57 by ccommiss          #+#    #+#             */
-/*   Updated: 2021/12/03 00:35:09 by ccommiss         ###   ########.fr       */
+/*   Updated: 2021/12/03 13:02:02 by ccommiss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ int	fill_token_buff(t_lex *l, char **to_tokenize, int *i, t_env *env)
 			l->exp_len--;
 	}
 	l->token[l->buf_i] = '\0';
+	l->buf_i = 0;
 	return (0);
 }
 

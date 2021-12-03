@@ -17,7 +17,6 @@
 
 int	g_return_value;
 
-
 void	choose_prompt(char **line)
 {
 	if ((!isatty(STDIN_FILENO)))
@@ -44,8 +43,8 @@ void	shell_loop(char **line, t_env **env)
 	t_token	toks;
 	t_cmd	cmd;
 
-	if (check_quote(*line) != 0)
-		return;
+	if (check_quote(*line) != 0 || line_length(*line) != 0)
+		return ;
 	init_tok_and_cmd(&toks, &cmd);
 	tokenize(*line, &toks, *env);
 //	debug_tokens(&toks);
@@ -79,9 +78,8 @@ int	main(int ac, char **av, char **envp)
 	env = NULL;
 	(void)ac;
 	(void)av;
-
 	if (error_management(ac, envp) == ERROR)
-		return 1;
+		return (1);
 	get_the_env(&env, envp);
 	while (1)
 	{

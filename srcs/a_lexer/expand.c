@@ -108,7 +108,7 @@ int	expand(char **to_tokenize, int *i, t_lex **l, t_env *env)
 		return (MALLOC_FAIL);
 	(**l).env = &env;
 	if (j == 1)
-		return (2);
+		return (free_and_return(var_name, 2));
 	if (j > 1)
 		*to_tokenize = ft_str_replace(*to_tokenize, *i, j - 1, l);
 	if ((*l)->exp_len == 0)
