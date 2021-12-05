@@ -6,7 +6,7 @@
 /*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 15:57:28 by ccommiss          #+#    #+#             */
-/*   Updated: 2021/12/03 19:32:30 by ccommiss         ###   ########.fr       */
+/*   Updated: 2021/12/05 21:24:42 by ccommiss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 **		- case 1 : $ symbole and {} both braces (eg: ${PATH} becomes PATH)
 **		- case 2 : only $ symbol
 */
+
 void	extract_pure_var_name(char **var_name, int len, int start, char *str)
 {
 	if (str[start + 1] == '{')
@@ -31,6 +32,7 @@ void	extract_pure_var_name(char **var_name, int len, int start, char *str)
 **		- 2) iterates through the env to see if one
 **			value match the provided key (var_name)
 */
+
 char	*assign_value(t_env *env, char *var_name)
 {
 	if (ft_strncmp(var_name, "?", 1) == 0)
@@ -115,6 +117,14 @@ int	expand(char **to_tokenize, int *i, t_lex **l, t_env *env)
 	return (expand_substitution_error_detector(var_name, exception));
 }
 
+/*
+**	handle expand : send expand char to be expanded.
+**	- if exp_len > 0 aks an expanded var is still being processed,
+**		or context is simple quotes, no expand has to be performed.
+**	- if old_i == 0 and nothing has been expanded, means it was juste a
+**		tok containing no var and should be set as NULL
+**
+*/
 int	handle_expand(char **to_tokenize, int *i, t_lex *l, t_env *env)
 {
 	int	old_context;

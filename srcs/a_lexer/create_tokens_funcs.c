@@ -6,11 +6,16 @@
 /*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 00:34:38 by ccommiss          #+#    #+#             */
-/*   Updated: 2021/12/03 13:03:33 by ccommiss         ###   ########.fr       */
+/*   Updated: 2021/12/05 21:17:29 by ccommiss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+/*
+**	create toks : creates token from the current lex struct
+**	data made in tokenize function
+*/
 
 void	create_token(t_token **toks, t_lex *l)
 {
@@ -32,6 +37,13 @@ void	create_token(t_token **toks, t_lex *l)
 	(*toks)->next->index = (*toks)->index + 1;
 	(*toks) = (*toks)->next;
 }
+
+/*
+**	creates toks : creates a token labelled as ERR which means
+**	we had an error during the substitution.
+**	Iterates until finding a pipe to make
+**	the next token, or the end of the input.
+*/
 
 int	create_exp_err_token(char **to_tokenize, int *i, t_lex *l)
 {

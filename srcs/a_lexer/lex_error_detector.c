@@ -6,7 +6,7 @@
 /*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 15:59:10 by ccommiss          #+#    #+#             */
-/*   Updated: 2021/12/03 17:41:24 by ccommiss         ###   ########.fr       */
+/*   Updated: 2021/12/05 21:54:01 by ccommiss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ int	is_op(int type)
 ** 	- reste a gerer -> si TOK en fin de ligne
 **   - NEXT TOK IS ALWAYS NULL as this function is called in each tok
 */
+
 void	syntax_error_detector(t_token *toks, int last_tok_is_op)
 {
 	char	tok_op;

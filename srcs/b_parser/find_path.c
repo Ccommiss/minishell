@@ -6,7 +6,7 @@
 /*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 16:01:37 by ccommiss          #+#    #+#             */
-/*   Updated: 2021/12/02 16:01:38 by ccommiss         ###   ########.fr       */
+/*   Updated: 2021/12/05 21:55:59 by ccommiss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ void	find_cmdp(t_cmd *cmds, char *path)
 **	(env = NULL after all iteration through env keys), cmdp is set
 **	to "".
 */
+
 void	find_path(t_cmd *cmds, t_env *env)
 {
 	if (cmds->index == -1)

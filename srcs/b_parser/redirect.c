@@ -6,11 +6,19 @@
 /*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 16:01:28 by ccommiss          #+#    #+#             */
-/*   Updated: 2021/12/02 16:11:46 by ccommiss         ###   ########.fr       */
+/*   Updated: 2021/12/05 21:59:18 by ccommiss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+/*
+**	redirect_out handles > (GREAT) operator.
+**	Both create a file if non existant.
+**	- if > : add or overwrite in a file (O_TRUNC)
+**	- if >> : append text to the end of file (O_APPEND) and
+**		set dgreat to TRUE.
+*/
 
 void	redirect_out(t_cmd *cmd, t_token **toks, int len)
 {
@@ -34,6 +42,11 @@ void	redirect_out(t_cmd *cmd, t_token **toks, int len)
 	}
 }
 
+/*
+**	set_heredoc : stores delimiters in io->here double tab.
+**		set dless to TRUE.
+*/
+
 void	set_heredoc(t_cmd *cmd, t_token **toks)
 {
 	if (!cmd->io_here)
@@ -47,6 +60,12 @@ void	set_heredoc(t_cmd *cmd, t_token **toks)
 	cmd->here_words += 1;
 	cmd->dless = TRUE;
 }
+
+/*
+**	redirect_in handles < (LESS) operator.
+**	Does not create a file if non existant.
+**	- if > : add or overwrite in a file (O_TRUNC)
+*/
 
 void	redirect_in(t_cmd *cmd, t_token **toks, int len)
 {

@@ -6,14 +6,14 @@
 /*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 15:58:45 by ccommiss          #+#    #+#             */
-/*   Updated: 2021/12/03 17:41:12 by ccommiss         ###   ########.fr       */
+/*   Updated: 2021/12/05 21:07:31 by ccommiss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /*
-**	These functions, called according to the contexte, return a token
+**	These functions, called according to the context, return a token
 **	defining how to interpret the current char given the context.
 **	Ex. while lexing a word, a ' ' should be interpreted as a stop
 **	character, while not if in a quoted context.
@@ -30,6 +30,11 @@ enum	e_tokens	op_toks(int c)
 
 	return (tok[c]);
 }
+
+/*
+**	word toks : in WORD context, pipes, less, great
+**	and spaces are interpreted as non word tokens.
+*/
 
 enum	e_tokens	word_toks(int c)
 {
@@ -56,49 +61,9 @@ enum	e_tokens	word_toks(int c)
 }
 
 /*
-**	Memo ASCII
-**
-**	0 a 32 : non-printable characters
-**	33 ... 47 : ponctuation
-**		├─> 34 : "
-**		├─> 36 : $
-**		├─> 39 : '
-**	48 a 57 : chiffres
-**	58 a 64 : operateurs
-**		├─> 60 : <
-**		├─> 62 : >
-**	65 a 90 : A a Z
-**	91 a 96 : ponctuation '[' a '`'
-**	97 a 122 : a a z
-**	123 a 127 : ponctuation { a ~ puis DEL
-**	128 a 254 : Ascii extended
+**	expand toks : in VAR context, all chars but all types of
+**	spaces are considered as word token.
 */
-
-enum e_tokens	corresp(int c)
-{
-	static enum e_tokens	corresp[256] = {
-	['|'] = OP,
-	['<'] = OP,
-	['>'] = OP,
-	['\0'...'!'] = WORD, // 0 a 33
-	['#'...'&'] = WORD, // 35 a 38
-	['('...'/'] = WORD, //40 a 47
-	['0'...'9'] = WORD, //48 a 57
-	[':'...';'] = WORD,
-	['='] = WORD,
-	['?'...'@'] = WORD, // 58 a 59 et 61, 63, 64
-	['A'...'Z'] = WORD, //65 a 90
-	['['...'`'] = WORD, // 91 a 96
-	['a'...'z'] = WORD, //97 a 122
-	['{'] = WORD,
-	['}'] = WORD,
-	['~'...u'ÿ'] = WORD, // 126 a la fin
-	['\''] = SQUOTE, //39
-	['\"'] = DQUOTE, //34
-	};
-
-	return (corresp[c]);
-}
 
 enum	e_tokens	expand_toks(int c)
 {
@@ -121,4 +86,54 @@ enum e_tokens	tok(int x, int y)
 	if (x == VAR)
 		return (expand_toks(y));
 	return (WORD);
+}
+
+/*
+**	Memo ASCII
+**
+**	0 a 32 : non-printable characters
+**	33 ... 47 : ponctuation
+**		├─> 34 : "
+**		├─> 36 : $
+**		├─> 39 : '
+**	48 a 57 : chiffres
+**	58 a 64 : operateurs
+**		├─> 60 : <
+**		├─> 62 : >
+**	65 a 90 : A a Z
+**	91 a 96 : ponctuation '[' a '`'
+**	97 a 122 : a a z
+**	123 a 127 : ponctuation { a ~ puis DEL
+**	128 a 254 : Ascii extended
+*/
+
+/*
+**	corresp : defines the reference character of
+**	the current examind sequence of char.
+*/
+
+enum e_tokens	corresp(int c)
+{
+	static enum e_tokens	corresp[256] = {
+	['|'] = OP,
+	['<'] = OP,
+	['>'] = OP,
+	['\0'...'!'] = WORD,
+	['#'...'&'] = WORD,
+	['('...'/'] = WORD,
+	['0'...'9'] = WORD,
+	[':'...';'] = WORD,
+	['='] = WORD,
+	['?'...'@'] = WORD,
+	['A'...'Z'] = WORD,
+	['['...'`'] = WORD,
+	['a'...'z'] = WORD,
+	['{'] = WORD,
+	['}'] = WORD,
+	['~'...u'ÿ'] = WORD,
+	['\''] = SQUOTE,
+	['\"'] = DQUOTE,
+	};
+
+	return (corresp[c]);
 }
