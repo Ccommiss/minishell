@@ -39,22 +39,22 @@ enum	e_tokens	op_toks(int c)
 enum	e_tokens	word_toks(int c)
 {
 	static enum e_tokens	tok[256] = {
-	['\0'...' '] = TOK_EAT, // CARACTERES D'ARRET
-	['#'...'&'] = TOK_WORD, // 35 a 38
-	['('...'/'] = TOK_WORD, //40 a 47
-	['0'...'9'] = TOK_WORD, //48 a 57
+	['\0'...' '] = TOK_EAT,
+	['#'...'&'] = TOK_WORD,
+	['('...'/'] = TOK_WORD,
+	['0'...'9'] = TOK_WORD,
 	[':'...';'] = TOK_WORD,
 	['='] = TOK_WORD,
-	['?'...'@'] = TOK_WORD, // 58 a 59 et 61, 63, 64
-	['A'...'z'] = TOK_WORD, //97 a 122
+	['?'...'@'] = TOK_WORD,
+	['A'...'z'] = TOK_WORD,
 	['{'] = TOK_WORD,
-	['}'] = TOK_WORD, //123,125
-	['~'...u'ÿ'] = TOK_WORD, // 126 a la fin
+	['}'] = TOK_WORD,
+	['~'...u'ÿ'] = TOK_WORD,
 	['|'] = TOK_PIPE,
 	['<'] = TOK_LESS,
 	['>'] = TOK_GREAT,
-	['\''] = TOK_WORD, //39
-	['\"'] = TOK_WORD, //34
+	['\''] = TOK_WORD,
+	['\"'] = TOK_WORD,
 	};
 
 	return (tok[c]);
