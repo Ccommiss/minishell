@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir_out.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mpochard <mpochard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/05 17:41:18 by mpochard          #+#    #+#             */
-/*   Updated: 2021/12/03 18:39:57 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/12/07 12:11:39 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,12 @@ void	in_the_pid_doubl(t_cmd cmd, char **tenvp)
 	ft_execve(cmd.cmdp, cmd.cmd_args, tenvp);
 }
 
+void	close_the(t_cmd cmd)
+{
+	close(cmd.io_in);
+	close(cmd.io_out);
+}
+
 int	both_redir(t_env *env, t_cmd cmd, char *line)
 {
 	int		builtin;
@@ -80,7 +86,6 @@ int	both_redir(t_env *env, t_cmd cmd, char *line)
 		set_status(status, 1);
 		ft_free_double_tab(tenvp);
 	}
-	close(cmd.io_in);
-	close(cmd.io_out);
+	close_the(cmd);
 	return (g_return_value);
 }

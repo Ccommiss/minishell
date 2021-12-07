@@ -6,7 +6,7 @@
 /*   By: mpochard <mpochard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/20 11:11:36 by mpochard          #+#    #+#             */
-/*   Updated: 2021/12/03 18:39:23 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/12/06 13:20:38 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,18 @@ void	no_cmd_here(int in, int out)
 void	the_rest_built(t_env *env, t_cmd cmd, int builtin)
 {
 	if (builtin == 3)
+	{
 		ft_putendl_fd(get_pwd(), 1);
+		g_return_value = 0;
+	}
 	else if (builtin == 4)
 		exito(cmd.cmd_args, &cmd, env, NULL);
 	else if (builtin == 5)
-		export_the(env, &cmd.cmd_args[1]);
+		g_return_value = export_the(env, &cmd.cmd_args[1]);
 	else if (builtin == 6)
-		do_the_unset(env, cmd.cmd_args);
+		g_return_value = do_the_unset(env, cmd.cmd_args);
 	else if (builtin == 7)
-		printf_the_env(env, cmd.cmd_args);
+		g_return_value = printf_the_env(env, cmd.cmd_args);
 }
 
 void	redir_here_built(t_env *env, t_cmd cmd, int builtin)
@@ -47,10 +50,10 @@ void	redir_here_built(t_env *env, t_cmd cmd, int builtin)
 		dup(cmd.io_out);
 	}
 	if (builtin == 1)
-		do_echo(cmd.cmd_args);
+		g_return_value = do_echo(cmd.cmd_args);
 	else if (builtin == 2)
 	{
-		cd(env, &cmd.cmd_args[1]);
+		g_return_value = cd(env, &cmd.cmd_args[1]);
 		set_thepwd(env);
 	}
 	else if (builtin >= 3 && builtin <= 7)

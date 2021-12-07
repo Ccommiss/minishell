@@ -6,7 +6,7 @@
 /*   By: mpochard <mpochard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/05 17:28:47 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/29 20:12:10 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/12/07 11:28:23 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,29 +15,26 @@
 void	do_redir_l(t_cmd cmd, int *pipefd, int nbr_p, int redir)
 {
 	if (cmd.cmd_args[0] == NULL || cmd.error == 1)
-		exit(0);
-	if (redir == 0)
 	{
-		dup2(pipefd[nbr_p - 2], 0);
-		close_all_p(pipefd, nbr_p);
+		if (cmd.cmd_args[0] == NULL)
+			exit (0);
+		exit(1);
 	}
+	if (redir == 0)
+		dup2(pipefd[nbr_p - 2], 0);
 	else if (redir == 1)
 	{
 		dup2(cmd.io_out, 1);
 		dup2(pipefd[nbr_p - 2], 0);
-		close_all_p(pipefd, nbr_p);
 	}
 	else if (redir == 2)
-	{
 		dup2(cmd.io_in, 0);
-		close_all_p(pipefd, nbr_p);
-	}
 	else if (redir == 4)
 	{
 		dup2(cmd.io_in, 0);
 		dup2(cmd.io_out, 1);
-		close_all_p(pipefd, nbr_p);
 	}
+	close_all_p(pipefd, nbr_p);
 }
 
 void	last_pid(t_cmd cmd, t_env *env, int *pipefd, int nbr_p)

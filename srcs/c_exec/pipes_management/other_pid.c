@@ -6,16 +6,34 @@
 /*   By: mpochard <mpochard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/05 17:28:44 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/30 11:51:18 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/12/07 12:08:49 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+void	other_redir(t_pipe piped, int redir, t_cmd cmd, int i)
+{
+	if (redir == 2)
+	{
+		dup2(piped.pipefd[i + i + 1], 1);
+		dup2(cmd.io_in, 0);
+	}
+	else if (redir == 4)
+	{
+		dup2(cmd.io_in, 0);
+		dup2(cmd.io_out, 1);
+	}
+}
+
 void	do_redir_o(t_cmd cmd, int i, t_pipe piped, int redir)
 {
 	if (cmd.cmd_args[0] == NULL || cmd.error == 1)
-		exit(0);
+	{
+		if (cmd.cmd_args[0] == NULL)
+			exit(0);
+		exit(1);
+	}
 	if (redir == 0)
 	{
 		dup2(piped.pipefd[i + (i - 2)], 0);
@@ -26,16 +44,8 @@ void	do_redir_o(t_cmd cmd, int i, t_pipe piped, int redir)
 		dup2(piped.pipefd[i + (i - 2)], 0);
 		dup2(cmd.io_out, 1);
 	}
-	else if (redir == 2)
-	{
-		dup2(piped.pipefd[i + i + 1], 1);
-		dup2(cmd.io_in, 0);
-	}
-	else if (redir == 4)
-	{
-		dup2(cmd.io_in, 0);
-		dup2(cmd.io_out, 1);
-	}
+	else if (redir >= 2 && redir <= 4)
+		other_redir(piped, redir, cmd, i);
 	close_all_p(piped.pipefd, piped.nbr_p);
 }
 

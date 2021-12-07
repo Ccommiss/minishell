@@ -6,12 +6,13 @@
 /*   By: mpochard <mpochard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 18:37:31 by mpochard          #+#    #+#             */
-/*   Updated: 2021/12/01 18:38:14 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/12/07 13:59:48 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include <stdio.h>
+
 char	*ft_auto_substr(char const *s, unsigned int start, size_t len)
 {
 	size_t		i;

@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mpochard <mpochard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/08 20:17:43 by mpochard          #+#    #+#             */
-/*   Updated: 2021/12/02 10:08:23 mpochard         ###   ########.fr       */
+/*   Created: 2021/12/07 11:24:22 by mpochard          #+#    #+#             */
+/*   Updated: 2021/12/07 11:26:12 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ int	if_num(char *str)
 	int	i;
 
 	i = 0;
+	if (str[i] == '+' || str[i] == '-')
+		i++;
 	while (str[i])
 	{
 		if (str[i] < '0' || str[i] > '9')
@@ -33,16 +35,15 @@ void	error_num(char *str, t_env *env, int param)
 		write(2, "Minishell: exit: ", 17);
 		write(2, str, ft_strlen(str));
 		write(2, ": numeric argument required\n", 28);
-		exit (2);
+		exit(2);
 	}
-	else if(param == 1)
+	else if (param == 1)
 	{
-
-	write(2, "Minishell: exit: ", 17);
-	write(2, str, ft_strlen(str));
-	write(2, ": numeric argument required\n", 28);
-	clean_env(env);
-	exit (2);
+		write(2, "Minishell: exit: ", 17);
+		write(2, str, ft_strlen(str));
+		write(2, ": numeric argument required\n", 28);
+		clean_env(env);
+		exit(2);
 	}
 }
 
@@ -64,7 +65,7 @@ int	error_count(char *str, t_env *env, int param)
 	return (0);
 }
 
-void	exito(char	**cmd_suff, t_cmd *cmd, t_env *env, char *line)
+void	exito(char **cmd_suff, t_cmd *cmd, t_env *env, char *line)
 {
 	char	n;
 	int		count;

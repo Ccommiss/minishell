@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   do_pipe.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mpochard <mpochard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/05 17:40:25 by mpochard          #+#    #+#             */
-/*   Updated: 2021/12/02 16:11:46 by ccommiss         ###   ########.fr       */
+/*   Updated: 2021/12/07 11:26:51 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ int	do_the_pipe(t_cmd *cmd, t_env *env)
 		cmd = cmd->next;
 	}
 	we_wait(piped.pid, piped.nbr_cmd, piped.pipefd, piped.nbr_p);
-	if (piped.status == 1)
+	if (piped.status > 0)
 		g_return_value = piped.temp;
 	unlink(".here_doc");
 	return (0);

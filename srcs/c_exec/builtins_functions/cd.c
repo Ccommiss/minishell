@@ -6,7 +6,7 @@
 /*   By: mpochard <mpochard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/05 17:41:53 by mpochard          #+#    #+#             */
-/*   Updated: 2021/12/03 18:38:06 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/12/07 12:18:28 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,21 +37,17 @@ int	is_home_unset(t_env *tmp, char *home)
 		tmp = tmp->next;
 	}
 	if (ft_strlen(temp->value) > 0 && chdir(temp->value) == -1)
-	{
-		write(2, "Minishell: cd: ", 14);
-		write(2, home, ft_strlen(home));
-		perror(": ");
-		write(2, "\n", 1);
-	}
+		error_cd(home);
 	free(home);
 	return (0);
 }
 
-int	set_home(t_env *env, char **home)
+int	set_home(t_env *env, char **home, char **temp)
 {
 	t_env	*tmp1;
 
 	tmp1 = env;
+	*temp = NULL;
 	while (tmp1)
 	{
 		if (strcmp(tmp1->key, "PWD") == 0)
@@ -120,34 +116,26 @@ int	cd(t_env *env, char **pwd)
 	char	*home;
 	char	*temp;
 
-	temp = NULL;
-	if(count_double_tab(pwd) > 1)
-	{
-		write(2, "Minishell: cd:", 15);
-		write(2, " too many arguments\n", 20);
-		return (-1);
-	}
-	set_home(env, &home);
-	temp = NULL;
+	if (count_double_tab(pwd) > 1)
+		return (cd_too_many_arg());
+	set_home(env, &home, &temp);
 	if (pwd[0] == NULL)
 	{
 		if (is_home_unset(env, home) == -1)
 			return (-1);
+		return (0);
 	}
-	else
+	while (env)
 	{
-		while (env)
+		if (strcmp(env->key, "OLDPWD") == 0)
 		{
-			if (strcmp(env->key, "OLDPWD") == 0)
-			{
-				if (with_home_set(env, home, &temp) == -1)
-					return (-1);
-				break ;
-			}
-			env = env->next;
+			if (with_home_set(env, home, &temp) == -1)
+				return (-1);
+			break ;
 		}
-		if (on_coupe(env, pwd[0], home, temp) == -1)
-			return (-1);
+		env = env->next;
 	}
+	if (on_coupe(env, pwd[0], home, temp) == -1)
+		return (-1);
 	return (0);
 }

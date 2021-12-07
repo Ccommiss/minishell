@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fill_thefd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mpochard <mpochard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 14:15:55 by mpochard          #+#    #+#             */
-/*   Updated: 2021/12/02 16:11:46 by ccommiss         ###   ########.fr       */
+/*   Updated: 2021/12/07 11:51:00 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ void	init(int *i)
 {
 	*i = 0;
 	handle_signal(HEREDOC);
+	g_return_value = 0;
 }
 
 int	fill_thefd(t_cmd cmd)
@@ -66,7 +67,6 @@ int	fill_thefd(t_cmd cmd)
 	char	*line;
 
 	init(&i);
-	g_return_value = 0;
 	while (cmd.here_words && g_return_value != 130)
 	{
 		if (fd_neg(&fd) == -1)
