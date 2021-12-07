@@ -6,7 +6,7 @@
 /*   By: mpochard <mpochard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 17:06:05 by mpochard          #+#    #+#             */
-/*   Updated: 2021/12/01 14:11:52 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/12/07 16:58:02 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	set_the_pwd_inv(t_env *env)
 {
 	while (env)
 	{
-		if (strcmp(env->key, "OLDPWD") == 0)
+		if (ft_strncmp(env->key, "OLDPWD", 7) == 0)
 		{
 			env->visible = -1;
 			break ;

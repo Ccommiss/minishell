@@ -6,7 +6,7 @@
 /*   By: mpochard <mpochard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/17 15:11:13 by mpochard          #+#    #+#             */
-/*   Updated: 2021/12/01 14:12:50 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/12/07 17:07:09 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ char	**ft_split_one_egal(char *str)
 		return (NULL);
 	while ((ft_isalnum(str[i]) == 1 || str[i] == '_') && str[i] != '=')
 		i++;
-	tab[j] = strndup(str, i);
+	tab[j] = ft_strndup(str, i);
 	j++;
 	if (str[i] == '+')
 		i++;

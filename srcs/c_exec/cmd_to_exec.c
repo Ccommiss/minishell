@@ -3,26 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_to_exec.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mpochard <mpochard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/13 10:05:27 by mpochard          #+#    #+#             */
-/*   Updated: 2021/12/03 10:32:00 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/12/07 16:27:40 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/*
- * permet d'articulier le parser avec mes builtin
- * echo is good
- */
-/* !!!!!!!
- * need to gerer export a ca va s'afficher dans export
- * mais pas dans env
- * gerer le export btw
- * mettre export en **
- */
-// fo incremeter les shlvl  de +1 au debut comme ca  cgerer
 void	exec_the_built(t_env *env, t_cmd *cmd, char *line, int builtin)
 {
 	char	*buf;

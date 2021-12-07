@@ -6,7 +6,7 @@
 /*   By: mpochard <mpochard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/05 17:41:40 by mpochard          #+#    #+#             */
-/*   Updated: 2021/12/03 10:31:41 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/12/07 16:27:35 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	ft_execve(char *path, char **cmd, char **tenvp)
 {
 	handle_signal(CHILD);
-	if (path == NULL)
+	if (path == NULL || ft_strlen(path) <= 0)
 	{
 		if (execve(cmd[0], cmd, tenvp) == -1)
 		{

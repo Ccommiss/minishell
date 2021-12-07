@@ -6,7 +6,7 @@
 /*   By: mpochard <mpochard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/29 17:49:53 by mpochard          #+#    #+#             */
-/*   Updated: 2021/11/30 17:25:12 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/12/07 16:45:29 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	need_to_unset(t_env *env, char *cmd_suffix)
 	temp = env;
 	while (temp)
 	{
-		if (strcmp(temp->key, cmd_suffix) == 0)
+		if (ft_strncmp(temp->key, cmd_suffix, (ft_strlen(cmd_suffix) + 1)) == 0)
 			return (1);
 		temp = temp->next;
 	}

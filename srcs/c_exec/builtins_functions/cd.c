@@ -6,7 +6,7 @@
 /*   By: mpochard <mpochard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/05 17:41:53 by mpochard          #+#    #+#             */
-/*   Updated: 2021/12/07 12:18:28 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/12/07 16:34:07 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	is_home_unset(t_env *tmp, char *home)
 	temp = tmp;
 	while (temp)
 	{
-		if (ft_strncmp(temp->key, "HOME", ft_strlen(temp->key)) == 0)
+		if (ft_strncmp(temp->key, "HOME", 5) == 0)
 			break ;
 		temp = temp->next;
 	}
@@ -28,7 +28,7 @@ int	is_home_unset(t_env *tmp, char *home)
 		return (no_home(home));
 	while (tmp)
 	{
-		if (ft_strncmp(tmp->key, "OLDPWD", ft_strlen("OLDPWD")) == 0)
+		if (ft_strncmp(tmp->key, "OLDPWD", 7) == 0)
 		{
 			if (set_the_oldpwd(tmp, home) == -1)
 				return (-1);
@@ -50,7 +50,7 @@ int	set_home(t_env *env, char **home, char **temp)
 	*temp = NULL;
 	while (tmp1)
 	{
-		if (strcmp(tmp1->key, "PWD") == 0)
+		if (ft_strncmp(tmp1->key, "PWD", 4) == 0)
 			break ;
 		tmp1 = tmp1->next;
 	}
@@ -127,7 +127,7 @@ int	cd(t_env *env, char **pwd)
 	}
 	while (env)
 	{
-		if (strcmp(env->key, "OLDPWD") == 0)
+		if (ft_strncmp(env->key, "OLDPWD", 7) == 0)
 		{
 			if (with_home_set(env, home, &temp) == -1)
 				return (-1);

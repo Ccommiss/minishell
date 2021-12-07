@@ -6,7 +6,7 @@
 /*   By: mpochard <mpochard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 17:22:52 by ccommiss          #+#    #+#             */
-/*   Updated: 2021/12/07 14:45:54 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/12/07 14:50:13 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,8 +123,8 @@ char			*get_pwd(void);
 char			*strjoin_char(char *str, char *str1, char c);
 int				is_home_unset(t_env *tmp, char *home);
 int				cd(t_env *env, char **pwd);
-int             cd_too_many_arg(void);
-void            error_cd(char *home);
+int				cd_too_many_arg(void);
+void			error_cd(char *home);
 void			set_thepwd(t_env *env);
 int				check_echo(char *cmd_suffix);
 int				count_double_tab(char **tab);

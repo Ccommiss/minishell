@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ccommiss <ccommiss@student.42.fr>          +#+  +:+       +#+         #
+#    By: mpochard <mpochard@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/21 20:33:41 by mpochard          #+#    #+#              #
-#    Updated: 2021/09/28 14:45:34 by ccommiss         ###   ########.fr        #
+#    Updated: 2021/12/07 17:05:29 by mpochard         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ SRC = ft_memset.c ft_bzero.c ft_memcpy.c ft_memccpy.c ft_memmove.c ft_memchr.c \
 		ft_putstr_fd.c ft_putendl_fd.c ft_putnbr_fd.c ft_swap.c \
 		ft_isin.c ft_absitoa.c ft_putchar.c ft_strconcat.c malloc_char_pointer.c \
 		malloc_int_pointer.c ft_free_double_tab.c ft_isalnum_str.c ft_realloc.c \
-		ft_auto_substr.c
+		ft_auto_substr.c ft_strcmp.c ft_strndup.c
 
 OBJS = ${SRC:.c=.o}
 

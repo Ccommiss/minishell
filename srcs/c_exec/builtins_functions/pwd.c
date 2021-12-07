@@ -6,7 +6,7 @@
 /*   By: mpochard <mpochard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 17:35:37 by mpochard          #+#    #+#             */
-/*   Updated: 2021/12/01 14:14:06 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/12/07 16:35:01 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	set_thepwd(t_env *env)
 {
 	while (env)
 	{
-		if (strcmp(env->key, "PWD") == 0)
+		if (ft_strncmp(env->key, "PWD", 4) == 0)
 		{
 			free(env->key);
 			free(env->value);

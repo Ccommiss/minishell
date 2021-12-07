@@ -6,7 +6,7 @@
 /*   By: mpochard <mpochard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/17 10:32:10 by mpochard          #+#    #+#             */
-/*   Updated: 2021/12/01 14:11:41 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/12/07 16:38:57 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ int	print_the_export(t_env *env)
 		j = 0;
 		while (j < nbr - 1 - i)
 		{
-			if (strcmp(exp[j], exp[j + 1]) > 0)
+			if (ft_strcmp(exp[j], exp[j + 1]) > 0)
 				ft_charswap(&exp[j], &exp[j + 1]);
 			j++;
 		}
