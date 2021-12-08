@@ -78,7 +78,6 @@ SRCS  += $(addprefix $(SPATH), $(SOURCES))
 OBJS	= 	${SRCS:.c=.o}
 CC = gcc
 
-#CFLAGS = -g -I.$(INCLUDES) -Wall -Werror -Wextra -fsanitize=address
 CFLAGS = -g -I.$(INCLUDES) -I/usr/local/opt/readline/include  -Wall -Werror -Wextra 
 
 RM = rm -f
@@ -91,7 +90,6 @@ $(OPATH)%.o: %.c
 ${NAME}: ${OBJS}
 		${MAKE} -C libft/
 		${CC} ${CFLAGS} ${OBJS} -lreadline -L/usr/local/opt/readline/lib libft/libft.a -o ${NAME}
-	#	${CC} ${CFLAGS} ${OBJS} -lreadline libft/libft.a -o ${NAME}
 all: ${NAME}
 
 clean :

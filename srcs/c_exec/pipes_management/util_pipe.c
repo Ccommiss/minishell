@@ -6,7 +6,7 @@
 /*   By: mpochard <mpochard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/05 17:36:27 by mpochard          #+#    #+#             */
-/*   Updated: 2021/12/02 10:26:37 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/12/08 09:34:43 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ void	we_wait(pid_t *pid, int nbr_cmd, int *pipefd, int pipee)
 	int	status;
 
 	i = 0;
+	status = 0;
 	close_all_p(pipefd, pipee);
 	while (i < nbr_cmd)
 	{

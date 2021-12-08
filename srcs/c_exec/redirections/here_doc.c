@@ -6,7 +6,7 @@
 /*   By: mpochard <mpochard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/20 11:11:36 by mpochard          #+#    #+#             */
-/*   Updated: 2021/12/06 13:20:38 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/12/08 09:33:01 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ void	here_doc(t_env *env, t_cmd cmd, int fd)
 	pid_t	pid;
 	char	**tenvp;
 
+	status = 0;
 	if (cmd.cmd_args[0] == NULL || cmd.error == 1)
 		return (no_cmd_here(cmd.io_in, cmd.io_out));
 	builtin = is_a_builtin(cmd.cmd_args[0]);
