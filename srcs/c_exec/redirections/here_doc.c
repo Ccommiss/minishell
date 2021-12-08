@@ -6,7 +6,7 @@
 /*   By: mpochard <mpochard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/20 11:11:36 by mpochard          #+#    #+#             */
-/*   Updated: 2021/12/08 09:33:01 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/12/08 16:29:53 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ void	here_doc(t_env *env, t_cmd cmd, int fd)
 		handle_signal(CHILD_HANDLING);
 		waitpid(pid, &status, 0);
 		set_status(status, 1);
-		ft_free_double_tab(tenvp);
+		close_and_free(tenvp, cmd);
 	}
 	unlink(".here_doc");
 }

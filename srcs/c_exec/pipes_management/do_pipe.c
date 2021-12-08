@@ -6,7 +6,7 @@
 /*   By: mpochard <mpochard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/05 17:40:25 by mpochard          #+#    #+#             */
-/*   Updated: 2021/12/07 11:26:51 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/12/08 16:31:16 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,6 @@ int	do_the_pipe(t_cmd *cmd, t_env *env)
 {
 	t_pipe	piped;
 
-	bzero(&piped, sizeof(t_pipe));
 	if (malloc_of_pipe(cmd, &piped) == -1)
 		return (-1);
 	if (deploy_pipe(piped) == -1)
@@ -82,7 +81,8 @@ int	do_the_pipe(t_cmd *cmd, t_env *env)
 	while (cmd)
 	{
 		if (cmd->dless == 1)
-			fill_thefd(*cmd);
+			if (if_cmd_dless(piped, cmd) == -1)
+				return (0);
 		piped.pid[piped.i] = fork();
 		if (piped.pid[piped.i] == 0)
 			inside_pid(env, cmd, piped);

@@ -6,7 +6,7 @@
 /*   By: mpochard <mpochard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/05 17:36:27 by mpochard          #+#    #+#             */
-/*   Updated: 2021/12/08 09:34:43 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/12/08 16:22:12 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,14 @@ int	malloc_of_pipe(t_cmd *cmd, t_pipe *piped)
 	t_cmd	*tmp;
 
 	tmp = cmd;
+	bzero(piped, sizeof(t_pipe));
 	piped->nbr_cmd = nbr_of_pipe(tmp) + 1;
 	piped->nbr_p = (piped->nbr_cmd - 1) * 2;
 	piped->pipefd = malloc(sizeof(int) * piped->nbr_p);
 	if (piped->pipefd == NULL)
 	{
 		perror("malloc");
+		unlink(".here_doc");
 		return (-1);
 	}
 	piped->pid = malloc(sizeof(int) * (piped->nbr_cmd));
@@ -43,6 +45,7 @@ int	malloc_of_pipe(t_cmd *cmd, t_pipe *piped)
 	{
 		free (piped->pipefd);
 		perror("malloc");
+		unlink(".here_doc");
 		return (-1);
 	}
 	return (0);
@@ -71,6 +74,7 @@ int	deploy_pipe(t_pipe piped)
 		{
 			free(piped.pipefd);
 			free(piped.pid);
+			unlink(".here_doc");
 			return (-1);
 		}
 		i += 2;

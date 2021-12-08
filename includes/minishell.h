@@ -6,7 +6,7 @@
 /*   By: mpochard <mpochard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 17:22:52 by ccommiss          #+#    #+#             */
-/*   Updated: 2021/12/07 14:50:13 by mpochard         ###   ########.fr       */
+/*   Updated: 2021/12/08 16:33:04 by mpochard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,7 @@ int				malloc_of_pipe(t_cmd *cmd, t_pipe *piped);
 void			close_all_p(int *fd, int nbr);
 int				deploy_pipe(t_pipe piped);
 int				which_redir(t_cmd cmd);
+int				if_cmd_dless(t_pipe piped, t_cmd *cmd);
 void			we_wait(pid_t *pid, int nbr_cmd, int *pipefd, int pipee);
 void			exec_builtin(t_env *env, char **cmd, int builtin);
 
@@ -160,6 +161,7 @@ int				redir_out_built(t_env *env, t_cmd cmd, int builtin, char *line);
 int				redir_double_built(t_env *env, t_cmd cmd, int built, char *l);
 void			built(t_env *env, t_cmd cmd, int *value, int builtin);
 int				fd_neg(int *fd);
+void			close_and_free(char **tenvp, t_cmd cmd);
 void			plus_plus(int *i, int *here_word, int fd);
 
 /*

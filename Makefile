@@ -15,13 +15,11 @@ SOURCES =	main.c\
 			$(LEX_PATH)/valid_expand_char_tab.c \
 			$(LEX_PATH)/lex_error_detector.c \
 			$(LEX_PATH)/quotes.c \
-			$(LEX_PATH)/debug_tokens.c \
 			$(LEX_PATH)/create_tokens_funcs.c \
 			$(LEX_PATH)/context.c \
 			$(PAR_PATH)/find_path.c \
 			$(PAR_PATH)/redirect.c \
 			$(PAR_PATH)/token_to_cmds.c \
-			$(PAR_PATH)/debug_cmds.c \
 			$(PAR_PATH)/parse_error_detector.c \
 			$(PAR_PATH)/command_and_suffix.c \
 			$(PAR_PATH)/init_cmd.c \
@@ -55,6 +53,7 @@ SOURCES =	main.c\
 			${PIPE_PATH}/other_pid.c\
 			${PIPE_PATH}/last_pid.c\
 			${PIPE_PATH}/util_pipe.c\
+			${PIPE_PATH}/do_pipe_util.c\
 			${EXEC_PATH}/signals.c \
 			${EXEC_PATH}/set_status.c \
 			$(UTILS_PATH)/cleanup.c \
